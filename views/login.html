@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+   <head>
+      <title>Title</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="/css/uikit.min.css" />
+      <script src="/js/axios.min.js"></script>      
+      <script src="/js/uikit.min.js"></script>
+      <script src="/js/uikit-icons.min.js"></script>
+   </head>
+   <body onload="authLoading()">
+    <div class="uk-position-center" id="auth-spinner">
+            <div uk-spinner="ratio: 2"></div>
+    </div>
+    <div id="auth" style="display: none">
+        <div id="login" class="uk-animation-slide-bottom-small">
+                <div class="uk-text-right">
+                    <a class="uk-close-large uk-margin-small-top uk-margin-small-right" href="/" uk-close></a>
+                </div>
+                <div class="uk-margin-large-top">
+                    <div class="uk-child-width-auto" uk-grid>
+                        <div class="uk-width-1-1 uk-width-1-2@s uk-width-1-3@m uk-margin-auto">
+                            <div class="uk-form-stacked uk-margin uk-margin-left uk-margin-right">
+                            <form id="login-form" class="uk-form-stacked">
+                                <legend class="uk-legend uk-text-center">CONNEXION</legend>
+                                <div class="uk-margin">
+                                    <label class="uk-form-label" for="login-email">Email</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input" id="login-email" type="email" placeholder="Entrez votre email ici">
+                                    </div>
+                                </div>
+                                <div class="uk-margin">
+                                    <label class="uk-form-label" for="login-password">Mot de passe</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input" id="login-password" type="password" placeholder="Entrez votre mot de passe ici">
+                                    </div>
+                                    <div class="uk-text-right">
+                                        <a onclick="displayRecovery()"><small>Mot de passe oublie ?</small></a>
+                                    </div>
+                                </div>
+                                <div>
+                                    <button class="uk-button uk-button-primary uk-width-1-1">SE CONNECTER</button>
+                                </div>
+                            </form>
+                            <div>
+                                <div class="uk-margin">
+                                    <div class="uk-margin-large-top uk-text-center">
+                                        <small>Vous n'avez pas de compte ?</small>
+                                    </div>
+                                    <a onclick="displayRegister()" class="uk-button uk-button-primary uk-width-1-1">
+                                    CREER UN COMPTE
+                                    </a>
+                                </div>
+                                <div class="uk-margin-large-top uk-text-center">
+                                    <small>SE CONNECTER AVEC:</small>
+                                </div>
+                                <div class="uk-margin uk-grid-expand" uk-grid>
+                                    <div class="uk-width-1-2">
+                                        <button class="uk-button uk-button-primary uk-width-1-1">
+                                        <span uk-icon="facebook"></span>
+                                        <small>FACEBOOK</small>
+                                        </button>
+                                    </div>
+                                    <div class="uk-width-1-2">
+                                        <button class="uk-button uk-button-primary uk-width-1-1">
+                                        <span uk-icon="google"></span>
+                                        <small>GOOGLE</small>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div id="recovery" style="display:none" class="uk-animation-slide-bottom-small">
+                <div class="uk-text-right">
+                    <a class="uk-close-large uk-margin-small-top uk-margin-small-right" onclick="closeRecovery()" uk-close></a>
+                </div>
+                <div class="uk-margin-xlarge-top">
+                    <div class="uk-child-width-auto" uk-grid>
+                        <div class="uk-width-1-1 uk-width-1-2@s uk-width-1-3@m uk-margin-auto">
+                            <div class="uk-form-stacked uk-margin uk-margin-left uk-margin-right">
+                            <form class="uk-form-stacked">
+                                <legend class="uk-legend uk-text-center">RECUPERATION DU MOT DE PASSE</legend>
+                                <div class="uk-margin">
+                                    <label class="uk-form-label" for="recovery-email">Adresse email</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input" id="recovery-email" type="email" placeholder="Entrez votre email ici">
+                                    </div>
+                                </div>
+                                <div>
+                                    <button class="uk-button uk-button-primary uk-width-1-1"><small>Recuperer le mot de passe</small></button>
+                                </div>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div id="register" style="display:none" class="uk-animation-slide-bottom-small">
+                <div class="uk-text-right">
+                    <a class="uk-close-large uk-margin-small-top uk-margin-small-right" onclick="closeRegister()" uk-close></a>
+                </div>
+                <div id="register" class="uk-margin-xlarge-top">
+                    <div class="uk-child-width-auto" uk-grid>
+                        <div class="uk-width-1-1 uk-width-1-2@s uk-width-1-3@m uk-margin-auto">
+                            <div class="uk-form-stacked uk-margin uk-margin-left uk-margin-right">
+                            <form id="register-form" action="/register" method="POST" class="uk-form-stacked">
+                                <legend class="uk-legend uk-text-center">CREER UN COMPTE</legend>
+                                <div class="uk-margin">
+                                    <label class="uk-form-label" for="register-user_name">Nom d'utilisateur</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input" id="register-user_name" name="userName" type="text" placeholder="Entrez votre Nom d'utilisateur ici">
+                                    </div>
+                                </div>
+                                <div class="uk-margin">
+                                    <label class="uk-form-label" for="register-email">Email</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input" id="register-email" name="email" type="email" placeholder="Entrez votre email ici">
+                                    </div>
+                                </div>
+                                <div class="uk-margin">
+                                    <label class="uk-form-label" for="register-password">Mot de passe</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input" id="register-password" name="password" type="password" placeholder="Entrez votre mot de passe ici">
+                                    </div>
+                                </div>
+                                <div class="uk-margin">
+                                    <label class="uk-form-label" for="register-password2">Repetez le mot de passe</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input" id="register-password2" type="password" placeholder="Repetez le mot de passe ici">
+                                    </div>
+                                </div>
+                                <div class="uk-margin uk-grid-small uk-child-width-expand uk-grid uk-text-center">
+                                    <label>
+                                    <input class="uk-checkbox" type="checkbox" required> <small>J'accepte les regles et les conditions d'utilisations du site</small>
+                                    </label>
+                                </div>
+                                <div class="uk-margin">
+                                    <button type="submit" class="uk-button uk-button-primary uk-width-1-1">CREER UN COMPTE</button>
+                                </div>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </div>
+                <div class="uk-margin-large-top" style="display: none" id="verification">
+                <div class="uk-child-width-auto" uk-grid>
+                    <div class="uk-width-1-1 uk-width-1-2@s uk-width-1-3@m uk-margin-auto">
+                        <div class="uk-form-stacked uk-margin uk-margin-left uk-margin-right">
+                        <form id="verification-form" method="POST" class="uk-form-stacked">
+                            <P class="uk-legend uk-text-center">Nous vous avons un code par email pour verification</P>
+                            <div class="uk-margin">
+                                <label class="uk-form-label" for="pin-code">ENTREZ LE CODE RECU PAR EMAIL</label>
+                                <div class="uk-form-controls">
+                                    <input class="uk-input" id="pin-code" name="pin" type="text" placeholder="Entrez code pin">
+                                </div>
+                            </div>
+                            <div>
+                                <button class="uk-button uk-button-primary uk-width-1-1">VALIDER</button>
+                            </div>
+                        </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+    </div>
+     <script src="/js/auth.js"></script>
+   </body>
+</html>

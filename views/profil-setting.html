@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <title>Title</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/css/uikit.min.css" />
+        <link rel="stylesheet" href="/css/index.css">
+        <script src="/js/uikit.min.js"></script>
+        <script src="/js/uikit-icons.min.js"></script>
+    </head>
+    <body>
+        <header style="margin-bottom: 10px">
+                <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;">
+                <nav class="uk-navbar uk-navbar-container">
+                    <div class="uk-navbar-left">
+                        <a class="uk-navbar-toggle" onclick="backToMainSetting()">
+                            <span uk-icon="icon: arrow-left; ratio: 1.5"></span>
+                        </a>
+                    </div>
+                <div class="uk-navbar-center">
+                    LOGO DU SITE
+                </div>
+                <div class="uk-navbar-right" style="height: 65px;">
+                    <a uk-toggle="target: #offcanvas-flip" class="uk-navbar-toggle">
+                        <span class="uk-icon uk-icon-image" style="background-image: url(https://goo.gl/qF6Lry); width: 30px; height: 30px;"></span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+        <!-- canvas content -->
+        <div class="uk-offcanvas-content">
+            <!-- right side -->
+        <div id="offcanvas-flip" uk-offcanvas="flip: true; overlay: true">
+            <div class="uk-offcanvas-bar">
+                <ul class="uk-nav uk-nav-default">
+                    <li class="uk-nav-header">USER NAME</li>
+                    <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: table"></span>Profil</a></li>
+                    <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: heart"></span>Favoris</a></li>
+                    <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: comment"></span>Messages</a></li>
+                    <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: settings"></span>Modifications</a></li>
+                    <li class="uk-nav-divider"></li>
+                    <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon:  sign-out"></span>Deconnecter</a></li>
+                </ul>
+            </div>
+        </div>
+        </div>
+        </header>
+        <main>
+            <div id="main-setting" class="uk-margin" uk-grid>
+                <div class="uk-text-center uk-margin-auto">
+                    <div class="dashboard-profil" >
+                        <img data-src="https://goo.gl/2DXsM5" alt="" uk-img>
+                        <p class="uk-text-bold">Manasse K. B</p>
+                        <p class="uk-text-small">from July 4, 2018</p>
+                        <p class="uk-text-small">Reputation: <strong>9/10</strong></p>
+                    </div>
+                </div>
+                <div class="uk-width-1-1 uk-text-center uk-margin-auto">
+                    <div class="user-data" uk-grid>
+                        <div class="user-name uk-width-1-1">
+                            <p class="uk-align-left">Nom de profil</p>
+                            <a class="uk-align-right" onclick="displaySetUserName()">Kouame behouba <span uk-icon="icon: arrow-right"></span></a>
+                        </div>
+                        <div class="user-tel uk-width-1-1">
+                            <p class="uk-align-left">Telephone</p>
+                            <p class="uk-align-right" href="">+79993109227 <span uk-icon="icon: arrow-right"></span></p>
+                        </div>
+                        <div class="user-city uk-width-1-1">
+                            <p class="uk-align-left">Ville</p>
+                            <a class="uk-align-right" onclick="displaySetCity()">Tokyo <span uk-icon="icon: arrow-right"></span></a>
+                        </div>
+                        <div class="user-email uk-width-1-1">
+                            <p class="uk-align-left">Email</p>
+                            <p class="uk-align-right" href="">behouba@gmail.com <span uk-icon="icon: arrow-right"></span></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div uk-grid id="set-username" style="display: none">
+                <div class="uk-text-center uk-margin-auto">
+                    <div class="dashboard-profil" >
+                        <img data-src="https://goo.gl/2DXsM5" alt="" uk-img>
+                    </div>
+                </div>
+                <div class="uk-width-1-1 uk-text-center uk-margin-auto uk-margin">
+                    <div class="uk-margin">
+                        <input class="uk-input" type="text" placeholder="Nouveau nom d'utilisateur">
+                    </div>
+                </div>
+                <div class="uk-width-1-1 uk-margin-auto" uk-grid>
+                    <button class="uk-width-1-2 uk-button uk-button-danger">ANNULER</button>
+                    <button class="uk-width-1-2 uk-button uk-button-primary">VALIDER</button>
+                </div>
+            </div>
+            <div uk-grid id="set-city" style="display: none">
+                <div class="uk-width-1-1 uk-text-center uk-margin-auto uk-margin">
+                    <div class="uk-margin">
+                        <input class="uk-input" type="text" placeholder="ville">
+                    </div>
+                </div>
+                <div class="uk-width-1-1 uk-margin-auto" uk-grid>
+                    <button class="uk-width-1-2 uk-button uk-button-danger">ANNULER</button>
+                    <button class="uk-width-1-2 uk-button uk-button-primary">VALIDER</button>
+                </div>
+            </div>
+        </main>
+        <footer>
+            <hr>
+            <div class="uk-text-center">
+                <small >
+                    © 2018 OKZ version beta 0.01
+                </small>
+            </div>
+        </footer>
+        <script>
+            let setUserName = document.getElementById("set-username")
+            let setCity = document.getElementById("set-city")
+            let main = document.getElementById("main-setting")
+            let step = 0
+
+            function displaySetUserName() {
+                step = 1
+                main.style.display = 'none'
+                setUserName.style.display = 'block'
+            }
+            function displaySetCity() {
+                step = 1
+                main.style.display = 'none'
+                setCity.style.display = 'block'
+            }
+            function backToMainSetting() {
+                if (step === 1) {
+                    step = 0
+                    setUserName.style.display = 'none'
+                    setCity.style.display = 'none'
+                    main.style.display = 'block'
+                    return
+                }
+                window.location.href = '/'
+                
+            }
+        </script>
+    </body>
+</html>

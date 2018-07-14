@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Messages</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="/css/uikit.min.css" />
+        <link rel="stylesheet" href="/css/index.css">
+        <script src="/js/uikit.min.js" defer></script>
+        <script src="/js/uikit-icons.min.js" defer></script>
+        <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    </head>
+    <body>
+        <div  id="msg-box">
+        <header style="margin-bottom: 10px">
+                <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;">
+                <nav class="uk-navbar uk-navbar-container">
+                    <div class="uk-navbar-left">
+                        <a class="uk-navbar-toggle" href="/">
+                            <span uk-icon="icon: arrow-left; ratio: 1.5"></span>
+                        </a>
+                    </div>
+                <div class="uk-navbar-center">
+                    LOGO DU SITE
+                </div>
+                <div class="uk-navbar-right" style="height: 65px;">
+                    <a uk-toggle="target: #offcanvas-flip" class="uk-navbar-toggle">
+                        <span class="uk-icon uk-icon-image" style="background-image: url(https://goo.gl/qF6Lry); width: 30px; height: 30px;"></span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+        <!-- canvas content -->
+        <div class="uk-offcanvas-content">
+            <!-- right side -->
+        <div id="offcanvas-flip" uk-offcanvas="flip: true; overlay: true">
+            <div class="uk-offcanvas-bar">
+                <ul class="uk-nav uk-nav-default">
+                    <li class="uk-nav-header">USER NAME</li>
+                    <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: table"></span>Profil</a></li>
+                    <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: heart"></span>Favoris</a></li>
+                    <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: comment"></span>Messages</a></li>
+                    <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: settings"></span>Modifications</a></li>
+                    <li class="uk-nav-divider"></li>
+                    <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon:  sign-out"></span>Deconnecter</a></li>
+                </ul>
+            </div>
+        </div>
+        </div>
+        </header>
+        <main>
+            <div id="chat-box">
+                    <div class="uk-align-left" uk-alert>Message Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempora fuga, illum ratione maiores dolorum recusandae</div>
+                    <div class="uk-align-right" uk-alert>Message Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempora fuga, illum ratione maiores dolorum recusandae</div>
+                    <div class="uk-align-left" uk-alert>Message Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempora fuga, illum ratione maiores dolorum recusandae</div>
+                    <div class="uk-align-right" uk-alert>Message Lorem ipsum, dolor sit amet consectetur adipisicing elit. Tempora fuga, illum ratione maiores dolorum recusandae</div>
+            </div>
+            <div>
+                <div class="write-msg-field uk-margin uk-width-1-1 uk-position-bottom">
+                    <textarea class="uk-textarea uk-margin-small-bottom" rows="2" placeholder="Message..."></textarea>
+                    <button class="uk-button uk-button-primary uk-width-1-1">Envoyer</button>
+                </div>
+            </div>
+        </main>
+    </div>
+    <script>
+        var app = new Vue({
+            el: '#msg-box',
+            data: {
+                images: ['https://goo.gl/2DXsM5', 'https://goo.gl/Hnfi2f' , 'https://goo.gl/qh9ZFX', 'https://goo.gl/qF6Lry', 'https://goo.gl/ZVgEDX', 'https://goo.gl/CQhSSx', 'https://goo.gl/Tb3MSK', '', 'https://goo.gl/qh9ZFX', 'https://goo.gl/qF6Lry', 'https://goo.gl/ZVgEDX', 'https://goo.gl/CQhSSx','',   'https://goo.gl/qh9ZFX', 'https://goo.gl/qF6Lry', 'https://goo.gl/ZVgEDX']
+            }
+        })
+    </script>
+    </body>
+</html>
