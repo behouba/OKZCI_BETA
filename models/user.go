@@ -40,6 +40,7 @@ func (u *User) AlreadyUser() (ok bool) {
 		ok = false
 	} else if user.Pin != "" {
 		mgoSession.DB("okzdb").C("users").Remove(bson.M{"email": u.Email})
+		return
 	} else if user.Email == u.Email {
 		ok = true
 	} else {
@@ -73,6 +74,9 @@ func (u *User) Authenticate() (err error) {
 	}
 	if dbUser.Pin != "" {
 		return errors.New("you must validate email address")
+	}
+	if dbUser.Auth != "email" {
+		return errors.New("must login with google or facebook")
 	}
 	err = bcrypt.CompareHashAndPassword([]byte(dbUser.Password), []byte(u.Password))
 	if err != nil {
@@ -140,7 +144,7 @@ func (u *User) AuthenticateFbUser() (err error) {
 		return
 	}
 	if dbUser.Auth != "facebook" {
-		return errors.New("user already register with this email but not with google")
+		return errors.New("user already register with this email but not with facebook")
 	}
 	return
 }

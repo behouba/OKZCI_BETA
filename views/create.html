@@ -1,30 +1,32 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <title>OKZ</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="/css/uikit.min.css" />
-        <link rel="stylesheet" href="/css/index.css" />
-        <script src="/js/uikit.min.js" defer></script>
-        <script src="/js/uikit-icons.min.js" defer></script>
-        <script src="/js/index.js" defer></script>
-        <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    </head>
-    <body onload="createPageLoaded()">
-        <div class="uk-position-center" id="create-spinner">
-                <div uk-spinner="ratio: 2"></div>
-        </div>
-        <div id="create" style="display: none">
-            <header style="margin-bottom: 10px">
-                    <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;">
-                    <nav class="uk-navbar uk-navbar-container">
-                        <div class="uk-navbar-left">
-                            <a class="uk-navbar-toggle" @click="backTo">
-                                <span uk-icon="icon: arrow-left; ratio: 1.5"></span>
-                            </a>
-                        </div>
+
+<head>
+    <title>OKZ</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/uikit.min.css" />
+    <link rel="stylesheet" href="/css/index.css" />
+    <script src="/js/uikit.min.js" defer></script>
+    <script src="/js/uikit-icons.min.js" defer></script>
+    <script src="/js/index.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body onload="createPageLoaded()">
+    <div class="uk-position-center" id="create-spinner">
+        <div uk-spinner="ratio: 2"></div>
+    </div>
+    <div id="create" style="display: none">
+        <header style="margin-bottom: 10px">
+            <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;">
+                <nav class="uk-navbar uk-navbar-container">
+                    <div class="uk-navbar-left">
+                        <a class="uk-navbar-toggle" @click="backTo">
+                            <span uk-icon="icon: arrow-left; ratio: 1.5"></span>
+                        </a>
+                    </div>
                     <div class="uk-navbar-center">
                         LOGO DU SITE
                     </div>
@@ -38,199 +40,170 @@
             <!-- canvas content -->
             <div class="uk-offcanvas-content">
                 <!-- right side -->
-            <div id="offcanvas-flip" uk-offcanvas="flip: true; overlay: true">
-                <div class="uk-offcanvas-bar">
-                    <ul class="uk-nav uk-nav-default">
-                        <li class="uk-nav-header">USER NAME</li>
-                        <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: table"></span>Profil</a></li>
-                        <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: heart"></span>Favoris</a></li>
-                        <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: comment"></span>Messages</a></li>
-                        <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: settings"></span>Modifications</a></li>
-                        <li class="uk-nav-divider"></li>
-                        <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon:  sign-out"></span>Deconnecter</a></li>
-                    </ul>
+                <div id="offcanvas-flip" uk-offcanvas="flip: true; overlay: true">
+                    <div class="uk-offcanvas-bar">
+                        <ul class="uk-nav uk-nav-default">
+                            <li class="uk-nav-header">USER NAME</li>
+                            <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: table"></span>Profil</a></li>
+                            <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: heart"></span>Favoris</a></li>
+                            <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: comment"></span>Messages</a></li>
+                            <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: settings"></span>Modifications</a></li>
+                            <li class="uk-nav-divider"></li>
+                            <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon:  sign-out"></span>Deconnecter</a></li>
+                        </ul>
+                    </div>
                 </div>
             </div>
-            </div>
-            </header>
-            <section style="margin: 30px 10px">
-                <div id="select-category" class="uk-width-1-2@m uk-margin-auto">
-                        <div class="uk-margin uk-text-center">
-                            <h3>CHOISIR UNE CATEGORIE</h3>
-                        </div>
-                    <ul class="uk-nav-primary uk-nav-parent-icon uk-nav-center" uk-nav>
-                        <li class="uk-parent">
-                            <a href="#">VEHICULES</a>
-                            <ul class="uk-nav-sub">
-                                <li v-for="cat in vehicules"><a @click="setCategory(cat.name)"></a></li>
-                            </ul>
-                        </li>
-                        <li class="uk-parent">
-                            <a href="#">ELECTRONIQUES</a>
-                            <ul class="uk-nav-sub">
-                                <li v-for="cat in electro"><a  @click="setCategory(cat.name)"></a></li>
-                            </ul>
-                        </li>
-                        <li class="uk-parent">
-                            <a href="#">IMMOBILIER</a>
-                            <ul class="uk-nav-sub">
-                                <li v-for="cat in immobiliers"><a  @click="setCategory(cat.name)"></a></li>
-                            </ul>
-                        </li>
-                        <li class="uk-parent">
-                            <a href="#">SERVICES</a>
-                            <ul class="uk-nav-sub">
-                                <li v-for="cat in services"><a  @click="setCategory(cat.name)"></a></li>
-                            </ul>
-                        </li>
-                        <li class="uk-parent">
-                            <a href="#">EMPLOIS</a>
-                            <ul class="uk-nav-sub">
-                                <li v-for="cat in emplois"><a  @click="setCategory(cat.name)"></a></li>
-                            </ul>
-                        </li>
-                        <li class="uk-parent">
-                            <a href="#">POUR LA MAISON</a>
-                            <ul class="uk-nav-sub">
-                                <li v-for="cat in home"><a  @click="setCategory(cat.name)"></a></li>
-                            </ul>
-                        </li>
-                        <li class="uk-parent">
-                            <a href="#">MODE</a>
-                            <ul class="uk-nav-sub">
-                                <li v-for="cat in mode"><a  @click="setCategory(cat.name)"></a></li>
-                            </ul>
-                        </li>
-                        <li class="uk-parent">
-                            <a href="#">LOISIR ET HOBBIES</a>
-                            <ul class="uk-nav-sub">
-                                <li v-for="cat in hobby"><a  @click="setCategory(cat.name)"></a></li>
-                            </ul>
-                        </li>
-                    </ul>
+        </header>
+        <section style="margin: 30px 10px">
+            <div id="select-category" class="uk-width-1-2@m uk-margin-auto">
+                <div class="uk-margin uk-text-center">
+                    <h3>CHOISIR UNE CATEGORIE</h3>
                 </div>
-               <div id="ad-form" class="uk-width-1-2@m uk-margin-auto" style="display:none">
-                    <h2 class="uk-text-center">Annonce</h2>
-                    <form class="uk-form-stacked" action="/post">
-                        <div class="uk-margin">
-                            <label class="uk-form-label" for="ad-type">Type d'annonce</label>
-                            <select class="uk-select" id="ad-type" required>
-                                <option @click="selling=false" value="Demande">Demande</option>
-                                <option @click="selling=true" value="Offre">Offre</option>
-                            </select>
+                <ul class="uk-nav-primary uk-nav-parent-icon uk-nav-center" uk-nav>
+                    <li class="uk-parent">
+                        <a href="#">VEHICULES</a>
+                        <ul class="uk-nav-sub">
+                            <li v-for="cat in vehicules"><a @click="setCategory(cat.name)"></a></li>
+                        </ul>
+                    </li>
+                    <li class="uk-parent">
+                        <a href="#">ELECTRONIQUES</a>
+                        <ul class="uk-nav-sub">
+                            <li v-for="cat in electro"><a @click="setCategory(cat.name)"></a></li>
+                        </ul>
+                    </li>
+                    <li class="uk-parent">
+                        <a href="#">IMMOBILIER</a>
+                        <ul class="uk-nav-sub">
+                            <li v-for="cat in immobiliers"><a @click="setCategory(cat.name)"></a></li>
+                        </ul>
+                    </li>
+                    <li class="uk-parent">
+                        <a href="#">SERVICES</a>
+                        <ul class="uk-nav-sub">
+                            <li v-for="cat in services"><a @click="setCategory(cat.name)"></a></li>
+                        </ul>
+                    </li>
+                    <li class="uk-parent">
+                        <a href="#">EMPLOIS</a>
+                        <ul class="uk-nav-sub">
+                            <li v-for="cat in emplois"><a @click="setCategory(cat.name)"></a></li>
+                        </ul>
+                    </li>
+                    <li class="uk-parent">
+                        <a href="#">POUR LA MAISON</a>
+                        <ul class="uk-nav-sub">
+                            <li v-for="cat in home"><a @click="setCategory(cat.name)"></a></li>
+                        </ul>
+                    </li>
+                    <li class="uk-parent">
+                        <a href="#">MODE</a>
+                        <ul class="uk-nav-sub">
+                            <li v-for="cat in mode"><a @click="setCategory(cat.name)"></a></li>
+                        </ul>
+                    </li>
+                    <li class="uk-parent">
+                        <a href="#">LOISIR ET HOBBIES</a>
+                        <ul class="uk-nav-sub">
+                            <li v-for="cat in hobby"><a @click="setCategory(cat.name)"></a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+            <div id="ad-form" class="uk-width-1-2@m uk-margin-auto" style="display:none">
+                <h2 class="uk-text-center">Annonce</h2>
+                <form class="uk-form-stacked" action="/post">
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="ad-type">Type d'annonce</label>
+                        <select class="uk-select" id="ad-type" required>
+                            <option @click="selling=false" value="Demande">Demande</option>
+                            <option @click="selling=true" value="Offre">Offre</option>
+                        </select>
+                    </div>
+                    <div v-if="selling" class="uk-margin">
+                        <label class="uk-form-label" for="selling-type">Type de vente</label>
+                        <select class="uk-select" id="selling-type" required>
+                            <option @click="auction=false" value="simple">Vente simple</option>
+                            <option @click="auction=true" value="auction">Vente aux encheres</option>
+                        </select>
+                    </div>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="title">Titre de l'annonce</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" id="title" required minlength="3" type="text" placeholder="Titre de l'annonce">
                         </div>
-                        <div v-if="selling" class="uk-margin">
-                            <label class="uk-form-label" for="selling-type">Type de vente</label>
-                            <select class="uk-select" id="selling-type" required>
-                                <option @click="auction=false" value="simple">Vente simple</option>
-                                <option @click="auction=true" value="auction">Vente aux encheres</option>
-                            </select>
-                        </div>
-                        <div class="uk-margin">
-                            <label class="uk-form-label" for="title">Titre de l'annonce</label>
+                    </div>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="city">Choisir une ville</label>
+                        <select class="uk-select" id="city">
+                            <option v-for="city in cities"></option>
+                        </select>
+                    </div>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="details">Details de l'annonce</label>
+                        <textarea class="uk-textarea" rows="5" id="details" required minlength="10" placeholder="Details..."></textarea>
+                    </div>
+                    <div v-if="auction">
+                        <div class="uk-margin" id="starting-price">
+                            <label class="uk-form-label" for="start-prix">Prix de depart</label>
                             <div class="uk-form-controls">
-                                <input class="uk-input" id="title" required minlength="3" type="text" placeholder="Titre de l'annonce">
+                                <input class="uk-input" id="start-prix" type="text" pattern="[0-9]+" required placeholder="Prix de l'annonce en Fcfa">
                             </div>
                         </div>
                         <div class="uk-margin">
-                            <label class="uk-form-label" for="city">Choisir une ville</label>
-                            <select class="uk-select" id="city">
-                                <option v-for="city in cities"></option>
-                            </select>
-                        </div>
-                        <div class="uk-margin">
-                            <label class="uk-form-label" for="details">Details de l'annonce</label>
-                            <textarea
-                            class="uk-textarea"
-                            rows="5"
-                            id="details"
-                            required
-                            minlength="10"
-                            placeholder="Details..."></textarea>
-                        </div>
-                        <div v-if="auction">
-                            <div class="uk-margin" id="starting-price">
-                                <label class="uk-form-label" for="start-prix">Prix de depart</label>
-                                <div class="uk-form-controls">
-                                    <input 
-                                    class="uk-input"
-                                    id="start-prix"
-                                    type="text"
-                                    pattern="[0-9]+"
-                                    required
-                                    placeholder="Prix de l'annonce en Fcfa">
-                                </div>
-                            </div>
-                            <div class="uk-margin">
-                                <label class="uk-form-label" for="title">Duree des encheres en heures</label>
-                                <div class="uk-form-controls">
-                                    <input
-                                    class="uk-input"
-                                    type="number"
-                                    placeholder="Min: 1heure, max: 168"
-                                    min="1" max="168"
-                                    placeholder="Duree en heures" required>
-                                </div>
+                            <label class="uk-form-label" for="title">Duree des encheres en heures</label>
+                            <div class="uk-form-controls">
+                                <input class="uk-input" type="number" placeholder="Min: 1heure, max: 168" min="1" max="168" placeholder="Duree en heures" required>
                             </div>
                         </div>
-                        <div v-if="selling && !auction" id="price-simple">
+                    </div>
+                    <div v-if="selling && !auction" id="price-simple">
                         <div class="uk-margin">
                             <label class="uk-form-label" for="prix">Prix</label>
                             <div class="uk-form-controls">
-                                <input 
-                                class="uk-input"
-                                id="prix"
-                                type="text"
-                                pattern="[0-9]+"
-                                required
-                                placeholder="Prix de l'annonce en Fcfa">
+                                <input class="uk-input" id="prix" type="text" pattern="[0-9]+" required placeholder="Prix de l'annonce en Fcfa">
                             </div>
                         </div>
                         <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
                             <label><input class="uk-radio" type="radio" name="radio2" checked> Negociable</label>
                             <label><input class="uk-radio" type="radio" name="radio2"> Non Negociable</label>
-                            </div>
-                        </div>               
-                        <div class="uk-margin">
-                            <label class="uk-form-label" for="contact">Contact tel</label>
-                            <div class="uk-form-controls">
-                                <input 
-                                class="uk-input"
-                                id="contact"
-                                type="tel"
-                                pattern="[0-9]{8}"
-                                required
-                                placeholder="Votre contact tel">
-                            </div>
                         </div>
-                        <div class="uk-margin">
-                            <div class="js-upload uk-placeholder uk-text-center">
-                                <span uk-icon="icon: cloud-upload"></span>
-                                <span class="uk-text-middle">Ajouter des photos</span>
-                                <div uk-form-custom>
-                                    <input type="file" accept="image/*" id="files">
-                                    <span class="uk-link">selection d'images</span>
-                                </div>
-                            </div>      
+                    </div>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="contact">Contact tel</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" id="contact" type="tel" pattern="[0-9]{8}" required placeholder="Votre contact tel">
                         </div>
-                        <div class="uk-margin">
-                            <div class="uk-placeholder">
-                                    <ul class="uk-thumbnav" uk-grid id="preview">
-                                    </ul>
+                    </div>
+                    <div class="uk-margin">
+                        <div class="js-upload uk-placeholder uk-text-center">
+                            <span uk-icon="icon: cloud-upload"></span>
+                            <span class="uk-text-middle">Ajouter des photos</span>
+                            <div uk-form-custom>
+                                <input type="file" accept="image/*" id="files">
+                                <span class="uk-link">selection d'images</span>
                             </div>
                         </div>
-                        <div class="uk-margin uk-grid-small uk-child-width-expand uk-grid uk-text-center">
-                            <label>
-                                <input class="uk-checkbox" type="checkbox" required> J'accepte les regles et les conditions d'utilisations du site
-                            </label>
+                    </div>
+                    <div class="uk-margin">
+                        <div class="uk-placeholder">
+                            <ul class="uk-thumbnav" uk-grid id="preview">
+                            </ul>
                         </div>
-                        <div class="uk-margin">
-                            <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Button</button>
-                        </div>
-                    </form>
-                </div>
-            </section>
-        </div>
-    </body>
-    <script src="/js/create.js"></script>
+                    </div>
+                    <div class="uk-margin uk-grid-small uk-child-width-expand uk-grid uk-text-center">
+                        <label>
+                            <input class="uk-checkbox" type="checkbox" required> J'accepte les regles et les conditions d'utilisations du site
+                        </label>
+                    </div>
+                    <div class="uk-margin">
+                        <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Button</button>
+                    </div>
+                </form>
+            </div>
+        </section>
+    </div>
+</body>
+<script src="/js/create.js"></script>
 </html>

@@ -1,56 +1,58 @@
 <!DOCTYPE html>
 <html lang="fr">
-    <head>
-        <title>Title</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="/css/uikit.min.css" />
-        <script src="/js/uikit.min.js" defer></script>
-        <script src="/js/uikit-icons.min.js" defer></script>
-        <script src="/js/index.js" defer></script>
-        <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
 
-    </head>
-    <body onload="detailPageLoaded()">
-        <div class="uk-position-center" id="detail-spinner">
-                <div uk-spinner="ratio: 2"></div>
-        </div>
-        <div id="detail" style="display:none">
+<head>
+    <title>Title</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/uikit.min.css" />
+    <script src="/js/uikit.min.js" defer></script>
+    <script src="/js/uikit-icons.min.js" defer></script>
+    <script src="/js/index.js" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
+
+</head>
+
+<body onload="detailPageLoaded()">
+    <div class="uk-position-center" id="detail-spinner">
+        <div uk-spinner="ratio: 2"></div>
+    </div>
+    <div id="detail" style="display:none">
         <header style="margin-bottom: 10px">
-                <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;">
+            <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;">
                 <nav class="uk-navbar uk-navbar-container">
                     <div class="uk-navbar-left">
                         <a class="uk-navbar-toggle" href="/">
                             <span uk-icon="icon: arrow-left; ratio: 1.5"></span>
                         </a>
                     </div>
-                <div class="uk-navbar-center">
-                    LOGO DU SITE
-                </div>
-                <div class="uk-navbar-right" style="height: 65px;">
-                    <a uk-toggle="target: #offcanvas-flip" class="uk-navbar-toggle">
-                        <span class="uk-icon uk-icon-image" style="background-image: url(https://goo.gl/qF6Lry); width: 30px; height: 30px;"></span>
-                    </a>
-                </div>
-            </nav>
-        </div>
-        <!-- canvas content -->
-        <div class="uk-offcanvas-content">
-            <!-- right side -->
-        <div id="offcanvas-flip" uk-offcanvas="flip: true; overlay: true">
-            <div class="uk-offcanvas-bar">
-                <ul class="uk-nav uk-nav-default">
-                    <li class="uk-nav-header">USER NAME</li>
-                    <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: table"></span>Profil</a></li>
-                    <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: heart"></span>Favoris</a></li>
-                    <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: comment"></span>Messages</a></li>
-                    <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: settings"></span>Modifications</a></li>
-                    <li class="uk-nav-divider"></li>
-                    <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon:  sign-out"></span>Deconnecter</a></li>
-                </ul>
+                    <div class="uk-navbar-center">
+                        LOGO DU SITE
+                    </div>
+                    <div class="uk-navbar-right" style="height: 65px;">
+                        <a uk-toggle="target: #offcanvas-flip" class="uk-navbar-toggle">
+                            <span class="uk-icon uk-icon-image" style="background-image: url(https://goo.gl/qF6Lry); width: 30px; height: 30px;"></span>
+                        </a>
+                    </div>
+                </nav>
             </div>
-        </div>
-        </div>
+            <!-- canvas content -->
+            <div class="uk-offcanvas-content">
+                <!-- right side -->
+                <div id="offcanvas-flip" uk-offcanvas="flip: true; overlay: true">
+                    <div class="uk-offcanvas-bar">
+                        <ul class="uk-nav uk-nav-default">
+                            <li class="uk-nav-header">USER NAME</li>
+                            <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: table"></span>Profil</a></li>
+                            <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: heart"></span>Favoris</a></li>
+                            <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: comment"></span>Messages</a></li>
+                            <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: settings"></span>Modifications</a></li>
+                            <li class="uk-nav-divider"></li>
+                            <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon:  sign-out"></span>Deconnecter</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
         </header>
         <section id="img-carousel">
             <div uk-slideshow="animation: push; min-height: 250;">
@@ -88,7 +90,7 @@
                     </div>
                 </div>
                 <hr>
-                <div id="address-map"  class="uk-margin-top uk-width-1-1 uk-margin" uk-grid>
+                <div id="address-map" class="uk-margin-top uk-width-1-1 uk-margin" uk-grid>
                     <div class="uk-width-1-2">
                         <p class="uk-align-left">Address</p>
                     </div>
@@ -127,20 +129,22 @@
             <footer>
                 <hr>
                 <div class="uk-text-center">
-                    <small >
+                    <small>
                         © 2018 OKZ version beta 0.01
                     </small>
                 </div>
             </footer>
         </section>
-     </div> <!--end vue container -->
-    </body>
-    <script>
-        var app = new Vue({
-            el: '#detail',
-            data: {
-                images: ['https://goo.gl/2DXsM5', 'https://goo.gl/Hnfi2f' , 'https://goo.gl/qh9ZFX', 'https://goo.gl/qF6Lry']
-            }
-        })
-    </script>
+    </div>
+    <!--end vue container -->
+</body>
+<script>
+    var app = new Vue({
+        el: '#detail',
+        data: {
+            images: ['https://goo.gl/2DXsM5', 'https://goo.gl/Hnfi2f', 'https://goo.gl/qh9ZFX', 'https://goo.gl/qF6Lry']
+        }
+    })
+</script>
+
 </html>

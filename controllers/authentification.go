@@ -72,6 +72,11 @@ func authentification(ctx iris.Context) {
 	ctx.ReadJSON(&user)
 	err := user.Authenticate()
 	if err != nil {
+		if err.Error() == "must login with google or facebook" {
+			log.Println(err)
+			ctx.StatusCode(iris.StatusConflict)
+			return
+		}
 		log.Println(err)
 		ctx.StatusCode(iris.StatusForbidden)
 		return
@@ -128,11 +133,10 @@ func register(ctx iris.Context) {
 	}
 
 	// will hash the user password and change his value in newUser struct
-	if bsPass, err := bcrypt.GenerateFromPassword([]byte(newUser.Password), bcrypt.MinCost); err == nil {
+	bsPass, err := bcrypt.GenerateFromPassword([]byte(newUser.Password), bcrypt.MinCost)
+	if err == nil {
 		newUser.Password = string(bsPass)
-	}
-
-	if err != nil {
+	} else if err != nil {
 		log.Println("can't hash password", err)
 	}
 	// default placeholder image for users
@@ -154,7 +158,6 @@ func verification(ctx iris.Context) {
 	}{}
 
 	ctx.ReadJSON(&c)
-	log.Println(c)
 	err := u.CheckPinCode(c.Pin)
 	if err != nil {
 		ctx.StatusCode(iris.StatusForbidden)
@@ -170,7 +173,6 @@ func recoveryVerification(ctx iris.Context) {
 	c := struct {
 		Pin string
 	}{}
-
 	ctx.ReadJSON(&c)
 	log.Println(c)
 	err := u.CheckPinCode(c.Pin)
@@ -209,6 +211,7 @@ func logout(ctx iris.Context) {
 }
 
 // sendVerificationMail send email with pin code to users
+// should make a nice looking email
 func sendVerificationMail(body, to, pin string) error {
 	from := "behoubaokz@gmail.com"
 	pass := "45001685"
