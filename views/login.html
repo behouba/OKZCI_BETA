@@ -4,10 +4,12 @@
       <title>Title</title>
       <meta charset="utf-8">
       <meta name="viewport" content="width=device-width, initial-scale=1">
+      <meta name="google-signin-client_id" content="958526051973-n3qc7e0501vo4uvlll8gq3qcrrdq587b.apps.googleusercontent.com">
       <link rel="stylesheet" href="/css/uikit.min.css" />
       <script src="/js/axios.min.js"></script>      
       <script src="/js/uikit.min.js"></script>
       <script src="/js/uikit-icons.min.js"></script>
+      <script src="https://apis.google.com/js/platform.js" async defer></script>
    </head>
    <body onload="authLoading()">
     <div class="uk-position-center" id="auth-spinner">
@@ -57,16 +59,16 @@
                                 </div>
                                 <div class="uk-margin uk-grid-expand" uk-grid>
                                     <div class="uk-width-1-2">
-                                        <button class="uk-button uk-button-primary uk-width-1-1">
-                                        <span uk-icon="facebook"></span>
-                                        <small>FACEBOOK</small>
+                                        <button
+                                        style="height: 36px;font-size: 12px;border-radius: 1px;box-shadow: 0 2px 4px 0 rgba(0,0,0,.25);box-sizing: border-box;"
+                                        class="uk-button uk-button-primary uk-width-1-1 uk-box-shadow-hover-small"
+                                        onclick="onFacebookLogin()">
+                                            <span uk-icon="icon: facebook"></span>
+                                            Facebook
                                         </button>
                                     </div>
                                     <div class="uk-width-1-2">
-                                        <button class="uk-button uk-button-primary uk-width-1-1">
-                                        <span uk-icon="google"></span>
-                                        <small>GOOGLE</small>
-                                        </button>
+                                        <div class="g-signin2" data-width="auto" data-onsuccess="onGoogleSignIn"></div>
                                     </div>
                                 </div>
                             </div>
@@ -83,7 +85,7 @@
                     <div class="uk-child-width-auto" uk-grid>
                         <div class="uk-width-1-1 uk-width-1-2@s uk-width-1-3@m uk-margin-auto">
                             <div class="uk-form-stacked uk-margin uk-margin-left uk-margin-right">
-                            <form class="uk-form-stacked">
+                            <form id="recovery-form" class="uk-form-stacked">
                                 <legend class="uk-legend uk-text-center">RECUPERATION DU MOT DE PASSE</legend>
                                 <div class="uk-margin">
                                     <label class="uk-form-label" for="recovery-email">Adresse email</label>
@@ -168,8 +170,69 @@
                     </div>
                 </div>
             </div>
+            <div class="uk-margin-large-top" style="display: none" id="recovery-verification">
+                    <div class="uk-child-width-auto" uk-grid>
+                        <div class="uk-width-1-1 uk-width-1-2@s uk-width-1-3@m uk-margin-auto">
+                            <div class="uk-form-stacked uk-margin uk-margin-left uk-margin-right">
+                            <form id="recovery-verification-form" method="POST" class="uk-form-stacked">
+                                <P class="uk-legend uk-text-center">Nous vous avons un code par email pour verification</P>
+                                <div class="uk-margin">
+                                    <label class="uk-form-label" for="pin-code">ENTREZ LE CODE RECU PAR EMAIL</label>
+                                    <div class="uk-form-controls">
+                                        <input class="uk-input" id="recovery-pin-code" name="pin" type="text" placeholder="Entrez code pin">
+                                    </div>
+                                </div>
+                                <div>
+                                    <button class="uk-button uk-button-primary uk-width-1-1">VALIDER</button>
+                                </div>
+                            </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="uk-margin-large-top" style="display: none" id="update-password">
+                        <div class="uk-child-width-auto" uk-grid>
+                            <div class="uk-width-1-1 uk-width-1-2@s uk-width-1-3@m uk-margin-auto">
+                                <div class="uk-form-stacked uk-margin uk-margin-left uk-margin-right">
+                                <form id="update-password-form" method="POST" class="uk-form-stacked">
+                                    <P class="uk-legend uk-text-center">CHOISISSEZ UN NOUVEAU MOT DE PASSE</P>
+                                    <div class="uk-margin">
+                                        <div class="uk-form-controls">
+                                            <input class="uk-input" id="new-password" name="pin" type="password" placeholder="Entrez votre nouveau mot de passe">
+                                        </div>
+                                    </div>
+                                    <div class="uk-margin">
+                                            <div class="uk-form-controls">
+                                                <input class="uk-input" id="new-password2" name="pin" type="password" placeholder="Entrez votre nouveau mot de passe">
+                                            </div>
+                                        </div>
+                                    <div>
+                                        <button class="uk-button uk-button-primary uk-width-1-1">VALIDER</button>
+                                    </div>
+                                </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
             
     </div>
-     <script src="/js/auth.js"></script>
+    <script>
+        window.fbAsyncInit = function() {
+          FB.init({
+            appId            : '157821501758780',
+            autoLogAppEvents : true,
+            xfbml            : true,
+            version          : 'v3.0'
+          });
+        };
+        (function(d, s, id){
+           var js, fjs = d.getElementsByTagName(s)[0];
+           if (d.getElementById(id)) {return;}
+           js = d.createElement(s); js.id = id;
+           js.src = "https://connect.facebook.net/en_US/sdk.js";
+           fjs.parentNode.insertBefore(js, fjs);
+         }(document, 'script', 'facebook-jssdk'));
+      </script>
+    <script src="/js/auth.js"></script>
    </body>
 </html>

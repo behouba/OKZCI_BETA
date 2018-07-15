@@ -19,6 +19,7 @@ type User struct {
 	CreatedAt   string        `json:"date"`
 	Location    string        `json:"location"`
 	Pin         string        `json:"pin"`
+	Auth        string        `json:"auth"`
 }
 
 // StoreUserData store new user data into database
@@ -37,6 +38,8 @@ func (u *User) AlreadyUser() (ok bool) {
 	err := mgoSession.DB("okzdb").C("users").Find(bson.M{"email": u.Email}).One(&user)
 	if err != nil {
 		ok = false
+	} else if user.Pin != "" {
+		mgoSession.DB("okzdb").C("users").Remove(bson.M{"email": u.Email})
 	} else if user.Email == u.Email {
 		ok = true
 	} else {
@@ -68,9 +71,76 @@ func (u *User) Authenticate() (err error) {
 	if err != nil {
 		return
 	}
+	if dbUser.Pin != "" {
+		return errors.New("you must validate email address")
+	}
 	err = bcrypt.CompareHashAndPassword([]byte(dbUser.Password), []byte(u.Password))
 	if err != nil {
 		return
+	}
+	return
+}
+
+// GetUserToRecover check if user exist in DB and if is registred with email address
+func GetUserToRecover(email string) (user User, err error) {
+	err = mgoSession.DB("okzdb").C("users").Find(bson.M{"email": email}).One(&user)
+	if err != nil {
+		return
+	}
+	if user.Auth != "email" {
+		return User{}, errors.New("account created with facebook or google")
+	}
+	return
+}
+
+// UpdateUserData Update user data
+func (u *User) UpdateUserData() (err error) {
+	u.ID = bson.NewObjectId()
+	err = mgoSession.DB("okzdb").C("users").
+		Update(bson.M{"email": u.Email}, bson.M{"$set": bson.M{"username": u.UserName, "phonenumber": u.PhoneNumber, "picture": u.Picture, "location": u.Location, "pin": u.Pin}})
+	if err != nil {
+		return
+	}
+	return nil
+}
+
+// UpdatePassword update user password
+func (u *User) UpdatePassword() (err error) {
+	err = mgoSession.DB("okzdb").C("users").Update(bson.M{"email": u.Email}, bson.M{"$set": bson.M{"password": u.Password}})
+	if err != nil {
+		return
+	}
+	return
+}
+
+// AuthenticateGoogleUser authenticate google users
+func (u *User) AuthenticateGoogleUser() (err error) {
+	var dbUser User
+	err = mgoSession.DB("okzdb").C("users").Find(bson.M{"email": u.Email}).One(&dbUser)
+	if err != nil {
+		if err = u.StoreUserData(); err != nil {
+			return
+		}
+		return
+	}
+	if dbUser.Auth != "google" {
+		return errors.New("user already register with this email but not with google")
+	}
+	return
+}
+
+// AuthenticateFbUser authenticate facebook users
+func (u *User) AuthenticateFbUser() (err error) {
+	var dbUser User
+	err = mgoSession.DB("okzdb").C("users").Find(bson.M{"email": u.Email}).One(&dbUser)
+	if err != nil {
+		if err = u.StoreUserData(); err != nil {
+			return
+		}
+		return
+	}
+	if dbUser.Auth != "facebook" {
+		return errors.New("user already register with this email but not with google")
 	}
 	return
 }

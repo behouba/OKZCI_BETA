@@ -4,7 +4,22 @@ function homePageLoaded() {
     document.getElementById("home-spinner").style.display = 'none'
 }
 
+// init google auth api
+function onLoad() {
+    gapi.load('auth2', function() {
+    gapi.auth2.init();
+    });
+}
+
 function logout() {
+    // google logout
+    gapi.auth2.init()
+    let auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+        console.log('User signed out.');
+    });
+
+    // server logout
     axios.get("/logout")
         .then(res => {
             console.log("disconnected")

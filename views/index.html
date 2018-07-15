@@ -4,12 +4,12 @@
         <title>OKZ</title>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="google-signin-client_id" content="958526051973-n3qc7e0501vo4uvlll8gq3qcrrdq587b.apps.googleusercontent.com">
         <link rel="stylesheet" href="/css/uikit.min.css" />
         <link rel="stylesheet" href="/css/index.css" />
         <script src="/js/uikit.min.js" defer></script>
         <script src="/js/uikit-icons.min.js" defer></script>
         <script src="/js/axios.min.js"></script>      
-        <script src="/js/index.js" defer></script>
         <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
     </head>
     <body onload="homePageLoaded()">
@@ -31,13 +31,13 @@
                 {{ if .user }}
                 <div class="uk-navbar-right" style="height: 65px;">
                     <a uk-toggle="target: #offcanvas-flip" class="uk-navbar-toggle">
-                        <span class="uk-icon uk-icon-image" style="background-image: url({{.user.Picture}}); width: 30px; height: 30px;"></span>
+                        <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 30px; height: 30px;"></span>
                     </a>
                 </div>
                 {{ else }}
                 <div class="uk-navbar-right" style="height: 65px;">
                     <a href="/login" class="uk-navbar-toggle">
-                        <span class="uk-icon uk-icon-image" style="background-image: url(https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png); width: 30px; height: 30px;"></span>
+                        <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url(https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png); width: 30px; height: 30px;"></span>
                     </a>
                 </div>
                 {{ end }}
@@ -193,5 +193,7 @@
     </div>
     </div>
     </body>
+    <script src="/js/index.js"></script>
+    <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
     <script src="/js/home.js"></script>
 </html>

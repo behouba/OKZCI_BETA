@@ -16,7 +16,7 @@ var mgoSession *mgo.Session
 var err error
 var redisDb *redis.Database
 
-// session
+// Sess for sessions
 var Sess *sessions.Sessions
 
 func init() {

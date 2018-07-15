@@ -17,7 +17,10 @@ func OkzApp() *iris.Application {
 	app.Get("/", checkIfLoggedIn, home)
 	app.Get("/login", blockAuthPages, login)
 	app.Post("/login", blockAuthPages, authentification)
+	app.Post("/google-auth", blockAuthPages, googleAuth)
+	app.Post("/facebook-auth", blockAuthPages, facebookAuth)
 	app.Post("/register", blockAuthPages, register)
+	app.Post("/recovery", recovery)
 	app.Get("/ad", detail)
 	app.Get("/create", create)
 	app.Post("/create", createAdvert)
@@ -26,6 +29,8 @@ func OkzApp() *iris.Application {
 	app.Get("/user/setting", userSetting)
 	app.Get("/user/thread", thread)
 	app.Post("/verification", verification)
+	app.Post("/recovery-verification", recoveryVerification)
+	app.Post("/update-password", updatePassword)
 	app.Get("/logout", logout)
 
 	return app

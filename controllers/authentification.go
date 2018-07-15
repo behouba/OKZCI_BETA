@@ -34,17 +34,79 @@ func login(ctx iris.Context) {
 	ctx.View("login.html")
 }
 
+func googleAuth(ctx iris.Context) {
+	session := models.Sess.Start(ctx)
+	var user models.User
+	ctx.ReadJSON(&user)
+	// set auth type as google
+	user.Auth = "google"
+	err := user.AuthenticateGoogleUser()
+	if err != nil {
+		log.Println(err)
+		ctx.StatusCode(iris.StatusForbidden)
+		return
+	}
+	log.Println("google user is authenticated...")
+	session.Set("email", user.Email)
+}
+
+func facebookAuth(ctx iris.Context) {
+	session := models.Sess.Start(ctx)
+	var user models.User
+	ctx.ReadJSON(&user)
+	// set auth type as google
+	user.Auth = "facebook"
+	err := user.AuthenticateFbUser()
+	if err != nil {
+		log.Println(err)
+		ctx.StatusCode(iris.StatusForbidden)
+		return
+	}
+	log.Println("facebook user is authenticated...")
+	session.Set("email", user.Email)
+}
+
 func authentification(ctx iris.Context) {
 	session := models.Sess.Start(ctx)
 	var user models.User
 	ctx.ReadJSON(&user)
 	err := user.Authenticate()
 	if err != nil {
+		log.Println(err)
 		ctx.StatusCode(iris.StatusForbidden)
 		return
 	}
 	log.Println("user is authenticated...")
 	session.Set("email", user.Email)
+}
+
+func recovery(ctx iris.Context) {
+	v := struct {
+		Email string
+	}{}
+	ctx.ReadJSON(&v)
+	user, err := models.GetUserToRecover(v.Email)
+	if err != nil {
+		if err.Error() == "account created with facebook or google" {
+			ctx.StatusCode(iris.StatusConflict)
+			return
+		}
+		log.Println(err)
+		ctx.StatusCode(iris.StatusForbidden)
+		return
+	}
+	user.Pin = strconv.Itoa(int(rand.Float32() * 9999))
+	err = user.UpdateUserData()
+	if err != nil {
+		log.Println("error in trying to update user data", err)
+		ctx.StatusCode(iris.StatusInternalServerError)
+	}
+	err = sendVerificationMail("hello from okz website", user.Email, user.Pin)
+	if err != nil {
+		log.Println(err)
+		ctx.StatusCode(iris.StatusInternalServerError)
+		return
+	}
 }
 
 func register(ctx iris.Context) {
@@ -75,6 +137,8 @@ func register(ctx iris.Context) {
 	}
 	// default placeholder image for users
 	newUser.Picture = "http://icons.iconarchive.com/icons/graphicloads/flat-finance/256/person-icon.png"
+	// set authentification type as email
+	newUser.Auth = "email"
 	if err := newUser.StoreUserData(); err != nil {
 		log.Println(err)
 		ctx.StatusCode(iris.StatusInternalServerError)
@@ -101,11 +165,50 @@ func verification(ctx iris.Context) {
 	session.Set("email", u.Email)
 }
 
+func recoveryVerification(ctx iris.Context) {
+	var u models.User
+	c := struct {
+		Pin string
+	}{}
+
+	ctx.ReadJSON(&c)
+	log.Println(c)
+	err := u.CheckPinCode(c.Pin)
+	if err != nil {
+		ctx.StatusCode(iris.StatusForbidden)
+		log.Println(err)
+		return
+	}
+	log.Println("recovery pin code is valid")
+}
+
+func updatePassword(ctx iris.Context) {
+	session := models.Sess.Start(ctx)
+	var user models.User
+	ctx.ReadJSON(&user)
+	hashPass, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.MinCost)
+	if err != nil {
+		log.Println(err)
+		ctx.StatusCode(iris.StatusInternalServerError)
+		return
+	}
+	user.Password = string(hashPass)
+	err = user.UpdatePassword()
+	if err != nil {
+		log.Println(err)
+		ctx.StatusCode(iris.StatusInternalServerError)
+		return
+	}
+	log.Println("password updated")
+	session.Set("email", user.Email)
+}
+
 func logout(ctx iris.Context) {
 	models.Sess.Start(ctx).Destroy()
 	ctx.Redirect("/", iris.StatusSeeOther)
 }
 
+// sendVerificationMail send email with pin code to users
 func sendVerificationMail(body, to, pin string) error {
 	from := "behoubaokz@gmail.com"
 	pass := "45001685"
@@ -124,6 +227,6 @@ func sendVerificationMail(body, to, pin string) error {
 		return err
 	}
 
-	log.Print("email send to new user")
+	log.Print("email to user")
 	return nil
 }

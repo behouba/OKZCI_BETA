@@ -9,7 +9,6 @@ import (
 
 func home(ctx iris.Context) {
 	userEmail := models.Sess.Start(ctx).GetString("email")
-	log.Println(userEmail)
 	user, err := models.GetUserByEmail(userEmail)
 	if err != nil {
 		log.Println(err)
