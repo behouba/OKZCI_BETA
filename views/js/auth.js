@@ -69,7 +69,12 @@ loginForm.addEventListener('submit', (e) => {
 
     axios.post("/login", userCredentials)
         .then(res => {
-            window.location.href = "/"
+            if (sessionStorage.getItem('createAd') === 'createAd'){
+                sessionStorage.removeItem('createAd')
+                window.location.href = "/create"
+            } else{
+                window.location.href = "/"
+            }
         })
         .catch(err => {
             spinner.style.display = 'none'
@@ -106,7 +111,12 @@ verifForm.addEventListener('submit', (e) => {
     axios.post("/verification", code)
         .then(res => {
             console.log(res)
-            window.location.href = "/"
+            if (sessionStorage.getItem('createAd') === 'createAd'){
+                sessionStorage.removeItem('createAd')
+                window.location.href = "/create"
+            } else{
+                window.location.href = "/"
+            }
         })
         .catch(err => {
             spinner.style.display = 'none'
@@ -155,10 +165,15 @@ updataPasswordForm.addEventListener('submit', e => {
     }
     axios.post("/update-password", user)
         .then(res => {
-            spinner.style.display = 'none'
-            updataPassword.style.display = 'block'
-            sessionStorage.clear()
-            window.location.href = '/'
+            // spinner.style.display = 'none'
+            // updataPassword.style.display = 'block'
+            sessionStorage.removeItem('recovery-email')
+            if (sessionStorage.getItem('createAd') === 'createAd'){
+                sessionStorage.removeItem('createAd')
+                window.location.href = "/create"
+            } else{
+                window.location.href = "/"
+            }
         })
         .catch(err => {
             spinner.style.display = 'none'
@@ -310,7 +325,12 @@ function onGoogleSignIn(googleUser) {
     axios.post("/google-auth", user)
         .then(res => {
             console.log(res)
-            window.location.href = "/"
+            if (sessionStorage.getItem('createAd') === 'createAd'){
+                sessionStorage.removeItem('createAd')
+                window.location.href = "/create"
+            } else{
+                window.location.href = "/"
+            }
         })
         .catch(err => {
             spinner.style.display = 'none'
@@ -352,7 +372,12 @@ function onFacebookLogin() {
                 axios.post("/facebook-auth", user)
                     .then(res => {
                         console.log(res)
-                        window.location.href = "/"
+                        if (sessionStorage.getItem('createAd') === 'createAd'){
+                            sessionStorage.removeItem('createAd')
+                            window.location.href = "/create"
+                        } else{
+                            window.location.href = "/"
+                        }
                     })
                     .catch(err => {
                         spinner.style.display = 'none'

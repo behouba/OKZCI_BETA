@@ -8,6 +8,13 @@ import (
 )
 
 func home(ctx iris.Context) {
+	session := models.Sess.Start(ctx).GetString("email")
+	ctx.ViewData("cities", models.Cities)
+	ctx.ViewData("categories", models.Categories)
+	if session == "" {
+		ctx.View("index.html")
+		return
+	}
 	userEmail := models.Sess.Start(ctx).GetString("email")
 	user, err := models.GetUserByEmail(userEmail)
 	if err != nil {
@@ -22,6 +29,19 @@ func detail(ctx iris.Context) {
 }
 
 func create(ctx iris.Context) {
+	session := models.Sess.Start(ctx).GetString("email")
+	ctx.ViewData("cities", models.Cities)
+	ctx.ViewData("categories", models.Categories)
+	if session == "" {
+		ctx.View("login.html")
+		return
+	}
+	userEmail := models.Sess.Start(ctx).GetString("email")
+	user, err := models.GetUserByEmail(userEmail)
+	if err != nil {
+		log.Println(err)
+	}
+	ctx.ViewData("user", user)
 	ctx.View("create.html")
 }
 

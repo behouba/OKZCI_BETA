@@ -12,15 +12,6 @@ import (
 	"github.com/kataras/iris"
 )
 
-func checkIfLoggedIn(ctx iris.Context) {
-	session := models.Sess.Start(ctx).GetString("email")
-	if session == "" {
-		ctx.View("index.html")
-		return
-	}
-	ctx.Next()
-}
-
 func blockAuthPages(ctx iris.Context) {
 	session := models.Sess.Start(ctx).GetString("email")
 	if session != "" {

@@ -66,7 +66,9 @@
                                 <p>Ville</p>
                                 <select class="uk-select uk-align-right">
                                     <option>Aucune selection</option>
-                                    <option v-for="ville in villes" :value="ville.name"></option>
+                                    {{ range .cities}}
+                                    <option value="{{.}}">{{.}}</option>
+                                    {{ end }}
                                 </select>
                             </div>
                             <div class="uk-width-1-1">
@@ -107,7 +109,17 @@
                             <div class="uk-panel">
                                 <img src="https://goo.gl/qh9ZFX" alt="">
                                 <div class="uk-overlay uk-overlay-primary uk-position-bottom uk-text-center uk-transition-slide-bottom">
-                                    <h3 class="uk-margin-remove">Bottom</h3>
+                                    <div v-if="true" class="uk-overlay uk-overlay-default uk-dark uk-position-bottom">
+                                            <div uk-countdown="date: 2018-07-30T22:55:00+00:00" class="uk-text-center">
+                                                <span class="uk-countdown-number uk-countdown-days"></span>
+                                                <span class="uk-countdown-separator">:</span>
+                                                <span class="uk-countdown-number uk-countdown-hours"></span>
+                                                <span class="uk-countdown-separator">:</span>
+                                                <span class="uk-countdown-number uk-countdown-minutes"></span>
+                                                <span class="uk-countdown-separator">:</span>
+                                                <span class="uk-countdown-number uk-countdown-seconds"></span>
+                                            </div>
+                                    </div>
                                 </div>
                             </div>
                         </li>
@@ -120,18 +132,26 @@
             <main>
                 <section style="margin-top: 60px">
                     <div class="uk-grid-small uk-child-width-expand@" uk-grid>
-                        <div v-for="c in images" class=" uk-width-1-2 uk-width-1-3@s uk-width-1-4@m">
+                        <div id="ad-card" v-for="c in images" class=" uk-width-1-2 uk-width-1-3@s uk-width-1-4@m">
                             <div class="uk-card ad-card uk-card-default uk-card-small uk-margin-auto">
                                 <div class="uk-card-media-top uk-inline">
-                                    <img :src="c" alt="No image" height="400">
+                                    <img :src="c" alt="Error: Failed to load image" height="400">
                                     <div class="uk-overlay uk-overlay-default uk-dark uk-position-top">
-                                        <span uk-icon="icon: location; ratio: 0.7"></span><small class="uk-text-bold"> Abidjan</small>
+                                        <span uk-icon="icon: location; ratio: 0.7"></span><small class="uk-text-bold">Abidjan</small>
                                     </div>
-                                    <div v-if="false" class="uk-overlay uk-overlay-default uk-dark uk-position-bottom">
-                                        <p class="uk-text-bold uk-text-center"> Abidjan</p>
+                                    <div v-if="true" class="uk-overlay uk-overlay-default uk-dark uk-position-bottom">
+                                            <div uk-countdown="date: 2018-07-30T22:55:00+00:00" class="uk-text-center">
+                                                <span class="uk-countdown-number uk-countdown-days"></span>
+                                                <span class="uk-countdown-separator">:</span>
+                                                <span class="uk-countdown-number uk-countdown-hours"></span>
+                                                <span class="uk-countdown-separator">:</span>
+                                                <span class="uk-countdown-number uk-countdown-minutes"></span>
+                                                <span class="uk-countdown-separator">:</span>
+                                                <span class="uk-countdown-number uk-countdown-seconds"></span>
+                                            </div>
                                     </div>
                                 </div>
-                                <div class="uk-card-badge uk-label"><small>Nouveau</small></div>
+                                <div class="uk-card-badge uk-label"><small>Enchère</small></div>
                                 <div class="uk-card-body">
                                     <p class="uk-text-small">Lorem ipsum color...</p>
                                     <p class="uk-text-bold">140000 FCFA</p>
@@ -147,7 +167,7 @@
                         <div uk-spinner></div>
                     </div>
                     <div id="sticky" style="text-align: center">
-                        <a href="/create" class="uk-button uk-button-primary">AJOUTER UNE ANNONCE</a>
+                        <a onclick="goCreateAdPage()"class="uk-button uk-button-primary">AJOUTER UNE ANNONCE</a>
                     </div>
                     <div id="canvas">
                         <!-- canvas content -->

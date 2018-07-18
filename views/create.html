@@ -10,7 +10,6 @@
     <script src="/js/uikit.min.js" defer></script>
     <script src="/js/uikit-icons.min.js" defer></script>
     <script src="/js/index.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 </head>
 
@@ -23,7 +22,7 @@
             <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;">
                 <nav class="uk-navbar uk-navbar-container">
                     <div class="uk-navbar-left">
-                        <a class="uk-navbar-toggle" @click="backTo">
+                        <a class="uk-navbar-toggle" onclick="backTo()">
                             <span uk-icon="icon: arrow-left; ratio: 1.5"></span>
                         </a>
                     </div>
@@ -32,7 +31,7 @@
                     </div>
                     <div class="uk-navbar-right" style="height: 65px;">
                         <a uk-toggle="target: #offcanvas-flip" class="uk-navbar-toggle">
-                            <span class="uk-icon uk-icon-image" style="background-image: url(https://goo.gl/qF6Lry); width: 30px; height: 30px;"></span>
+                            <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 30px; height: 30px;"></span>
                         </a>
                     </div>
                 </nav>
@@ -43,93 +42,116 @@
                 <div id="offcanvas-flip" uk-offcanvas="flip: true; overlay: true">
                     <div class="uk-offcanvas-bar">
                         <ul class="uk-nav uk-nav-default">
-                            <li class="uk-nav-header">USER NAME</li>
-                            <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: table"></span>Profil</a></li>
+                            <li class="uk-nav-header">{{ .user.UserName }}</li>
+                            <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: user"></span>Profil</a></li>
                             <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: heart"></span>Favoris</a></li>
                             <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: comment"></span>Messages</a></li>
-                            <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: settings"></span>Modifications</a></li>
+                            <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: bell"></span>Notifications</a></li>
                             <li class="uk-nav-divider"></li>
-                            <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon:  sign-out"></span>Deconnecter</a></li>
+                            <li><a onclick="logout()"><span class="uk-margin-small-right" uk-icon="icon: sign-out"></span>Deconnecter</a></li>
                         </ul>
                     </div>
                 </div>
             </div>
         </header>
-        <section style="margin: 30px 10px">
-            <div id="select-category" class="uk-width-1-2@m uk-margin-auto">
+        <div style="margin: 30px 10px;">
+            <div id="select-category" class="uk-width-1-2@m uk-margin-auto uk-padding">
                 <div class="uk-margin uk-text-center">
-                    <h3>CHOISIR UNE CATEGORIE</h3>
+                    <h3>CHOISIR LA CATEGORIE</h3>
                 </div>
                 <ul class="uk-nav-primary uk-nav-parent-icon uk-nav-center" uk-nav>
                     <li class="uk-parent">
                         <a href="#">VEHICULES</a>
                         <ul class="uk-nav-sub">
-                            <li v-for="cat in vehicules"><a @click="setCategory(cat.name)"></a></li>
+                            {{ range .categories.Vehicules}}
+                            <li><a onclick="setCategory({{.Name}})">{{.Name}}</a></li>
+                            {{ end }}
                         </ul>
                     </li>
                     <li class="uk-parent">
                         <a href="#">ELECTRONIQUES</a>
                         <ul class="uk-nav-sub">
-                            <li v-for="cat in electro"><a @click="setCategory(cat.name)"></a></li>
+                            {{ range .categories.Electroniques}}
+                            <li><a onclick="setCategory({{.Name}})">{{.Name}}</a></li>
+                            {{ end }}
                         </ul>
                     </li>
                     <li class="uk-parent">
                         <a href="#">IMMOBILIER</a>
                         <ul class="uk-nav-sub">
-                            <li v-for="cat in immobiliers"><a @click="setCategory(cat.name)"></a></li>
+                            {{ range .categories.Immobilier}}
+                            <li><a onclick="setCategory({{.Name}})">{{.Name}}</a></li>
+                            {{ end }}
                         </ul>
                     </li>
                     <li class="uk-parent">
                         <a href="#">SERVICES</a>
                         <ul class="uk-nav-sub">
-                            <li v-for="cat in services"><a @click="setCategory(cat.name)"></a></li>
+                            {{ range .categories.Services}}
+                            <li><a onclick="setCategory({{.Name}})">{{.Name}}</a></li>
+                            {{ end }}
                         </ul>
                     </li>
                     <li class="uk-parent">
                         <a href="#">EMPLOIS</a>
                         <ul class="uk-nav-sub">
-                            <li v-for="cat in emplois"><a @click="setCategory(cat.name)"></a></li>
+                            {{ range .categories.Emplois}}
+                            <li><a onclick="setCategory({{.Name}})">{{.Name}}</a></li>
+                            {{ end }}
                         </ul>
                     </li>
                     <li class="uk-parent">
                         <a href="#">POUR LA MAISON</a>
                         <ul class="uk-nav-sub">
-                            <li v-for="cat in home"><a @click="setCategory(cat.name)"></a></li>
+                            {{ range .categories.Maison}}
+                            <li><a onclick="setCategory({{.Name}})">{{.Name}}</a></li>
+                            {{ end }}
                         </ul>
                     </li>
                     <li class="uk-parent">
                         <a href="#">MODE</a>
                         <ul class="uk-nav-sub">
-                            <li v-for="cat in mode"><a @click="setCategory(cat.name)"></a></li>
+                            {{ range .categories.Mode}}
+                            <li><a onclick="setCategory({{.Name}})">{{.Name}}</a></li>
+                            {{ end }}
                         </ul>
                     </li>
                     <li class="uk-parent">
                         <a href="#">LOISIR ET HOBBIES</a>
                         <ul class="uk-nav-sub">
-                            <li v-for="cat in hobby"><a @click="setCategory(cat.name)"></a></li>
+                            {{ range .categories.Hobby}}
+                            <li><a onclick="setCategory({{.Name}})">{{.Name}}</a></li>
+                            {{ end }}
+                        </ul>
+                    </li>
+                    <li class="uk-parent">
+                        <a href="#">Dons gratuit d'objets</a>
+                        <ul class="uk-nav-sub">
+                            <li><a onclick="setCategory('dons')">Donner gratuitement des objets qui ne vous servent plus</a></li>
                         </ul>
                     </li>
                 </ul>
             </div>
             <div id="ad-form" class="uk-width-1-2@m uk-margin-auto" style="display:none">
-                <h2 class="uk-text-center">Annonce</h2>
-                <form class="uk-form-stacked" action="/post">
-                    <div class="uk-margin">
+                <h2 class="uk-text-center" id="form-title">Annonce</h2>
+                <form id="ad-form-field" class="uk-form-stacked">
+                    <div id="ad-type" class="uk-margin">
                         <label class="uk-form-label" for="ad-type">Type d'annonce</label>
-                        <select class="uk-select" id="ad-type" required>
-                            <option @click="selling=false" value="Demande">Demande</option>
-                            <option @click="selling=true" value="Offre">Offre</option>
+                        <select class="uk-select" id="ad-type" onchange="adType(value)">
+                                <option value="Offre">Offre (Vous vendez ou louez)</option>
+                                <option value="Demande">Demande (Vous recherchez)</option>
                         </select>
                     </div>
-                    <div v-if="selling" class="uk-margin">
-                        <label class="uk-form-label" for="selling-type">Type de vente</label>
-                        <select class="uk-select" id="selling-type" required>
-                            <option @click="auction=false" value="simple">Vente simple</option>
-                            <option @click="auction=true" value="auction">Vente aux encheres</option>
+                    <div id="selling" class="uk-margin">
+                        <label class="uk-form-label" for="selling-type">Type de d'offre</label>
+                        <select class="uk-select" id="selling-type" onchange="selectSellingType(value)">
+                            <option value="simple">Vente & location</option>
+                            <option value="auction">Vente aux encheres</option>
+                            <option value="others">Autres</option>
                         </select>
                     </div>
                     <div class="uk-margin">
-                        <label class="uk-form-label" for="title">Titre de l'annonce</label>
+                        <label class="uk-form-label" for="title" id="title">Titre de l'annonce</label>
                         <div class="uk-form-controls">
                             <input class="uk-input" id="title" required minlength="3" type="text" placeholder="Titre de l'annonce">
                         </div>
@@ -137,14 +159,16 @@
                     <div class="uk-margin">
                         <label class="uk-form-label" for="city">Choisir une ville</label>
                         <select class="uk-select" id="city">
-                            <option v-for="city in cities"></option>
+                            {{ range .cities}}
+                            <option value="{{.}}">{{.}}</option>
+                            {{ end }}
                         </select>
                     </div>
                     <div class="uk-margin">
                         <label class="uk-form-label" for="details">Details de l'annonce</label>
                         <textarea class="uk-textarea" rows="5" id="details" required minlength="10" placeholder="Details..."></textarea>
                     </div>
-                    <div v-if="auction">
+                    <div id="auction" style="display: none">
                         <div class="uk-margin" id="starting-price">
                             <label class="uk-form-label" for="start-prix">Prix de depart</label>
                             <div class="uk-form-controls">
@@ -158,11 +182,11 @@
                             </div>
                         </div>
                     </div>
-                    <div v-if="selling && !auction" id="price-simple">
+                    <div id="price-simple">
                         <div class="uk-margin">
-                            <label class="uk-form-label" for="prix">Prix</label>
+                            <label class="uk-form-label" id="price" for="prix">Prix</label>
                             <div class="uk-form-controls">
-                                <input class="uk-input" id="prix" type="text" pattern="[0-9]+" required placeholder="Prix de l'annonce en Fcfa">
+                                <input class="uk-input" id="prix" type="text" pattern="[0-9]+" required placeholder="En Fcfa">
                             </div>
                         </div>
                         <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
@@ -198,11 +222,11 @@
                         </label>
                     </div>
                     <div class="uk-margin">
-                        <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Button</button>
+                        <button type="submit" class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Button</button>
                     </div>
                 </form>
             </div>
-        </section>
+        </div>
     </div>
 </body>
 <script src="/js/create.js"></script>

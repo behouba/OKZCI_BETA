@@ -47,3 +47,8 @@ function createPageLoaded() {
     document.getElementById("create-spinner").style.display = 'none'
     document.getElementById("create").style.display = 'block'
 }
+
+function goCreateAdPage(){
+    sessionStorage.setItem('createAd', 'createAd')
+    window.location.href = "/create"
+}

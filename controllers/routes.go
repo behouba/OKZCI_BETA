@@ -14,7 +14,7 @@ func OkzApp() *iris.Application {
 	templates := iris.HTML("./views", ".html").Reload(true)
 	app.RegisterView(templates)
 
-	app.Get("/", checkIfLoggedIn, home)
+	app.Get("/", home)
 	app.Get("/login", blockAuthPages, login)
 	app.Post("/login", blockAuthPages, authentification)
 	app.Post("/google-auth", blockAuthPages, googleAuth)
