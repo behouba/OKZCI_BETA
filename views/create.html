@@ -5,12 +5,16 @@
     <title>OKZ</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-signin-client_id" content="958526051973-n3qc7e0501vo4uvlll8gq3qcrrdq587b.apps.googleusercontent.com">
     <link rel="stylesheet" href="/css/uikit.min.css" />
     <link rel="stylesheet" href="/css/index.css" />
     <script src="/js/uikit.min.js" defer></script>
     <script src="/js/uikit-icons.min.js" defer></script>
+    <script src="/js/axios.min.js"></script>
+    <script src="/js/date.js"></script>
+    <script src="/js/uuid.js"></script>
     <script src="/js/index.js" defer></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
 </head>
 
 <body onload="createPageLoaded()">
@@ -137,14 +141,14 @@
                 <form id="ad-form-field" class="uk-form-stacked">
                     <div id="ad-type" class="uk-margin">
                         <label class="uk-form-label" for="ad-type">Type d'annonce</label>
-                        <select class="uk-select" id="ad-type" onchange="adType(value)">
+                        <select class="uk-select" id="ad-type-value" onchange="adType(value)" name="ad-type">
                                 <option value="Offre">Offre (Vous vendez ou louez)</option>
                                 <option value="Demande">Demande (Vous recherchez)</option>
                         </select>
                     </div>
                     <div id="selling" class="uk-margin">
                         <label class="uk-form-label" for="selling-type">Type de d'offre</label>
-                        <select class="uk-select" id="selling-type" onchange="selectSellingType(value)">
+                        <select class="uk-select" id="selling-type" onchange="selectSellingType(value)" name="sellingType">
                             <option value="simple">Vente & location</option>
                             <option value="auction">Vente aux encheres</option>
                             <option value="others">Autres</option>
@@ -153,12 +157,12 @@
                     <div class="uk-margin">
                         <label class="uk-form-label" for="title" id="title">Titre de l'annonce</label>
                         <div class="uk-form-controls">
-                            <input class="uk-input" id="title" required minlength="3" type="text" placeholder="Titre de l'annonce">
+                            <input class="uk-input" id="title" required minlength="3" type="text" name="title" placeholder="Titre de l'annonce">
                         </div>
                     </div>
                     <div class="uk-margin">
                         <label class="uk-form-label" for="city">Choisir une ville</label>
-                        <select class="uk-select" id="city">
+                        <select class="uk-select" id="city" name="city">
                             {{ range .cities}}
                             <option value="{{.}}">{{.}}</option>
                             {{ end }}
@@ -166,19 +170,19 @@
                     </div>
                     <div class="uk-margin">
                         <label class="uk-form-label" for="details">Details de l'annonce</label>
-                        <textarea class="uk-textarea" rows="5" id="details" required minlength="10" placeholder="Details..."></textarea>
+                        <textarea class="uk-textarea" rows="5" id="details" name="description" required minlength="10" placeholder="Details..."></textarea>
                     </div>
                     <div id="auction" style="display: none">
                         <div class="uk-margin" id="starting-price">
-                            <label class="uk-form-label" for="start-prix">Prix de depart</label>
+                            <label class="uk-form-label" for="first-price">Prix de depart</label>
                             <div class="uk-form-controls">
-                                <input class="uk-input" id="start-prix" type="text" pattern="[0-9]+" required placeholder="Prix de l'annonce en Fcfa">
+                                <input class="uk-input" id="first-price" name="startingPrice" type="number" pattern="[0-9]+" placeholder="Prix de l'annonce en Fcfa" min="1">
                             </div>
                         </div>
                         <div class="uk-margin">
-                            <label class="uk-form-label" for="title">Duree des encheres en heures</label>
+                            <label class="uk-form-label" for="auction-duration">Durée de mise en vente en heures</label>
                             <div class="uk-form-controls">
-                                <input class="uk-input" type="number" placeholder="Min: 1heure, max: 168" min="1" max="168" placeholder="Duree en heures" required>
+                                <input class="uk-input" type="number" id="auction-duration" placeholder="Min: 1heure, max: 168 heures" min="1" max="168" placeholder="Duree en heures">
                             </div>
                         </div>
                     </div>
@@ -186,18 +190,18 @@
                         <div class="uk-margin">
                             <label class="uk-form-label" id="price" for="prix">Prix</label>
                             <div class="uk-form-controls">
-                                <input class="uk-input" id="prix" type="text" pattern="[0-9]+" required placeholder="En Fcfa">
+                                <input class="uk-input" id="prix" type="text" name="price" pattern="[0-9]+" placeholder="En Fcfa">
                             </div>
                         </div>
                         <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-                            <label><input class="uk-radio" type="radio" name="radio2" checked> Negociable</label>
-                            <label><input class="uk-radio" type="radio" name="radio2"> Non Negociable</label>
+                            <label><input class="uk-radio" type="radio" name="isNegociable" value="false" checked> Non Negociable</label>
+                            <label><input class="uk-radio" type="radio" name="isNegociable" value="true"> Negociable</label>
                         </div>
                     </div>
                     <div class="uk-margin">
                         <label class="uk-form-label" for="contact">Contact tel</label>
                         <div class="uk-form-controls">
-                            <input class="uk-input" id="contact" type="tel" pattern="[0-9]{8}" required placeholder="Votre contact tel">
+                            <input class="uk-input" id="contact" name="contact" type="tel" pattern="[0-9]{8}" required placeholder="Votre contact tel">
                         </div>
                     </div>
                     <div class="uk-margin">
@@ -205,7 +209,7 @@
                             <span uk-icon="icon: cloud-upload"></span>
                             <span class="uk-text-middle">Ajouter des photos</span>
                             <div uk-form-custom>
-                                <input type="file" accept="image/*" id="files">
+                                <input type="file" accept="image/*" id="files" name="files">
                                 <span class="uk-link">selection d'images</span>
                             </div>
                         </div>
@@ -222,7 +226,7 @@
                         </label>
                     </div>
                     <div class="uk-margin">
-                        <button type="submit" class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Button</button>
+                        <button class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Button</button>
                     </div>
                 </form>
             </div>
@@ -230,4 +234,5 @@
     </div>
 </body>
 <script src="/js/create.js"></script>
+<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
 </html>

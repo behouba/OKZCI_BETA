@@ -99,8 +99,8 @@ main {
     padding: 2% 30px;
 }
 
-.uk-form-width-medium {
-    width: 255px;
+#search-bar .uk-form-width-medium {
+    width: 310px;
 }
 .ad-card .uk-countdown-number, .ad-card .uk-countdown-separator {
     font-size: 1rem;

@@ -10,6 +10,8 @@ func OkzApp() *iris.Application {
 
 	app.StaticWeb("/css", "./views/css")
 	app.StaticWeb("/js", "./views/js")
+	app.StaticWeb("/img", "./views/img")
+	app.StaticWeb("/pictures", "./public")
 
 	templates := iris.HTML("./views", ".html").Reload(true)
 	app.RegisterView(templates)
