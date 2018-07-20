@@ -1,9 +1,7 @@
 package models
 
 import (
-	"crypto/tls"
 	"log"
-	"net"
 	"time"
 
 	"github.com/kataras/iris/sessions"
@@ -17,23 +15,24 @@ var mgoSession *mgo.Session
 var err error
 var redisDb *redis.Database
 
-var mongoURI = "mongodb://behouba:45001685@okzdb-shard-00-00-fo6si.mongodb.net:27017,okzdb-shard-00-01-fo6si.mongodb.net:27017,okzdb-shard-00-02-fo6si.mongodb.net:27017/admin?replicaSet=OKZDB-shard-0&authSource=admin"
+// var mongoURI = "mongodb://behouba:45001685@okzdb-shard-00-00-fo6si.mongodb.net:27017,okzdb-shard-00-01-fo6si.mongodb.net:27017,okzdb-shard-00-02-fo6si.mongodb.net:27017/admin?replicaSet=OKZDB-shard-0&authSource=admin"
 
 // Sess for sessions
 var Sess *sessions.Sessions
 
 func init() {
-	dialInfo, err := mgo.ParseURL(mongoURI)
-	if err != nil {
-		log.Println(err)
-		panic(err)
-	}
-	tlsConfig := &tls.Config{}
-	dialInfo.DialServer = func(addr *mgo.ServerAddr) (net.Conn, error) {
-		conn, err := tls.Dial("tcp", addr.String(), tlsConfig)
-		return conn, err
-	}
-	mgoSession, err = mgo.DialWithInfo(dialInfo)
+	// dialInfo, err := mgo.ParseURL(mongoURI)
+	// if err != nil {
+	// 	log.Println(err)
+	// 	panic(err)
+	// }
+	// tlsConfig := &tls.Config{}
+	// dialInfo.DialServer = func(addr *mgo.ServerAddr) (net.Conn, error) {
+	// 	conn, err := tls.Dial("tcp", addr.String(), tlsConfig)
+	// 	return conn, err
+	// }
+	// mgoSession, err = mgo.DialWithInfo(dialInfo)
+	mgoSession, err = mgo.Dial("localhost")
 	if err != nil {
 		log.Println(err)
 		panic(err)

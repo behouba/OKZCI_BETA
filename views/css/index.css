@@ -54,7 +54,9 @@ main {
 
 }
 .ad-card .uk-overlay {
+    color: #fff;
     padding: 5px;
+    background: rgba(0,0,0,.2);
 }
 .ad-card .uk-card-badge {
     position: absolute;
@@ -74,6 +76,7 @@ main {
 }
 .ad-card p {
     margin: 5px 0px;
+    color: #393939;
 }
 .ad-card .uk-text-small {
     font-size: 11px;
@@ -95,19 +98,29 @@ main {
     height: 80px;
     object-fit: cover;
 }
-#cat-slider .uk-overlay {
+#auctions-slider .uk-overlay {
     padding: 2% 30px;
+    color: #ea1b42;
+}
+#auctions-slider img{
+    height: 180px; 
+    width: 100%; 
+    object-fit: cover;
 }
 
 #search-bar .uk-form-width-medium {
     width: 310px;
 }
-.ad-card .uk-countdown-number, .ad-card .uk-countdown-separator {
+#ad-card .uk-countdown-number, .ad-card .uk-countdown-separator {
     font-size: 1rem;
 }
-.ad-card .uk-countdown-number, .uk-countdown-separator {
+#ad-card .uk-countdown-number, .uk-countdown-separator {
     line-height: 30px;
 }
-#cat-slider .uk-overlay{
-    color: #1e87f0;
+#ad-card a:hover{
+    text-decoration: none;
+}
+
+.uk-card-default {
+    box-shadow: 0 5px 15px rgba(0,0,0,.5);
 }

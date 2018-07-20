@@ -6,19 +6,26 @@ import (
 	"os"
 	"time"
 
+	"github.com/ventu-io/go-shortid"
+
 	"github.com/behouba/OKZ_BETA_0.01/models"
 	"github.com/kataras/iris"
 )
 
 func home(ctx iris.Context) {
 	session := models.Sess.Start(ctx).GetString("email")
-	adverts, err := models.GetAd()
+	adverts, err := models.GetAds()
+	if err != nil {
+		log.Println(err)
+	}
+	hotAuctions, err := models.GetHotAuction()
 	if err != nil {
 		log.Println(err)
 	}
 	ctx.ViewData("cities", models.Cities)
 	ctx.ViewData("categories", models.Categories)
 	ctx.ViewData("ads", adverts)
+	ctx.ViewData("hotAuctions", hotAuctions)
 	if session == "" {
 		ctx.View("index.html")
 		return
@@ -32,7 +39,18 @@ func home(ctx iris.Context) {
 	ctx.View("index.html")
 }
 
-func detail(ctx iris.Context) {
+func watch(ctx iris.Context) {
+	if ok := ctx.URLParamExists("a"); !ok {
+		ctx.Redirect("/", iris.StatusSeeOther)
+		return
+	}
+	adShortID := ctx.URLParam("a")
+	ad, err := models.GetAdByShortID(adShortID)
+	if err != nil {
+		log.Println(err)
+		ctx.StatusCode(iris.StatusNotFound)
+	}
+	ctx.ViewData("ad", ad)
 	ctx.View("detail.html")
 }
 
@@ -44,8 +62,7 @@ func create(ctx iris.Context) {
 		ctx.View("login.html")
 		return
 	}
-	userEmail := models.Sess.Start(ctx).GetString("email")
-	user, err := models.GetUserByEmail(userEmail)
+	user, err := models.GetUserByEmail(session)
 	if err != nil {
 		log.Println(err)
 	}
@@ -70,15 +87,26 @@ func thread(ctx iris.Context) {
 }
 
 func createAdvert(ctx iris.Context) {
+	session := models.Sess.Start(ctx).GetString("email")
+	user, err := models.GetUserByEmail(session)
+	if err != nil {
+		log.Println(err)
+		log.Println("must be login to create ad")
+		ctx.StatusCode(iris.StatusForbidden)
+		return
+	}
 	ad := models.Advert{}
 	ctx.ReadForm(&ad)
-	err := os.Mkdir("./public/"+ad.UUID+"/", os.ModeDir)
+	ad.OwnerID = user.ID
+	ad.ShortID = shortid.MustGenerate()
+	err = os.Mkdir("./public/ad/"+ad.ShortID+"/", os.ModeDir)
 	if err != nil {
+		log.Println(err)
 		ctx.StatusCode(iris.StatusInternalServerError)
 		return
 	}
-	val, err := ctx.UploadFormFiles("./public/"+ad.UUID+"/", func(ctx iris.Context, file *multipart.FileHeader) {
-		path := "http://localhost:8080/pictures/" + ad.UUID + "/" + file.Filename
+	val, err := ctx.UploadFormFiles("./public/ad/"+ad.ShortID+"/", func(ctx iris.Context, file *multipart.FileHeader) {
+		path := "http://localhost:8080/pictures/ad/" + ad.ShortID + "/" + file.Filename
 		ad.Pictures = append(ad.Pictures, path)
 		ad.CreatedAt = time.Now()
 	})
@@ -88,6 +116,7 @@ func createAdvert(ctx iris.Context) {
 		return
 	}
 	if err := ad.StoreNewAd(); err != nil {
+		log.Println(err)
 		ctx.StatusCode(iris.StatusInternalServerError)
 		return
 	}

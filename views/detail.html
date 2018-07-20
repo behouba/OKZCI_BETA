@@ -9,8 +9,6 @@
     <script src="/js/uikit.min.js" defer></script>
     <script src="/js/uikit-icons.min.js" defer></script>
     <script src="/js/index.js" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/vue@2.5.16/dist/vue.js"></script>
-
 </head>
 
 <body onload="detailPageLoaded()">
@@ -22,7 +20,7 @@
             <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;">
                 <nav class="uk-navbar uk-navbar-container">
                     <div class="uk-navbar-left">
-                        <a class="uk-navbar-toggle" href="/">
+                        <a class="uk-navbar-toggle" onclick="goBack()">
                             <span uk-icon="icon: arrow-left; ratio: 1.5"></span>
                         </a>
                     </div>
@@ -58,14 +56,16 @@
             <div uk-slideshow="animation: push; min-height: 250;">
                 <div class="uk-position-relative uk-visible-toggle uk-light">
                     <ul class="uk-slideshow-items">
-                        <li v-for="img in images">
-                            <img :src="img" alt="Image" uk-cover>
+                        {{ range .ad.Pictures }}
+                        <li>
+                            <img src="{{.}}" alt="Image" uk-cover>
                             <div class="uk-position-bottom uk-position-small  uk-position-small">
                                 <div uk-lightbox>
-                                    <a uk-icon="expand" :href="img" data-type="image"></a>
+                                    <a uk-icon="expand" href="{{.}}" data-type="image"></a>
                                 </div>
                             </div>
                         </li>
+                        {{ end }}
                     </ul>
                     <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slideshow-item="previous"></a>
                     <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slideshow-item="next"></a>
@@ -75,8 +75,8 @@
         <section style="margin: 20px 10px">
             <div>
                 <div id="head-info">
-                    <h2 class="uk-text-bold">Titre de l'annonce</h2>
-                    <p>Price somme other details</p>
+                    <h2 class="uk-text-bold">{{ .ad.Title }}</h2>
+                    <p>{{ .ad.Price }}</p>
                     <!-- <a class="uk-align-right" href="" uk-icon="icon: heart; ratio: 1."></a> -->
                 </div>
                 <div id="contact-box">
@@ -92,10 +92,10 @@
                 <hr>
                 <div id="address-map" class="uk-margin-top uk-width-1-1 uk-margin" uk-grid>
                     <div class="uk-width-1-2">
-                        <p class="uk-align-left">Address</p>
+                        <p class="uk-align-left">Addresse</p>
                     </div>
                     <div class="uk-width-expand">
-                        <p class="uk-align-right">Address</p>
+                        <p class="uk-align-right">{{ .ad.City}}</p>
                     </div>
                 </div>
                 <hr>
@@ -104,13 +104,13 @@
                         <img class="uk-border-circle" width="40" height="40" src="https://goo.gl/Hnfi2f">
                     </div>
                     <div class="uk-width-expand">
-                        <h3 class="uk-align-right">Title</h3>
+                        <h3 class="uk-align-right">{{ .ad.Title }}</h3>
                     </div>
                 </div>
                 <hr>
-                <div id="description" uk-grid class="uk-margin uk-width-1-1">
-                    <p class="uk-text-large uk-text-bold">Details</p>
-                    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Explicabo, magnam quos quod, accusantium hic cumque consectetur natus tenetur officiis nobis iusto eos neque. Nihil, omnis earum molestiae sint quidem doloribus.</p>
+                <div id="description" uk-grid class="uk-margin">
+                    <p class="uk-text-large uk-text-bold uk-width-1-1">Details</p>
+                    <p class="uk-width-1-1">{{ .ad.Details }}</p>
                 </div>
                 <hr>
                 <div id="social" uk-grid class="uk-margin">
@@ -138,13 +138,5 @@
     </div>
     <!--end vue container -->
 </body>
-<script>
-    var app = new Vue({
-        el: '#detail',
-        data: {
-            images: ['https://goo.gl/2DXsM5', 'https://goo.gl/Hnfi2f', 'https://goo.gl/qh9ZFX', 'https://goo.gl/qF6Lry']
-        }
-    })
-</script>
-
+<script src="/js/details.js"></script>
 </html>

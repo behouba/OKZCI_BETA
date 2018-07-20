@@ -1,13 +1,10 @@
 let searchField = document.getElementById("search")
 let searchCloseIcon = document.getElementById("search-close-icon")
 let searchSetting = document.getElementById("search-setting")
+let createDate = document.getElementsByClassName('create-date')
 
-// var app = new Vue({
-//     el: '#main',
-//     data: {
-//         images: ['https://goo.gl/2DXsM5', 'https://goo.gl/Hnfi2f', 'https://goo.gl/qh9ZFX', 'https://goo.gl/qF6Lry', 'https://goo.gl/ZVgEDX', 'https://goo.gl/CQhSSx', 'https://goo.gl/Tb3MSK', '', 'https://goo.gl/qh9ZFX', 'https://goo.gl/qF6Lry', 'https://goo.gl/ZVgEDX', 'https://goo.gl/CQhSSx', '', 'https://goo.gl/qh9ZFX', 'https://goo.gl/qF6Lry', 'https://goo.gl/ZVgEDX']
-//     }
-// })
+moment.locale('fr');
+
 function clearSearch(){
     searchField.value = ''
     searchSetting.style.display = 'inline-flex'
@@ -33,4 +30,9 @@ window.onscroll = function (e) {
     this.oldScroll = this.scrollY;
 }
 
-
+for (let i=0; i< createDate.length; i++){
+    let dateStr = createDate.item(i).innerHTML
+    console.log(dateStr)
+    createDate.item(i).innerHTML = moment(dateStr, 'YYYY-MM-DD HH:mm Z', 'fr').fromNow()
+}
+// moment(.CreatedAt,'' , 'fr').fromNow()

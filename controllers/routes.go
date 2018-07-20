@@ -23,7 +23,7 @@ func OkzApp() *iris.Application {
 	app.Post("/facebook-auth", blockAuthPages, facebookAuth)
 	app.Post("/register", blockAuthPages, register)
 	app.Post("/recovery", recovery)
-	app.Get("/ad", detail)
+	app.Get("/watch", watch)
 	app.Get("/create", create)
 	app.Post("/create", createAdvert)
 	app.Get("/user", userPage)

@@ -12,7 +12,6 @@
     <script src="/js/uikit-icons.min.js" defer></script>
     <script src="/js/axios.min.js"></script>
     <script src="/js/date.js"></script>
-    <script src="/js/uuid.js"></script>
     <script src="/js/index.js" defer></script>
     <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
 </head>
@@ -139,9 +138,9 @@
             <div id="ad-form" class="uk-width-1-2@m uk-margin-auto" style="display:none">
                 <h2 class="uk-text-center" id="form-title">Annonce</h2>
                 <form id="ad-form-field" class="uk-form-stacked">
-                    <div id="ad-type" class="uk-margin">
+                    <div id="type" class="uk-margin">
                         <label class="uk-form-label" for="ad-type">Type d'annonce</label>
-                        <select class="uk-select" id="ad-type-value" onchange="adType(value)" name="ad-type">
+                        <select class="uk-select" id="ad-type" onchange="setType(value)" name="ad-type">
                                 <option value="Offre">Offre (Vous vendez ou louez)</option>
                                 <option value="Demande">Demande (Vous recherchez)</option>
                         </select>
@@ -155,9 +154,9 @@
                         </select>
                     </div>
                     <div class="uk-margin">
-                        <label class="uk-form-label" for="title" id="title">Titre de l'annonce</label>
+                        <label class="uk-form-label" for="title" id="title-label">Titre de l'annonce</label>
                         <div class="uk-form-controls">
-                            <input class="uk-input" id="title" required minlength="3" type="text" name="title" placeholder="Titre de l'annonce">
+                            <input class="uk-input" id="title" required minlength="3" type="text" name="title" placeholder="Titre de l'annonce" maxlength="45">
                         </div>
                     </div>
                     <div class="uk-margin">
@@ -192,10 +191,6 @@
                             <div class="uk-form-controls">
                                 <input class="uk-input" id="prix" type="text" name="price" pattern="[0-9]+" placeholder="En Fcfa">
                             </div>
-                        </div>
-                        <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-                            <label><input class="uk-radio" type="radio" name="isNegociable" value="false" checked> Non Negociable</label>
-                            <label><input class="uk-radio" type="radio" name="isNegociable" value="true"> Negociable</label>
                         </div>
                     </div>
                     <div class="uk-margin">
