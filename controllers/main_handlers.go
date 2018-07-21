@@ -4,6 +4,7 @@ import (
 	"log"
 	"mime/multipart"
 	"os"
+	"strconv"
 	"time"
 
 	"github.com/ventu-io/go-shortid"
@@ -45,13 +46,34 @@ func watch(ctx iris.Context) {
 		return
 	}
 	adShortID := ctx.URLParam("a")
-	ad, err := models.GetAdByShortID(adShortID)
+
+	ad, owner, err := models.GetAdByShortID(adShortID)
 	if err != nil {
 		log.Println(err)
 		ctx.StatusCode(iris.StatusNotFound)
 	}
+	userEmail := models.Sess.Start(ctx).GetString("email")
+	user, err := models.GetUserByEmail(userEmail)
+	if err != nil {
+		log.Println(err)
+	} else {
+		ctx.ViewData("user", user)
+	}
+	ctx.ViewData("owner", owner)
 	ctx.ViewData("ad", ad)
 	ctx.View("detail.html")
+}
+
+func loadMore(ctx iris.Context) {
+	offset, err := strconv.Atoi(ctx.URLParam("offset"))
+	if err != nil {
+		log.Println(err)
+	}
+	ads, err := models.LoadMoreAds(offset)
+	if err != nil {
+		log.Println(err)
+	}
+	ctx.JSON(ads)
 }
 
 func create(ctx iris.Context) {

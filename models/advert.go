@@ -30,18 +30,6 @@ type bid struct {
 	Date   time.Time
 }
 
-// ShortTitle return short version of the title
-func (a *Advert) ShortTitle() string {
-	var numRunes = 0
-	for index := range a.Title {
-		numRunes++
-		if numRunes > 25 {
-			return a.Title[:index] + "..."
-		}
-	}
-	return a.Title
-}
-
 // StoreNewAd method store new created ad to the database
 func (a *Advert) StoreNewAd() (err error) {
 	err = mgoSession.DB("okzdb").C("adverts").Insert(&a)
@@ -53,7 +41,16 @@ func (a *Advert) StoreNewAd() (err error) {
 
 // GetAds method retreive advert from database
 func GetAds() (ads []Advert, err error) {
-	err = mgoSession.DB("okzdb").C("adverts").Find(bson.M{}).Limit(50).All(&ads)
+	err = mgoSession.DB("okzdb").C("adverts").Find(bson.M{}).Limit(20).Sort("-created_at").All(&ads)
+	if err != nil {
+		return
+	}
+	return
+}
+
+// loadMoreAds load more adverts to be send to client
+func LoadMoreAds(skip int) (ads []Advert, err error) {
+	err = mgoSession.DB("okzdb").C("adverts").Find(bson.M{}).Skip(skip).Limit(20).Sort("-created_at").All(&ads)
 	if err != nil {
 		return
 	}
@@ -70,8 +67,12 @@ func GetHotAuction() (ads []Advert, err error) {
 }
 
 // GetAdByShortID Get one ad by it shortID
-func GetAdByShortID(shortID string) (ad Advert, err error) {
+func GetAdByShortID(shortID string) (ad Advert, Owner User, err error) {
 	err = mgoSession.DB("okzdb").C("adverts").Find(bson.M{"short_id": shortID}).One(&ad)
+	if err != nil {
+		return
+	}
+	err = mgoSession.DB("okzdb").C("users").Find(bson.M{"_id": ad.OwnerID}).Select(bson.M{"username": 1, "picture": 1}).One(&Owner)
 	if err != nil {
 		return
 	}

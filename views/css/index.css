@@ -111,13 +111,13 @@ main {
 #search-bar .uk-form-width-medium {
     width: 310px;
 }
-#ad-card .uk-countdown-number, .ad-card .uk-countdown-separator {
+.ad-card .uk-countdown-number, .ad-card .uk-countdown-separator {
     font-size: 1rem;
 }
-#ad-card .uk-countdown-number, .uk-countdown-separator {
+.ad-card .uk-countdown-number, .uk-countdown-separator {
     line-height: 30px;
 }
-#ad-card a:hover{
+.ad-card > a:hover{
     text-decoration: none;
 }
 
