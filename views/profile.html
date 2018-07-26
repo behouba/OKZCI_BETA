@@ -44,19 +44,21 @@
         <!-- canvas content -->
         <div class="uk-offcanvas-content">
             <!-- right side -->
+            {{ if .user}}
             <div id="offcanvas-flip" uk-offcanvas="flip: true; overlay: true">
                 <div class="uk-offcanvas-bar">
                     <ul class="uk-nav uk-nav-default">
-                        <li class="uk-nav-header">USER NAME</li>
-                        <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: table"></span>Profil</a></li>
-                        <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: heart"></span>Favoris</a></li>
-                        <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: comment"></span>Messages</a></li>
-                        <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: settings"></span>Modifications</a></li>
+                        <li class="uk-nav-header">{{ .user.UserName }}</li>
+                        <li><a href="/me"><span class="uk-margin-small-right" uk-icon="icon: user"></span>Profil</a></li>
+                        <li><a href="/activités"><span class="uk-margin-small-right" uk-icon="icon: comment"></span>Activités</a></li>
+                        <li><a href="/box"><span class="uk-margin-small-right" uk-icon="icon: comment"></span>Messages</a></li>
+                        <li><a href="/settings"><span class="uk-margin-small-right" uk-icon="icon: settings"></span>Modifications</a></li>
                         <li class="uk-nav-divider"></li>
-                        <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon:  sign-out"></span>Deconnecter</a></li>
+                        <li><a onclick="logout()"><span class="uk-margin-small-right" uk-icon="icon: sign-out"></span>Deconnecter</a></li>
                     </ul>
                 </div>
             </div>
+            {{ end }}
         </div>
     </header>
     <main style="margin: 20px 10px">

@@ -47,13 +47,13 @@
                     <div id="offcanvas-flip" uk-offcanvas="flip: true; overlay: true">
                         <div class="uk-offcanvas-bar">
                             <ul class="uk-nav uk-nav-default">
-                                <li class="uk-nav-header">USER NAME</li>
-                                <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: table"></span>Profil</a></li>
-                                <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: heart"></span>Favoris</a></li>
-                                <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: comment"></span>Messages</a></li>
-                                <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: settings"></span>Modifications</a></li>
+                                <li class="uk-nav-header">{{ .user.UserName }}</li>
+                                <li><a href="/me"><span class="uk-margin-small-right" uk-icon="icon: user"></span>Profil</a></li>
+                                <li><a href="/activités"><span class="uk-margin-small-right" uk-icon="icon: comment"></span>Activités</a></li>
+                                <li><a href="/box"><span class="uk-margin-small-right" uk-icon="icon: comment"></span>Messages</a></li>
+                                <li><a href="/settings"><span class="uk-margin-small-right" uk-icon="icon: settings"></span>Modifications</a></li>
                                 <li class="uk-nav-divider"></li>
-                                <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon:  sign-out"></span>Deconnecter</a></li>
+                                <li><a onclick="logout()"><span class="uk-margin-small-right" uk-icon="icon: sign-out"></span>Deconnecter</a></li>
                             </ul>
                         </div>
                     </div>
@@ -61,19 +61,23 @@
         </header>
         <main style="margin: 20px 10px">
             <div class="uk-grid-small" uk-grid>
+                {{ range .conversations }}
+                {{ range .Thread }}
                 <div v-for="c in images" class="uk-width-1-1">
-                    <a href="" class="uk-link-reset">
+                    <a href="/thread" class="uk-link-reset">
                         <div class="message-item uk-card uk-card-default uk-margin-auto">
                             <div class="uk-align-left">
                                 <img class="uk-border-circle" :src="c" alt="Example image">
                             </div>
                             <div>
-                                <p class="uk-text-small">Lorem, ipsum dolor sit amet consectetur adipisicing</p>
-                                <p class="uk-text-right uk-text-small">Duis aute </p>
+                                <p class="uk-text-small">{{ .Body}}</p>
+                                <p class="uk-text-right uk-text-small">{{ .Date }}</p>
                             </div>
                         </div>
                     </a>
                 </div>
+                {{ end }}
+                {{ end }}
             </div>
         </main>
         <footer>

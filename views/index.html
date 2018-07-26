@@ -275,6 +275,11 @@
                         </div>
                     </div>
                 </section>
+                {{ if .newMessage}}
+                <script>
+                    UIkit.notification({message: 'Vous avez de nouveaux messages', pos: 'bottom-center', status: 'success'})
+                </script>
+                {{ end }}
             </main>
             <footer>
                 <hr>

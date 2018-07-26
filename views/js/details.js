@@ -16,10 +16,20 @@ function showHistory() {
     }
 }
 
-function sendMessageTo(userID) {
-    console.log(messageBody.value + "send to user with id=" + userID)
-    UIkit.notification('Votre message a bien été envoyé')
-    UIkit.modal('#message-modal').hide()
+function sendMessageTo(receiverId, userId) {
+    var mgs = {
+        "sender_id": userId,
+        "receiver_id": receiverId,
+        "body": messageBody.value
+    }
+    axios.post('/send-message', mgs)
+        .then(res => {
+            UIkit.notification('Votre message a bien été envoyé')
+            UIkit.modal('#message-modal').hide()
+        })
+        .catch(err => {
+            UIkit.notification('Echec d\'envoi', 'danger')
+        })
 }
 
 function addToFavorites(adID) {
