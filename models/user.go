@@ -20,6 +20,7 @@ type User struct {
 	Location    string        `json:"location"`
 	Pin         string        `json:"pin"`
 	Auth        string        `json:"auth"`
+	FavList     []string      `bson:"favList" json:"favList"`
 }
 
 // StoreUserData store new user data into database
@@ -30,6 +31,22 @@ func (u *User) StoreUserData() (err error) {
 		return
 	}
 	return nil
+}
+
+func (u *User) AddFavorite(shortID string) (err error) {
+	err = mgoSession.DB("okzdb").C("users").Update(bson.M{"email": u.Email}, bson.M{"$addToSet": bson.M{"favList": shortID}})
+	if err != nil {
+		return
+	}
+	return
+}
+
+func (u *User) RemoveFavorite(shortID string) (err error) {
+	err = mgoSession.DB("okzdb").C("users").Update(bson.M{"email": u.Email}, bson.M{"$pull": bson.M{"favList": shortID}})
+	if err != nil {
+		return
+	}
+	return
 }
 
 // AlreadyUser check is new user is already registered
@@ -152,6 +169,30 @@ func (u *User) AuthenticateFbUser() (err error) {
 // GetUserByEmail get user data from database by their email
 func GetUserByEmail(email string) (user User, err error) {
 	err = mgoSession.DB("okzdb").C("users").Find(bson.M{"email": email}).One(&user)
+	if err != nil {
+		return
+	}
+	return
+}
+
+func (u *User) UpdateUserName() (err error) {
+	err = mgoSession.DB("okzdb").C("users").Update(bson.M{"email": u.Email}, bson.M{"$set": bson.M{"username": u.UserName}})
+	if err != nil {
+		return
+	}
+	return
+}
+
+func (u *User) UpdateContact() (err error) {
+	err = mgoSession.DB("okzdb").C("users").Update(bson.M{"email": u.Email}, bson.M{"$set": bson.M{"phonenumber": u.PhoneNumber}})
+	if err != nil {
+		return
+	}
+	return
+}
+
+func (u *User) UpdateUserLocation() (err error) {
+	err = mgoSession.DB("okzdb").C("users").Update(bson.M{"email": u.Email}, bson.M{"$set": bson.M{"location": u.Location}})
 	if err != nil {
 		return
 	}

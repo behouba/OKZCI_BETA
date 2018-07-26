@@ -8,19 +8,17 @@
     <meta name="google-signin-client_id" content="958526051973-n3qc7e0501vo4uvlll8gq3qcrrdq587b.apps.googleusercontent.com">
     <link rel="stylesheet" href="/css/uikit.min.css" />
     <link rel="stylesheet" href="/css/index.css" />
-    <script src="/js/uikit.min.js" defer></script>
-    <script src="/js/uikit-icons.min.js" defer></script>
+    <script src="/js/uikit.min.js"></script>
+    <script src="/js/uikit-icons.min.js"></script>
     <script src="/js/axios.min.js"></script>
     <script src="/js/date.js"></script>
-    <script src="/js/index.js" defer></script>
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script> -->
 </head>
 
-<body onload="createPageLoaded()">
-    <div class="uk-position-center" id="create-spinner">
-        <div uk-spinner="ratio: 2"></div>
+<body>
+    <div class="uk-position-center" id="create-spinner" style="display: none;">
+        <img src="/img/logo.gif" />
     </div>
-    <div id="create" style="display: none">
+    <div id="create">
         <header style="margin-bottom: 10px">
             <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;">
                 <nav class="uk-navbar uk-navbar-container">
@@ -30,13 +28,24 @@
                         </a>
                     </div>
                     <div class="uk-navbar-center">
-                        LOGO DU SITE
+                        <a class="uk-logo" href="/">
+                            <img src="/img/logo-okz.png" width="100" height="30" alt="OKZ">
+                        </a>
                     </div>
+                    {{ if .user }}
                     <div class="uk-navbar-right" style="height: 65px;">
                         <a uk-toggle="target: #offcanvas-flip" class="uk-navbar-toggle">
                             <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 30px; height: 30px;"></span>
                         </a>
                     </div>
+                    {{ else }}
+                    <div class="uk-navbar-right" style="height: 65px;">
+                        <a href="/login" class="uk-navbar-toggle">
+                            <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url(https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png); width: 30px; height: 30px;"></span>
+                        </a>
+                    </div>
+                    {{ end }}
+                </nav>
                 </nav>
             </div>
             <!-- canvas content -->
@@ -58,11 +67,11 @@
             </div>
         </header>
         <div style="margin: 30px 10px;">
-            <div id="select-category" class="uk-width-1-2@m uk-margin-auto uk-padding">
-                <div class="uk-margin uk-text-center">
+            <div id="select-category" class="uk-width-1-2@m uk-margin-auto uk-padding-small">
+                <div>
                     <h3>CHOISIR LA CATEGORIE</h3>
                 </div>
-                <ul class="uk-nav-primary uk-nav-parent-icon uk-nav-center" uk-nav>
+                <ul class="uk-nav-primary uk-nav-parent-icon" uk-nav>
                     <li class="uk-parent">
                         <a href="#">VEHICULES</a>
                         <ul class="uk-nav-sub">

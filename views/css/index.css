@@ -7,6 +7,7 @@ body {
     bottom: 10px;
     z-index: 2;
     text-align: center;
+    display: block;
 }
 
 .loadMore {
@@ -121,6 +122,6 @@ main {
     text-decoration: none;
 }
 
-.uk-card-default {
+/* .uk-card-default {
     box-shadow: 0 5px 15px rgba(0,0,0,.5);
-}
+} */

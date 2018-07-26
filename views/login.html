@@ -13,11 +13,11 @@
     <script src="https://apis.google.com/js/platform.js" async defer></script>
 </head>
 
-<body onload="authLoading()">
-    <div class="uk-position-center" id="auth-spinner">
-        <div uk-spinner="ratio: 2"></div>
+<body>
+    <div class="uk-position-center" id="auth-spinner" style="display: none">
+        <img src="/img/logo.gif" />
     </div>
-    <div id="auth" style="display: none">
+    <div id="auth">
         <div id="login" class="uk-animation-slide-bottom-small">
             <div class="uk-text-right">
                 <a class="uk-close-large uk-margin-small-top uk-margin-small-right" href="/" uk-close></a>

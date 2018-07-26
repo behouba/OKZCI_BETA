@@ -6,8 +6,10 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/css/uikit.min.css" />
-    <script src="/js/uikit.min.js" defer></script>
-    <script src="/js/uikit-icons.min.js" defer></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <script src="/js/uikit.min.js"></script>
+    <script src="/js/axios.min.js"></script>
+    <script src="/js/uikit-icons.min.js"></script>
 </head>
 <style>
     a:hover{
@@ -16,13 +18,16 @@
     h3, p{
         margin: 8px auto;
     }
+    #head-info a:hover{
+        cursor: pointer;
+    }
 </style>
 
-<body onload="detailPageLoaded()">
-    <div class="uk-position-center" id="detail-spinner">
-        <div uk-spinner="ratio: 2"></div>
-    </div>
-    <div id="detail" style="display:none">
+<body>
+    <!-- <div class="uk-position-center" id="detail-spinner">
+        <img src="/img/logo.gif" />
+    </div> -->
+    <div id="detail">
         <header style="margin-bottom: 10px">
             <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;">
                 <nav class="uk-navbar uk-navbar-container">
@@ -92,13 +97,23 @@
         <section style="margin: 20px 10px">
             <div>
                 <div id="head-info">
-                    <h2 class="uk-text-bold">{{ .ad.Title }}</h2>
+                    <div style="display: inline">
+                        <h2 class="uk-text-bold">{{ .ad.Title }}</h2>
+                        <a class="uk-align-right favorites" onclick="addToFavorites({{.ad.ShortID}})">
+                            <!-- <i class="fas fa-star" id="isFav"></i> -->
+                            {{ if .isFav}}
+                            <i class="fas fa-star" id="fav"></i>
+                            {{ else }}
+                            <i class="far fa-star" id="fav"></i>
+                            {{ end }}
+                        </a>
+                    </div>
                     {{ if .ad.Price }}
                     <p>{{ .ad.Price }} FCFA</p>
                     {{ else }}
                     <p>Gratuit </p>
                     {{ end }}
-                    <!-- <a class="uk-align-right" href="" uk-icon="icon: heart; ratio: 1."></a> -->
+                    
                 </div>
                 {{ if eq .ad.OfferType "auction" }}
                 <div id="contact-box" class="uk-margin">
@@ -153,9 +168,9 @@
                 <div id="contact-box">
                     <div class="uk-child-width-expand@ uk-child-width-1-2" uk-grid>
                         <div>
-                            <a href="#modal-full" class="uk-button uk-button-primary uk-width-1-1" uk-toggle>Appeler</a>
+                            <a href="#contact-modal" class="uk-button uk-button-primary uk-width-1-1" uk-toggle>Appeler</a>
                         </div>
-                            <div id="modal-full" class="uk-modal-full" uk-modal>
+                            <div id="contact-modal" class="uk-modal-full" uk-modal>
                                 <div class="uk-modal-dialog" style="min-height: 100%;">
                                     <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
                                     <div class="uk-grid-collapse uk-child-width-1-1@s uk-flex-middle" uk-grid>
@@ -179,7 +194,22 @@
                                 </div>
                             </div>
                         <div>
-                            <button class="uk-button uk-button-primary uk-width-1-1">Ecrire</button>
+                            <a href="#message-modal" class="uk-button uk-button-primary uk-width-1-1" uk-toggle>Ecrire</a>
+                        </div>
+                        <div id="message-modal" class="uk-modal-full" uk-modal>
+                            <div class="uk-modal-dialog" style="min-height: 100%;">
+                                <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
+                                <div class="uk-grid-collapse uk-child-width-1-1@s uk-flex-middle" uk-grid>
+                                    <div class="uk-padding-large uk-text-center">
+                                        <div class="uk-margin-medium-top">
+                                            <textarea class="uk-textarea" rows="6" placeholder="Votre message pour {{.owner.UserName}}" id="message-body"></textarea>
+                                        </div>
+                                        <div class="uk-width-1-1 uk-margin-large-top">
+                                            <a class="uk-button uk-button-primary uk-width-1-1" onclick="sendMessageTo({{.owner.ID}})">ENVOYER</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <title>OKZ</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-signin-client_id" content="958526051973-n3qc7e0501vo4uvlll8gq3qcrrdq587b.apps.googleusercontent.com">
+    <link rel="stylesheet" href="/css/uikit.min.css" />
+    <link rel="stylesheet" href="/css/index.css" />
+    <script src="/js/uikit.min.js"></script>
+    <script src="/js/uikit-icons.min.js"></script>
+    <script src="/js/axios.min.js"></script>
+    <script src="/js/date.js"></script>
+</head>
+
+<body>
+    <div class="uk-position-center" id="create-spinner" style="display: none;">
+        <img src="/img/logo.gif" />
+    </div>
+    <div id="create">
+        <header style="margin-bottom: 10px">
+            <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;">
+                <nav class="uk-navbar uk-navbar-container">
+                    <div class="uk-navbar-left">
+                        <a class="uk-navbar-toggle" href="/me">
+                            <span uk-icon="icon: arrow-left; ratio: 1.5"></span>
+                        </a>
+                    </div>
+                    <div class="uk-navbar-center">
+                        <a class="uk-logo" href="/">
+                            <img src="/img/logo-okz.png" width="100" height="30" alt="OKZ">
+                        </a>
+                    </div>
+                    {{ if .user }}
+                    <div class="uk-navbar-right" style="height: 65px;">
+                        <a uk-toggle="target: #offcanvas-flip" class="uk-navbar-toggle">
+                            <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 30px; height: 30px;"></span>
+                        </a>
+                    </div>
+                    {{ else }}
+                    <div class="uk-navbar-right" style="height: 65px;">
+                        <a href="/login" class="uk-navbar-toggle">
+                            <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url(https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png); width: 30px; height: 30px;"></span>
+                        </a>
+                    </div>
+                    {{ end }}
+                </nav>
+                </nav>
+            </div>
+            <!-- canvas content -->
+            <div class="uk-offcanvas-content">
+                <!-- right side -->
+                <div id="offcanvas-flip" uk-offcanvas="flip: true; overlay: true">
+                    <div class="uk-offcanvas-bar">
+                        <ul class="uk-nav uk-nav-default">
+                            <li class="uk-nav-header">{{ .user.UserName }}</li>
+                            <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: user"></span>Profil</a></li>
+                            <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: heart"></span>Favoris</a></li>
+                            <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: comment"></span>Messages</a></li>
+                            <li><a href="#"><span class="uk-margin-small-right" uk-icon="icon: bell"></span>Notifications</a></li>
+                            <li class="uk-nav-divider"></li>
+                            <li><a onclick="logout()"><span class="uk-margin-small-right" uk-icon="icon: sign-out"></span>Deconnecter</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </header>
+        <div style="margin: 30px 10px;">
+            <div id="ad-form" class="uk-width-1-2@m uk-margin-auto">
+                    <div class="uk-margin-large-top uk-child-width-expand uk-child-width-1-2" uk-grid id="update-btn">
+                        <div>
+                            <a class="uk-button uk-button-default uk-width-1-1" onclick="startUpdate()">
+                                <span uk-icon="icon: file-edit"></span>
+                                 MODIFIER CETTE ANNONCE
+                            </a>
+                        </div>
+                    </div>
+                    <div class="uk-margin-large-top uk-child-width-expand uk-child-width-1-2" uk-grid id="delete-btn">
+                        <div>
+                            <a class="uk-button uk-button-danger uk-width-1-1" href="#delete-modal" uk-toggle>
+                                <span uk-icon="icon: trash"></span> 
+                                SUPPRIMER CETTE ANNONCE
+                            </a>
+                        </div>
+                    </div>
+                    <div id="delete-modal" class="uk-flex-top" uk-modal>
+                            <div class="uk-modal-dialog">
+                                <div class="uk-padding uk-width-1-1 uk-text-center uk-margin-auto">
+                                    <div>
+                                        <h2>Vous etre sur le point de supprimer cette annonce. Attention cette action est irreversible</h2>
+                                    </div>
+                                    <div class="uk-margin-large-top uk-child-width-expand uk-child-width-1-2" uk-grid>
+                                        <div>
+                                            <a class="uk-button uk-button-danger uk-width-1-1 uk-modal-close">ANNULER</a>
+                                        </div>
+                                        <div>
+                                            <a onclick="deleteAd()" class="uk-button uk-button-primary uk-width-1-1">SUPPRIMER</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                <form id="form-field" class="uk-form-stacked uk-margin">
+                    <fieldset id="field-set" disabled>
+                        <legend><h2>Données de l'annonce</h2></legend>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="title" id="title-label">Titre</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" id="title" required minlength="3" type="text" name="title" value="{{ .ad.Title }}" maxlength="45">
+                        </div>
+                    </div>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="city">Ville</label>
+                        <select class="uk-select" id="city" name="city">
+                            <option value="{{.ad.City}}">{{ .ad.City }}</option>
+                            {{ range .cities}}
+                            <option value="{{.}}">{{.}}</option>
+                            {{ end }}
+                        </select>
+                    </div>
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="details">Details</label>
+                        <textarea class="uk-textarea" rows="5" id="details" name="description">{{ .ad.Details }}</textarea>
+                    </div>
+                    {{ if .ad.Price }}
+                    <div id="price-simple">
+                        <div class="uk-margin">
+                            <label class="uk-form-label" for="prix">Prix</label>
+                            <div class="uk-form-controls">
+                                <input class="uk-input" id="price" type="number" name="price" pattern="[0-9]+" value="{{ .ad.Price }}">
+                            </div>
+                        </div>
+                    </div>
+                    {{ end }}
+                    <div class="uk-margin">
+                        <label class="uk-form-label" for="contact">Contact tel</label>
+                        <div class="uk-form-controls">
+                            <input class="uk-input" id="contact" name="contact" type="tel" pattern="[0-9]{8}" value="{{ .ad.Contact }}" >
+                        </div>
+                    </div>
+                    <div class="uk-margin-large-top uk-child-width-expand uk-child-width-1-2" uk-grid id="bottom-btn" style="display: none">
+                        <div>
+                            <a onclick="cancelUpdate()" class="uk-button uk-button-danger uk-width-1-1" id="cancel-btn">ANNULER</a>
+                        </div>
+                        <div>
+                            <a onclick="updateAdData()" class="uk-button uk-button-primary uk-width-1-1">APPLIQUER</a>
+                        </div>
+                    </div>
+                </fieldset>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+<script src="/js/update-ad.js"></script>
+<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+</html>

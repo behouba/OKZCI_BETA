@@ -217,3 +217,9 @@ adFormField.addEventListener('submit', e => {
             }
         })
 })
+
+
+function createPageLoaded() {
+    document.getElementById("create-spinner").style.display = 'none'
+    document.getElementById("create").style.display = 'block'
+}

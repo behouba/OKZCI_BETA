@@ -59,9 +59,19 @@ func watch(ctx iris.Context) {
 	} else {
 		ctx.ViewData("user", user)
 	}
+	ctx.ViewData("isFav", isAdFavorite(user.FavList, ad.ShortID))
 	ctx.ViewData("owner", owner)
 	ctx.ViewData("ad", ad)
 	ctx.View("detail.html")
+}
+
+func isAdFavorite(favList []string, adShortID string) bool {
+	for _, shortID := range favList {
+		if shortID == adShortID {
+			return true
+		}
+	}
+	return false
 }
 
 func loadMore(ctx iris.Context) {
@@ -92,7 +102,27 @@ func create(ctx iris.Context) {
 	ctx.View("create.html")
 }
 
-func userPage(ctx iris.Context) {
+func userProfil(ctx iris.Context) {
+	session := models.Sess.Start(ctx).GetString("email")
+	if session == "" {
+		ctx.Redirect("/", iris.StatusSeeOther)
+		return
+	}
+	user, err := models.GetUserByEmail(session)
+	if err != nil {
+		log.Println(err)
+	}
+	ads, err := models.GetUserAdsByUserID(user.ID)
+	if err != nil {
+		log.Println(err)
+	}
+	favorites, err := models.GetFavoritesAdsByUserID(user.ID)
+	if err != nil {
+		log.Println(err)
+	}
+	ctx.ViewData("favorites", favorites)
+	ctx.ViewData("ads", ads)
+	ctx.ViewData("user", user)
 	ctx.View("profile.html")
 }
 
@@ -101,11 +131,129 @@ func userMessages(ctx iris.Context) {
 }
 
 func userSetting(ctx iris.Context) {
+	session := models.Sess.Start(ctx).GetString("email")
+	if session == "" {
+		ctx.Redirect("/", iris.StatusSeeOther)
+		return
+	}
+	user, err := models.GetUserByEmail(session)
+	if err != nil {
+		log.Println(err)
+	}
+	ctx.ViewData("cities", models.Cities)
+	ctx.ViewData("user", user)
 	ctx.View("profil-setting.html")
+}
+
+func updateAdvert(ctx iris.Context) {
+	email := models.Sess.Start(ctx).GetString("email")
+	if email == "" {
+		log.Println(email)
+		ctx.StatusCode(iris.StatusForbidden)
+		return
+	}
+	if ok := ctx.URLParamExists("a"); !ok {
+		log.Println(ok)
+		ctx.StatusCode(iris.StatusForbidden)
+		return
+	}
+	adShortID := ctx.URLParam("a")
+	var ad models.Advert
+	ctx.ReadJSON(&ad)
+	err := ad.UpdateData(adShortID)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+}
+
+func deleteAdvert(ctx iris.Context) {
+	email := models.Sess.Start(ctx).GetString("email")
+	if email == "" {
+		log.Println(email)
+		ctx.StatusCode(iris.StatusForbidden)
+		return
+	}
+	if ok := ctx.URLParamExists("a"); !ok {
+		log.Println(ok)
+		ctx.StatusCode(iris.StatusForbidden)
+		return
+	}
+	adShortID := ctx.URLParam("a")
+	err := models.DeleteAdvert(adShortID)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+}
+
+func updatePage(ctx iris.Context) {
+	email := models.Sess.Start(ctx).GetString("email")
+	if email == "" {
+		ctx.Redirect("/", iris.StatusSeeOther)
+		return
+	}
+	if ok := ctx.URLParamExists("a"); !ok {
+		ctx.Redirect("/", iris.StatusSeeOther)
+		return
+	}
+	adShortID := ctx.URLParam("a")
+
+	ad, owner, err := models.GetAdByShortID(adShortID)
+	if err != nil || owner.Email != email {
+		ctx.StatusCode(iris.StatusNotFound)
+		return
+	}
+	ctx.ViewData("user", owner)
+	ctx.ViewData("cities", models.Cities)
+	ctx.ViewData("ad", ad)
+	ctx.View("update-ad.html")
 }
 
 func thread(ctx iris.Context) {
 	ctx.View("thread.html")
+}
+
+func addFav(ctx iris.Context) {
+	session := models.Sess.Start(ctx).GetString("email")
+	user, err := models.GetUserByEmail(session)
+	if err != nil {
+		ctx.StatusCode(iris.StatusForbidden)
+		log.Println(err)
+		return
+	}
+	ad := struct {
+		ShortID string
+	}{}
+	ctx.ReadJSON(&ad)
+	err = user.AddFavorite(ad.ShortID)
+	if err != nil {
+		ctx.StatusCode(iris.StatusForbidden)
+		log.Println(err)
+		return
+	}
+	log.Println("fav added", ad.ShortID, user.UserName)
+}
+
+func removeFav(ctx iris.Context) {
+	session := models.Sess.Start(ctx).GetString("email")
+	user, err := models.GetUserByEmail(session)
+	if err != nil {
+		ctx.StatusCode(iris.StatusForbidden)
+		log.Println(err)
+		return
+	}
+	ad := struct {
+		ShortID string
+	}{}
+	ctx.ReadJSON(&ad)
+	err = user.RemoveFavorite(ad.ShortID)
+	if err != nil {
+		ctx.StatusCode(iris.StatusForbidden)
+		log.Println(err)
+		return
+	}
+	log.Println("fav removed", ad.ShortID, user.UserName)
 }
 
 func createAdvert(ctx iris.Context) {
@@ -127,7 +275,7 @@ func createAdvert(ctx iris.Context) {
 		ctx.StatusCode(iris.StatusInternalServerError)
 		return
 	}
-	val, err := ctx.UploadFormFiles("./public/ad/"+ad.ShortID+"/", func(ctx iris.Context, file *multipart.FileHeader) {
+	_, err = ctx.UploadFormFiles("./public/ad/"+ad.ShortID+"/", func(ctx iris.Context, file *multipart.FileHeader) {
 		path := "http://localhost:8080/pictures/ad/" + ad.ShortID + "/" + file.Filename
 		ad.Pictures = append(ad.Pictures, path)
 		ad.CreatedAt = time.Now()
@@ -142,5 +290,37 @@ func createAdvert(ctx iris.Context) {
 		ctx.StatusCode(iris.StatusInternalServerError)
 		return
 	}
-	log.Println("new ad created ", ad, val)
+	log.Println("new ad created ")
+}
+
+// security issue with these three functions bellow
+
+func updateUserName(ctx iris.Context) {
+	var user models.User
+	ctx.ReadJSON(&user)
+	user.Email = models.Sess.Start(ctx).GetString("email")
+	err := user.UpdateUserName()
+	if err != nil {
+		ctx.StatusCode(iris.StatusInternalServerError)
+	}
+}
+
+func updateUserContact(ctx iris.Context) {
+	var user models.User
+	ctx.ReadJSON(&user)
+	user.Email = models.Sess.Start(ctx).GetString("email")
+	err := user.UpdateContact()
+	if err != nil {
+		ctx.StatusCode(iris.StatusInternalServerError)
+	}
+}
+
+func updateUserLocation(ctx iris.Context) {
+	var user models.User
+	ctx.ReadJSON(&user)
+	user.Email = models.Sess.Start(ctx).GetString("email")
+	err := user.UpdateUserLocation()
+	if err != nil {
+		ctx.StatusCode(iris.StatusInternalServerError)
+	}
 }

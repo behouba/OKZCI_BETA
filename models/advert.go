@@ -1,6 +1,8 @@
 package models
 
 import (
+	"log"
+	"os"
 	"time"
 
 	"gopkg.in/mgo.v2/bson"
@@ -8,20 +10,20 @@ import (
 
 // Advert struct models for all ads
 type Advert struct {
-	OwnerID   bson.ObjectId `form:"owner_id" bson:"owner_id"`
-	Category  string        `form:"category" bson:"category"`
-	CreatedAt time.Time     `form:"created_at" bson:"created_at"`
-	AdType    string        `form:"ad_type" bson:"ad_type"`
-	OfferType string        `form:"offer_type" bson:"offer_type"`
-	Title     string        `form:"title" bson:"title"`
-	City      string        `form:"city" bson:"city"`
-	Details   string        `form:"details" bson:"details"`
-	Price     int64         `form:"price" bson:"price"`
-	Bids      []bid         `form:"bid" bson:"bids"`
-	EndDate   string        `form:"end_date" bson:"end_date"`
-	Contact   string        `form:"contact" bson:"contact"`
-	Pictures  []string      `form:"files" bson:"pictures"`
-	ShortID   string        `bson:"short_id"`
+	OwnerID   bson.ObjectId `form:"owner_id" bson:"owner_id" json:"owner_id"`
+	Category  string        `form:"category" bson:"category" json:"category"`
+	CreatedAt time.Time     `form:"created_at" bson:"created_at" json:"created_at"`
+	AdType    string        `form:"ad_type" bson:"ad_type" json:"ad_type"`
+	OfferType string        `form:"offer_type" bson:"offer_type" json:"offer_type"`
+	Title     string        `form:"title" bson:"title" json:"title"`
+	City      string        `form:"city" bson:"city" json:"city"`
+	Details   string        `form:"details" bson:"details" json:"details"`
+	Price     int64         `form:"price" bson:"price" json:"price"`
+	Bids      []bid         `form:"bid" bson:"bids" json:"bids"`
+	EndDate   string        `form:"end_date" bson:"end_date" json:"end_date"`
+	Contact   string        `form:"contact" bson:"contact" json:"contact"`
+	Pictures  []string      `form:"files" bson:"pictures" json:"pictures"`
+	ShortID   string        `bson:"short_id" json:"short_id"`
 }
 
 type bid struct {
@@ -41,16 +43,16 @@ func (a *Advert) StoreNewAd() (err error) {
 
 // GetAds method retreive advert from database
 func GetAds() (ads []Advert, err error) {
-	err = mgoSession.DB("okzdb").C("adverts").Find(bson.M{}).Limit(20).Sort("-created_at").All(&ads)
+	err = mgoSession.DB("okzdb").C("adverts").Find(bson.M{}).Limit(8).Sort("city").All(&ads)
 	if err != nil {
 		return
 	}
 	return
 }
 
-// loadMoreAds load more adverts to be send to client
+// LoadMoreAds load more adverts to be send to client
 func LoadMoreAds(skip int) (ads []Advert, err error) {
-	err = mgoSession.DB("okzdb").C("adverts").Find(bson.M{}).Skip(skip).Limit(20).Sort("-created_at").All(&ads)
+	err = mgoSession.DB("okzdb").C("adverts").Find(bson.M{}).Skip(skip).Limit(8).Sort("city").All(&ads)
 	if err != nil {
 		return
 	}
@@ -72,7 +74,84 @@ func GetAdByShortID(shortID string) (ad Advert, Owner User, err error) {
 	if err != nil {
 		return
 	}
-	err = mgoSession.DB("okzdb").C("users").Find(bson.M{"_id": ad.OwnerID}).Select(bson.M{"username": 1, "picture": 1}).One(&Owner)
+	err = mgoSession.DB("okzdb").C("users").Find(bson.M{"_id": ad.OwnerID}).Select(bson.M{"username": 1, "picture": 1, "email": 1}).One(&Owner)
+	if err != nil {
+		return
+	}
+	return
+}
+
+// GetUserAdsByUserID get adverts of current user
+func GetUserAdsByUserID(userID bson.ObjectId) (ads []Advert, err error) {
+	err = mgoSession.DB("okzdb").C("adverts").Find(bson.M{"owner_id": userID}).Sort("-created_at").All(&ads)
+	if err != nil {
+		return
+	}
+	return
+}
+
+// GetFavoritesAdsByUserID find all favorite ad of user
+func GetFavoritesAdsByUserID(userID bson.ObjectId) (ads []Advert, err error) {
+	var obj = struct {
+		FavList []string `bson:"favList"`
+	}{}
+	err = mgoSession.DB("okzdb").C("users").Find(bson.M{"_id": userID}).Select(bson.M{"favList": 1}).One(&obj)
+	if err != nil {
+		return
+	}
+	favList := reverse(obj.FavList)
+	for _, shortID := range favList {
+		var ad Advert
+		err = mgoSession.DB("okzdb").C("adverts").Find(bson.M{"short_id": shortID}).One(&ad)
+		if err != nil {
+			log.Println(err)
+		}
+		ads = append(ads, ad)
+	}
+	return
+}
+
+func reverse(slice []string) []string {
+	for i := 0; i < len(slice)/2; i++ {
+		j := len(slice) - i - 1
+		slice[i], slice[j] = slice[j], slice[i]
+	}
+	return slice
+}
+
+// DeleteAdvert delete ad from database collection
+func DeleteAdvert(shortID string) (err error) {
+	err = ArchiveAdvert(shortID)
+	if err != nil {
+		return
+	}
+	err = mgoSession.DB("okzdb").C("adverts").Remove(bson.M{"short_id": shortID})
+	if err != nil {
+		return
+	}
+	err = os.RemoveAll("./public/ad/" + shortID)
+	if err != nil {
+		return
+	}
+	return
+}
+
+// ArchiveAdvert put ad on trash collection before delete it
+func ArchiveAdvert(shortID string) (err error) {
+	var ad Advert
+	err = mgoSession.DB("okzdb").C("adverts").Find(bson.M{"short_id": shortID}).One(&ad)
+	if err != nil {
+		return
+	}
+	err = mgoSession.DB("okzdb").C("adverts_trash").Insert(&ad)
+	if err != nil {
+		return
+	}
+	return
+}
+
+func (a *Advert) UpdateData(shortID string) (err error) {
+	err = mgoSession.DB("okzdb").C("adverts").Update(bson.M{"short_id": shortID}, bson.M{"$set": bson.M{"title": a.Title, "city": a.City, "price": a.Price, "details": a.Details, "contact": a.Contact}})
 	if err != nil {
 		return
 	}
