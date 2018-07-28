@@ -55,12 +55,27 @@
                     <div class="uk-offcanvas-bar">
                         <ul class="uk-nav uk-nav-default">
                             <li class="uk-nav-header">{{ .user.UserName }}</li>
-                            <li><a href="/me"><span class="uk-margin-small-right" uk-icon="icon: user"></span>Profil</a></li>
-                            <li><a href="/activités"><span class="uk-margin-small-right" uk-icon="icon: comment"></span>Activités</a></li>
-                            <li><a href="/box"><span class="uk-margin-small-right" uk-icon="icon: comment"></span>Messages</a></li>
-                            <li><a href="/settings"><span class="uk-margin-small-right" uk-icon="icon: settings"></span>Modifications</a></li>
+                            <li>
+                                <a href="/me">
+                                    <span class="uk-margin-small-right" uk-icon="icon: user"></span>Profil</a>
+                            </li>
+                            <li>
+                                <a href="/activités">
+                                    <span class="uk-margin-small-right" uk-icon="icon: comment"></span>Activités</a>
+                            </li>
+                            <li>
+                                <a href="/box">
+                                    <span class="uk-margin-small-right" uk-icon="icon: comment"></span>Messages</a>
+                            </li>
+                            <li>
+                                <a href="/settings">
+                                    <span class="uk-margin-small-right" uk-icon="icon: settings"></span>Modifications</a>
+                            </li>
                             <li class="uk-nav-divider"></li>
-                            <li><a onclick="logout()"><span class="uk-margin-small-right" uk-icon="icon: sign-out"></span>Deconnecter</a></li>
+                            <li>
+                                <a onclick="logout()">
+                                    <span class="uk-margin-small-right" uk-icon="icon: sign-out"></span>Deconnecter</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -76,7 +91,9 @@
                         <a href="#">VEHICULES</a>
                         <ul class="uk-nav-sub">
                             {{ range .categories.Vehicules}}
-                            <li><a onclick="setCategory({{.Name}})">{{.Name}}</a></li>
+                            <li>
+                                <a onclick="setCategory({{.Name}})">{{.Name}}</a>
+                            </li>
                             {{ end }}
                         </ul>
                     </li>
@@ -84,7 +101,9 @@
                         <a href="#">ELECTRONIQUES</a>
                         <ul class="uk-nav-sub">
                             {{ range .categories.Electroniques}}
-                            <li><a onclick="setCategory({{.Name}})">{{.Name}}</a></li>
+                            <li>
+                                <a onclick="setCategory({{.Name}})">{{.Name}}</a>
+                            </li>
                             {{ end }}
                         </ul>
                     </li>
@@ -92,7 +111,9 @@
                         <a href="#">IMMOBILIER</a>
                         <ul class="uk-nav-sub">
                             {{ range .categories.Immobilier}}
-                            <li><a onclick="setCategory({{.Name}})">{{.Name}}</a></li>
+                            <li>
+                                <a onclick="setCategory({{.Name}})">{{.Name}}</a>
+                            </li>
                             {{ end }}
                         </ul>
                     </li>
@@ -100,7 +121,9 @@
                         <a href="#">SERVICES</a>
                         <ul class="uk-nav-sub">
                             {{ range .categories.Services}}
-                            <li><a onclick="setCategory({{.Name}})">{{.Name}}</a></li>
+                            <li>
+                                <a onclick="setCategory({{.Name}})">{{.Name}}</a>
+                            </li>
                             {{ end }}
                         </ul>
                     </li>
@@ -108,7 +131,9 @@
                         <a href="#">EMPLOIS</a>
                         <ul class="uk-nav-sub">
                             {{ range .categories.Emplois}}
-                            <li><a onclick="setCategory({{.Name}})">{{.Name}}</a></li>
+                            <li>
+                                <a onclick="setCategory({{.Name}})">{{.Name}}</a>
+                            </li>
                             {{ end }}
                         </ul>
                     </li>
@@ -116,7 +141,9 @@
                         <a href="#">POUR LA MAISON</a>
                         <ul class="uk-nav-sub">
                             {{ range .categories.Maison}}
-                            <li><a onclick="setCategory({{.Name}})">{{.Name}}</a></li>
+                            <li>
+                                <a onclick="setCategory({{.Name}})">{{.Name}}</a>
+                            </li>
                             {{ end }}
                         </ul>
                     </li>
@@ -124,7 +151,9 @@
                         <a href="#">MODE</a>
                         <ul class="uk-nav-sub">
                             {{ range .categories.Mode}}
-                            <li><a onclick="setCategory({{.Name}})">{{.Name}}</a></li>
+                            <li>
+                                <a onclick="setCategory({{.Name}})">{{.Name}}</a>
+                            </li>
                             {{ end }}
                         </ul>
                     </li>
@@ -132,14 +161,18 @@
                         <a href="#">LOISIR ET HOBBIES</a>
                         <ul class="uk-nav-sub">
                             {{ range .categories.Hobby}}
-                            <li><a onclick="setCategory({{.Name}})">{{.Name}}</a></li>
+                            <li>
+                                <a onclick="setCategory({{.Name}})">{{.Name}}</a>
+                            </li>
                             {{ end }}
                         </ul>
                     </li>
                     <li class="uk-parent">
                         <a href="#">Dons gratuit d'objets</a>
                         <ul class="uk-nav-sub">
-                            <li><a onclick="setCategory('dons')">Donner gratuitement des objets qui ne vous servent plus</a></li>
+                            <li>
+                                <a onclick="setCategory('dons')">Donner gratuitement des objets qui ne vous servent plus</a>
+                            </li>
                         </ul>
                     </li>
                 </ul>
@@ -150,8 +183,8 @@
                     <div id="type" class="uk-margin">
                         <label class="uk-form-label" for="ad-type">Type d'annonce</label>
                         <select class="uk-select" id="ad-type" onchange="setType(value)" name="ad-type">
-                                <option value="Offre">Offre (Vous vendez ou louez)</option>
-                                <option value="Demande">Demande (Vous recherchez)</option>
+                            <option value="Offre">Offre (Vous vendez ou louez)</option>
+                            <option value="Demande">Demande (Vous recherchez)</option>
                         </select>
                     </div>
                     <div id="selling" class="uk-margin">
@@ -184,13 +217,15 @@
                         <div class="uk-margin" id="starting-price">
                             <label class="uk-form-label" for="first-price">Prix de depart</label>
                             <div class="uk-form-controls">
-                                <input class="uk-input" id="first-price" name="startingPrice" type="number" pattern="[0-9]+" placeholder="Prix de l'annonce en Fcfa" min="1">
+                                <input class="uk-input" id="first-price" name="startingPrice" type="number" pattern="[0-9]+" placeholder="Prix de l'annonce en Fcfa"
+                                    min="1">
                             </div>
                         </div>
                         <div class="uk-margin">
                             <label class="uk-form-label" for="auction-duration">Durée de mise en vente en heures</label>
                             <div class="uk-form-controls">
-                                <input class="uk-input" type="number" id="auction-duration" placeholder="Min: 1heure, max: 168 heures" min="1" max="168" placeholder="Duree en heures">
+                                <input class="uk-input" type="number" id="auction-duration" placeholder="Min: 1heure, max: 168 heures" min="1" max="168"
+                                    placeholder="Duree en heures">
                             </div>
                         </div>
                     </div>
@@ -239,4 +274,5 @@
 </body>
 <script src="/js/create.js"></script>
 <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+
 </html>

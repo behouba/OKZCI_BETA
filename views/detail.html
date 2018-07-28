@@ -6,19 +6,23 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/css/uikit.min.css" />
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
+        crossorigin="anonymous">
     <script src="/js/uikit.min.js"></script>
     <script src="/js/axios.min.js"></script>
     <script src="/js/uikit-icons.min.js"></script>
 </head>
 <style>
-    a:hover{
+    a:hover {
         text-decoration: none;
     }
-    h3, p{
+
+    h3,
+    p {
         margin: 8px auto;
     }
-    #head-info a:hover{
+
+    #head-info a:hover {
         cursor: pointer;
     }
 </style>
@@ -37,23 +41,23 @@
                         </a>
                     </div>
                     <div class="uk-navbar-center">
-                            <a class="uk-logo" href="/">
-                                <img src="/img/logo-okz.png" width="100" height="30" alt="OKZ">
-                            </a>
-                        </div>
-                        {{ if .user }}
-                        <div class="uk-navbar-right">
-                            <a uk-toggle="target: #offcanvas-flip" class="uk-navbar-toggle">
-                                <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 30px; height: 30px;"></span>
-                            </a>
-                        </div>
-                        {{ else }}
-                        <div class="uk-navbar-right">
-                            <a href="/login" class="uk-navbar-toggle">
-                                <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url(https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png); width: 30px; height: 30px;"></span>
-                            </a>
-                        </div>
-                        {{ end }}
+                        <a class="uk-logo" href="/">
+                            <img src="/img/logo-okz.png" width="100" height="30" alt="OKZ">
+                        </a>
+                    </div>
+                    {{ if .user }}
+                    <div class="uk-navbar-right">
+                        <a uk-toggle="target: #offcanvas-flip" class="uk-navbar-toggle">
+                            <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 30px; height: 30px;"></span>
+                        </a>
+                    </div>
+                    {{ else }}
+                    <div class="uk-navbar-right">
+                        <a href="/login" class="uk-navbar-toggle">
+                            <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url(https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png); width: 30px; height: 30px;"></span>
+                        </a>
+                    </div>
+                    {{ end }}
                 </nav>
             </div>
             <!-- canvas content -->
@@ -64,12 +68,27 @@
                     <div class="uk-offcanvas-bar">
                         <ul class="uk-nav uk-nav-default">
                             <li class="uk-nav-header">{{ .user.UserName }}</li>
-                            <li><a href="/me"><span class="uk-margin-small-right" uk-icon="icon: user"></span>Profil</a></li>
-                            <li><a href="/activités"><span class="uk-margin-small-right" uk-icon="icon: comment"></span>Activités</a></li>
-                            <li><a href="/box"><span class="uk-margin-small-right" uk-icon="icon: comment"></span>Messages</a></li>
-                            <li><a href="/settings"><span class="uk-margin-small-right" uk-icon="icon: settings"></span>Modifications</a></li>
+                            <li>
+                                <a href="/me">
+                                    <span class="uk-margin-small-right" uk-icon="icon: user"></span>Profil</a>
+                            </li>
+                            <li>
+                                <a href="/activités">
+                                    <span class="uk-margin-small-right" uk-icon="icon: comment"></span>Activités</a>
+                            </li>
+                            <li>
+                                <a href="/box">
+                                    <span class="uk-margin-small-right" uk-icon="icon: comment"></span>Messages</a>
+                            </li>
+                            <li>
+                                <a href="/settings">
+                                    <span class="uk-margin-small-right" uk-icon="icon: settings"></span>Modifications</a>
+                            </li>
                             <li class="uk-nav-divider"></li>
-                            <li><a onclick="logout()"><span class="uk-margin-small-right" uk-icon="icon: sign-out"></span>Deconnecter</a></li>
+                            <li>
+                                <a onclick="logout()">
+                                    <span class="uk-margin-small-right" uk-icon="icon: sign-out"></span>Deconnecter</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -115,13 +134,13 @@
                     {{ else }}
                     <p>Gratuit </p>
                     {{ end }}
-                    
+
                 </div>
                 {{ if eq .ad.OfferType "auction" }}
                 <div id="contact-box" class="uk-margin">
                     <div class="uk-child-width-expand@ uk-child-width-1-2" uk-grid>
                         <div>
-                            <input  type="number" class="uk-input uk-width-1-1"/>
+                            <input type="number" class="uk-input uk-width-1-1" />
                         </div>
                         <div>
                             <button class="uk-button uk-button-primary uk-width-1-1">Enchérir</button>
@@ -129,42 +148,52 @@
                     </div>
                 </div>
                 <hr>
-                <p class="uk-text-center"><a onclick="showHistory()">Voir l'historique</a></p>
+                <p class="uk-text-center">
+                    <a onclick="showHistory()">Voir l'historique</a>
+                </p>
                 <div id="history" class="uk-margin" style="display: none;">
-                        <div class="uk-overflow-auto">
-                                <table class="uk-table uk-table-hover uk-table-middle uk-table-divider">
-                                    <thead>
-                                        <tr>
-                                            <th class="uk-table-shrink">Participants</th>
-                                            <th class="uk-width-small">Enchères</th>
-                                            <th class="uk-table-shrink uk-text-nowrap">Dates</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td><img class="uk-preserve-width uk-border-circle" src="{{.owner.Picture}}" width="40" alt=""></td>
-                                            <td class="uk-text-truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</td>
-                                            <td class="uk-text-nowrap">Lorem ipsum dolor</td>
-                                        </tr>
-                                        <tr>
-                                            <td><img class="uk-preserve-width uk-border-circle" src="{{.owner.Picture}}" width="40" alt=""></td>
-                                            <td class="uk-text-truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</td>
-                                            <td class="uk-text-nowrap">Lorem ipsum dolor</td>
-                                        </tr>
-                                        <tr>
-                                           <td><img class="uk-preserve-width uk-border-circle" src="{{.owner.Picture}}" width="40" alt=""></td>
-                                            <td class="uk-text-truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</td>
-                                            <td class="uk-text-nowrap">Lorem ipsum dolor</td>
-                                        </tr>
-                                        <tr>
-                                            <td><img class="uk-preserve-width uk-border-circle" src="{{.owner.Picture}}" width="40" alt=""></td>
-                                            <td class="uk-text-truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</td>
-                                            <td class="uk-text-nowrap">Lorem ipsum dolor</td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                    <div class="uk-overflow-auto">
+                        <table class="uk-table uk-table-hover uk-table-middle uk-table-divider">
+                            <thead>
+                                <tr>
+                                    <th class="uk-table-shrink">Participants</th>
+                                    <th class="uk-width-small">Enchères</th>
+                                    <th class="uk-table-shrink uk-text-nowrap">Dates</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <img class="uk-preserve-width uk-border-circle" src="{{.owner.Picture}}" width="40" alt="">
+                                    </td>
+                                    <td class="uk-text-truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</td>
+                                    <td class="uk-text-nowrap">Lorem ipsum dolor</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <img class="uk-preserve-width uk-border-circle" src="{{.owner.Picture}}" width="40" alt="">
+                                    </td>
+                                    <td class="uk-text-truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</td>
+                                    <td class="uk-text-nowrap">Lorem ipsum dolor</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <img class="uk-preserve-width uk-border-circle" src="{{.owner.Picture}}" width="40" alt="">
+                                    </td>
+                                    <td class="uk-text-truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</td>
+                                    <td class="uk-text-nowrap">Lorem ipsum dolor</td>
+                                </tr>
+                                <tr>
+                                    <td>
+                                        <img class="uk-preserve-width uk-border-circle" src="{{.owner.Picture}}" width="40" alt="">
+                                    </td>
+                                    <td class="uk-text-truncate">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor.</td>
+                                    <td class="uk-text-nowrap">Lorem ipsum dolor</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
+                </div>
                 {{ end }}
                 <hr>
                 <div id="contact-box">
@@ -172,29 +201,35 @@
                         <div>
                             <a href="#contact-modal" class="uk-button uk-button-primary uk-width-1-1" uk-toggle>Appeler</a>
                         </div>
-                            <div id="contact-modal" class="uk-modal-full" uk-modal>
-                                <div class="uk-modal-dialog" style="min-height: 100%;">
-                                    <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
-                                    <div class="uk-grid-collapse uk-child-width-1-1@s uk-flex-middle" uk-grid>
-                                        <div class="uk-padding-large uk-text-center">
-                                            <div class="uk-margin-auto">
-                                                <div class="uk-margin-large-top">
-                                                    <img src="{{ .owner.Picture }}" height="150" width="150" class="uk-border-circle" alt="">
-                                                    <p class="uk-text-bold">{{ .owner.UserName }}</p>
-                                                    <p class="uk-text-small">from July 4, 2018</p>
-                                                    <p class="uk-text-small">Reputation: <strong>9/10</strong></p>
-                                                </div>
+                        <div id="contact-modal" class="uk-modal-full" uk-modal>
+                            <div class="uk-modal-dialog" style="min-height: 100%;">
+                                <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
+                                <div class="uk-grid-collapse uk-child-width-1-1@s uk-flex-middle" uk-grid>
+                                    <div class="uk-padding-large uk-text-center">
+                                        <div class="uk-margin-auto">
+                                            <div class="uk-margin-large-top">
+                                                <img src="{{ .owner.Picture }}" height="150" width="150" class="uk-border-circle" alt="">
+                                                <p class="uk-text-bold">{{ .owner.UserName }}</p>
+                                                <p class="uk-text-small">from July 4, 2018</p>
+                                                <p class="uk-text-small">Reputation:
+                                                    <strong>9/10</strong>
+                                                </p>
                                             </div>
-                                            <h3>+225 {{ .ad.Contact }}</h3>
-                                            <small>Attention s'il vous plait! Ne vous contentez pas d'un paiement anticipé si vous n'êtes pas sûr de la fiabilité du vendeur. Lors du calcul en espèces, vérifiez les marchandises lors de la rencontre avec le vendeur. Si vous utilisez le service "Transaction sécurisée", vérifiez les marchandises avant de définir le statut "Confirmé réception" ou lors d'une rencontre avec un représentant du service de livraison.</small>
-                                            <div class="uk-width-1-1 uk-margin-large-top">
-                                                <button class="uk-button uk-button-default uk-modal-close" uk-dis>ANNULER</button>
-                                                <a  href="tel:+225{{ .ad.Contact }}" class="uk-button uk-button-primary">APPELER</a>
-                                            </div>
+                                        </div>
+                                        <h3>+225 {{ .ad.Contact }}</h3>
+                                        <small>Attention s'il vous plait! Ne vous contentez pas d'un paiement anticipé si vous n'êtes
+                                            pas sûr de la fiabilité du vendeur. Lors du calcul en espèces, vérifiez les marchandises
+                                            lors de la rencontre avec le vendeur. Si vous utilisez le service "Transaction
+                                            sécurisée", vérifiez les marchandises avant de définir le statut "Confirmé réception"
+                                            ou lors d'une rencontre avec un représentant du service de livraison.</small>
+                                        <div class="uk-width-1-1 uk-margin-large-top">
+                                            <button class="uk-button uk-button-default uk-modal-close" uk-dis>ANNULER</button>
+                                            <a href="tel:+225{{ .ad.Contact }}" class="uk-button uk-button-primary">APPELER</a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
+                        </div>
                         <div>
                             <a href="#message-modal" class="uk-button uk-button-primary uk-width-1-1" uk-toggle>Ecrire</a>
                         </div>
@@ -241,12 +276,18 @@
                 <div id="social" uk-grid class="uk-margin">
                     <p class="uk-text-primary uk-text-center uk-width-1-1">Partager cette annonce</p>
                     <div class="uk-text-center uk-width-1-1">
-                        <a class="uk-icon-button uk-margin-small-right" href="http://www.facebook.com/sharer.php?u=https://google.com&src=sp" target="blank" uk-icon="facebook"></a>
-                        <a class="uk-icon-button uk-margin-small-right twitter-share-button" href="https://twitter.com/intent/tweet?text=http://localhost:8080/watch?a={{ .ad.ShortID }}" uk-icon="twitter"></a>
+                        <a class="uk-icon-button uk-margin-small-right" href="http://www.facebook.com/sharer.php?u=https://google.com&src=sp" target="blank"
+                            uk-icon="facebook"></a>
+                        <a class="uk-icon-button uk-margin-small-right twitter-share-button" href="https://twitter.com/intent/tweet?text=http://localhost:8080/watch?a={{ .ad.ShortID }}"
+                            uk-icon="twitter"></a>
                         <a onclick="whatsAppShare()" class="uk-icon-button uk-margin-small-right" uk-icon="whatsapp"></a>
                     </div>
-                    <p class="uk-align-center uk-text-small"><a class="uk-text-danger">Signaler cette annonce</a></p>
-                    <small style="font-size: 11px" class="uk-text-muted">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vero fugiat, omnis maiores ad eaque dolorem accusantium non doloribus at corporis iste officiis incidunt quo minus amet commodi natus, maxime doloremque.</small>
+                    <p class="uk-align-center uk-text-small">
+                        <a class="uk-text-danger">Signaler cette annonce</a>
+                    </p>
+                    <small style="font-size: 11px" class="uk-text-muted">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vero fugiat, omnis maiores ad eaque dolorem
+                        accusantium non doloribus at corporis iste officiis incidunt quo minus amet commodi natus, maxime
+                        doloremque.</small>
                 </div>
             </div>
             <footer>
@@ -262,23 +303,27 @@
     <!--end vue container -->
     <div id="fb-root"></div>
     <script>
-            window.fbAsyncInit = function() {
-              FB.init({
-                appId            : '157821501758780',
-                autoLogAppEvents : true,
-                xfbml            : true,
-                version          : 'v3.0'
-              });
-            };
-          
-            (function(d, s, id){
-               var js, fjs = d.getElementsByTagName(s)[0];
-               if (d.getElementById(id)) {return;}
-               js = d.createElement(s); js.id = id;
-               js.src = "https://connect.facebook.net/en_US/sdk.js";
-               fjs.parentNode.insertBefore(js, fjs);
-             }(document, 'script', 'facebook-jssdk'));
+        window.fbAsyncInit = function () {
+            FB.init({
+                appId: '157821501758780',
+                autoLogAppEvents: true,
+                xfbml: true,
+                version: 'v3.0'
+            });
+        };
+
+        (function (d, s, id) {
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) {
+                return;
+            }
+            js = d.createElement(s);
+            js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
     </script>
 </body>
 <script src="/js/details.js"></script>
+
 </html>

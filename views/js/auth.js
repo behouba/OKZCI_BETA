@@ -69,10 +69,10 @@ loginForm.addEventListener('submit', (e) => {
 
     axios.post("/login", userCredentials)
         .then(res => {
-            if (sessionStorage.getItem('createAd') === 'createAd'){
+            if (sessionStorage.getItem('createAd') === 'createAd') {
                 sessionStorage.removeItem('createAd')
                 window.location.href = "/create"
-            } else{
+            } else {
                 window.location.href = "/"
             }
         })
@@ -111,10 +111,10 @@ verifForm.addEventListener('submit', (e) => {
     axios.post("/verification", code)
         .then(res => {
             console.log(res)
-            if (sessionStorage.getItem('createAd') === 'createAd'){
+            if (sessionStorage.getItem('createAd') === 'createAd') {
                 sessionStorage.removeItem('createAd')
                 window.location.href = "/create"
-            } else{
+            } else {
                 window.location.href = "/"
             }
         })
@@ -168,10 +168,10 @@ updataPasswordForm.addEventListener('submit', e => {
             // spinner.style.display = 'none'
             // updataPassword.style.display = 'block'
             sessionStorage.removeItem('recovery-email')
-            if (sessionStorage.getItem('createAd') === 'createAd'){
+            if (sessionStorage.getItem('createAd') === 'createAd') {
                 sessionStorage.removeItem('createAd')
                 window.location.href = "/create"
-            } else{
+            } else {
                 window.location.href = "/"
             }
         })
@@ -325,10 +325,10 @@ function onGoogleSignIn(googleUser) {
     axios.post("/google-auth", user)
         .then(res => {
             console.log(res)
-            if (sessionStorage.getItem('createAd') === 'createAd'){
+            if (sessionStorage.getItem('createAd') === 'createAd') {
                 sessionStorage.removeItem('createAd')
                 window.location.href = "/create"
-            } else{
+            } else {
                 window.location.href = "/"
             }
         })
@@ -356,12 +356,12 @@ function onGoogleSignIn(googleUser) {
 
 // facebook sigin
 function onFacebookLogin() {
-    FB.login(function(response) {
+    FB.login(function (response) {
         if (response.authResponse) {
             console.log('Welcome!  Fetching your information.... ');
             FB.api('/me', {
                 fields: 'name, email, picture.width(320).height(320)'
-            }, function(response) {
+            }, function (response) {
                 console.log(response);
                 let user = {
                     "userName": response.name,
@@ -372,10 +372,10 @@ function onFacebookLogin() {
                 axios.post("/facebook-auth", user)
                     .then(res => {
                         console.log(res)
-                        if (sessionStorage.getItem('createAd') === 'createAd'){
+                        if (sessionStorage.getItem('createAd') === 'createAd') {
                             sessionStorage.removeItem('createAd')
                             window.location.href = "/create"
-                        } else{
+                        } else {
                             window.location.href = "/"
                         }
                     })
