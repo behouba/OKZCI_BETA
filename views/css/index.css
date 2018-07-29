@@ -1,8 +1,19 @@
-body {
-    background: #fafafa;
+* {
+    font-family: 'Helvetica Neue', 'Helvetica', Arial, sans-serif;
 }
+
+.uk-link,
+a {
+    color: #00aaff;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
 .sticky {
-    position: -webkit-sticky; /* Safari */
+    position: -webkit-sticky;
+    /* Safari */
     position: sticky;
     bottom: 10px;
     z-index: 2;
@@ -13,85 +24,115 @@ body {
 .loadMore {
     z-index: 5;
 }
+
 .hideSticky {
     display: none;
 }
+
 .card-img {
     height: 90px;
     object-fit: cover;
 }
-.ads-listing a{
+
+.ads-listing a {
     text-decoration: none;
 }
-.preview-img{
-    width:100%;
-    height:100px;
+
+.preview-img {
+    width: 100%;
+    height: 100px;
     object-fit: cover;
 }
 
-.dashboard-profil img{
+.dashboard-profil img {
     width: 150px;
-    height:150px;
+    height: 150px;
     object-fit: cover;
     border: 2px lightblue solid;
     border-radius: 50%;
 }
+
 .user-ads {
     min-height: 400px;
 }
+
 main {
     min-height: 500px;
 }
+
+#main {
+    max-width: 964px;
+    margin-right: auto;
+    margin-left: auto;
+    background: #fff;
+}
+
 .write-msg-field {
     margin: 5px auto;
     padding: 10px;
 }
+
 .ad-card img {
     width: 100%;
     height: 168px;
     min-height: 168px;
     object-fit: cover;
     border-radius: 4px 4px 0px 0px;
-
 }
+
 .ad-card .uk-overlay {
     color: #fff;
     padding: 5px;
-    background: rgba(0,0,0,.2);
+    background: rgba(0, 0, 0, .2);
 }
+
 .ad-card .uk-card-badge {
     position: absolute;
     top: 8px;
     right: 5px;
     z-index: 1;
 }
+
 .ad-card small {
     font-size: 11px;
 }
+
 .ad-card .uk-label {
     padding: 0px 5px;
     text-transform: capitalize;
 }
-.ad-card .uk-card-body{
+
+.ad-card .uk-card-body {
     padding: 5px;
 }
+
 .ad-card p {
     margin: 5px 0px;
     color: #393939;
 }
+
+.ad-card .uk-text-truncate {
+    color: #00aaff;
+    font-weight: bold;
+}
+
 .ad-card .uk-text-small {
     font-size: 11px;
 }
+
 .uk-card {
     border-radius: 4px;
 }
+
 .message-item {
     height: 100px;
     padding: 10px 10px;
 }
+
 .user-data div {
     border-bottom: 2px lightgray solid;
 }
+
 .message-item img {
     max-width: 80px;
     max-height: 80px;
@@ -99,29 +140,87 @@ main {
     height: 80px;
     object-fit: cover;
 }
+
 #auctions-slider .uk-overlay {
     padding: 2% 30px;
     color: #ea1b42;
 }
-#auctions-slider img{
-    height: 180px; 
-    width: 100%; 
+
+#auctions-slider img {
+    height: 180px;
+    width: 100%;
     object-fit: cover;
 }
 
 #search-bar .uk-form-width-medium {
     width: 310px;
 }
-.ad-card .uk-countdown-number, .ad-card .uk-countdown-separator {
+
+.ad-card .uk-countdown-number,
+.ad-card .uk-countdown-separator {
     font-size: 1rem;
 }
-.ad-card .uk-countdown-number, .uk-countdown-separator {
+
+.ad-card .uk-countdown-number,
+.uk-countdown-separator {
     line-height: 30px;
 }
-.ad-card > a:hover{
+
+.ad-card>a:hover {
     text-decoration: none;
+}
+
+.cat-badge {
+    margin: 10px;
+    font-size: 15px;
+    padding: 15px;
+    font-weight: bold;
+}
+
+.cat-badge .uk-icon {
+    margin-left: 5px;
 }
 
 /* .uk-card-default {
     box-shadow: 0 5px 15px rgba(0,0,0,.5);
 } */
+
+@media only screen and (min-width: 768px) {
+    /* For desktop: */
+    #mobile-header {
+        display: none;
+    }
+    #desktop-header {
+        display: block;
+    }
+    .uk-navbar-container:not(.uk-navbar-transparent) {
+        background: #fff;
+    }
+    .ad-card .uk-text-small {
+        font-size: 15px;
+    }
+    a {
+        color: #00aaff;
+        text-decoration: none;
+    }
+    a:hover {
+        text-decoration: none;
+    }
+    #sticky a {
+        font-weight: bold;
+    }
+    #desktop-header img {
+        height: 40px;
+        width: auto;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    /* For mobile: */
+    #mobile-header {
+        display: block;
+    }
+    #desktop-header {
+        display: none;
+    }
+}

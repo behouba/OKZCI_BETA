@@ -30,9 +30,6 @@ func home(ctx iris.Context) {
 	if err != nil {
 		log.Println(err)
 	}
-	if ok := user.CheckForNewMessage(); ok {
-		ctx.ViewData("newMessage", true)
-	}
 	ctx.ViewData("user", user)
 	ctx.View("index.html")
 }

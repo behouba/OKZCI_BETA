@@ -1,8 +1,6 @@
 let create = document.getElementById("create")
 let spinner = document.getElementById("create-spinner")
 
-let selling = document.getElementById("selling")
-let sellingType = document.getElementById("selling-type")
 let auction = document.getElementById("auction")
 let simple = document.getElementById("price-simple")
 let category = document.getElementById('select-category')
@@ -28,96 +26,61 @@ let fileList = []
 let selectedCategory = ''
 
 
-function setType(value){
-    if (value === 'Demande'){
-        selling.style.display = 'none'
+function setType(value) {
+    if (value === 'Demande') {
         auction.style.display = 'none'
         simple.style.display = 'none'
-        sellingType.selectedIndex = 0
     } else if (value === 'Offre') {
-        selling.style.display = 'block'
         auction.style.display = 'none'
         simple.style.display = 'block'
-        sellingType.selectedIndex = 0
     }
 }
 
 
-function selectSellingType(value) {
-   if (value === 'simple'){
-       simple.style.display = 'block'
-       auction.style.display = 'none'
-   } else if (value === 'auction'){
-        simple.style.display = 'none'
-        auction.style.display = 'block'       
-   } else if (value === 'others'){
-       simple.style.display = 'none'
-       auction.style.display = 'none'
-   }
-   priceValue.value = ''
-   firstPrice.value = ''
-   auctionDuration.value = ''
-}
-
-
-function displaySelling(){
-    selling.style.display = 'block'
-}
-
-function hideSelling(){
-    selling.style.display = 'none'
-    auction.style.display = 'none'
-    simple.style.display = 'none'
-}
-
 function setCategory(c) {
     selectedCategory = c
-    formTitle.innerText = 'Annonce '+ c
+    formTitle.innerText = 'Annonce ' + c
     if (c === 'Locations' || c === 'Colocations' || c === 'Bureaux et Commerces') {
         price.innerText = 'Loyer'
     } else {
         price.innerText = 'Prix'
     }
 
-    if (c === 'Offre d\'emploi'){
+    if (c === 'Offre d\'emploi') {
         simple.style.display = 'none'
-        selling.style.display = 'none'
         type.style.display = 'none'
         titleLabel.innerText = 'Intitulé du poste'
     } else if (c === 'dons') {
-        selling.style.display = 'none'
         type.style.display = 'none'
         titleLabel.innerText = 'Titre de l\'annonce'
         simple.style.display = 'none'
     } else {
         titleLabel.innerText = 'Titre de l\'annonce'
         type.style.display = 'block'
-        selling.style.display = 'block'
         simple.style.display = 'block'
     }
     steps = 1
     console.log(c)
-    auction.style.display = 'none'
     category.style.display = 'none'
     adForm.style.display = 'block'
 }
 
 function backTo() {
-            if (steps === 1) {
-                adFormField.reset()
-                category.style.display = 'block'
-                adForm.style.display = 'none'
-                document.getElementById('preview').innerHTML = ''
-                fileList = []
-                steps = 0
-                return
-            }
-            window.location.href = '/'
+    if (steps === 1) {
+        adFormField.reset()
+        category.style.display = 'block'
+        adForm.style.display = 'none'
+        document.getElementById('preview').innerHTML = ''
+        fileList = []
+        steps = 0
+        return
+    }
+    window.location.href = '/'
 }
 
 
 function handleFileSelect(event) {
-    if (fileList.length > 7){
+    if (fileList.length > 7) {
         UIkit.notification('Nombre maximum d\'images pour une annonce atteint', 'warning')
         return
     }
@@ -147,8 +110,8 @@ preview.addEventListener('click', function (e) {
     let index = 0
     let close = document.querySelector('.remove_img_preview')
     let src = e.target.nextSibling.children[0].src
-    for (let file of fileList){
-        if(file.data === src){
+    for (let file of fileList) {
+        if (file.data === src) {
             fileList.splice(index, 1)
         }
         index++
@@ -164,7 +127,6 @@ adFormField.addEventListener('submit', e => {
 
     let advert = new FormData()
     advert.set('ad_type', adType.value)
-    advert.set('offer_type', sellingType.value)
     advert.set('title', title.value)
     advert.set('city', city.value)
     advert.set('details', details.value)
@@ -172,27 +134,22 @@ adFormField.addEventListener('submit', e => {
     advert.set('created_at', Date.now().toISOString())
     advert.set('price', priceValue.value)
     advert.set('contact', contact.value)
-    
-    if (sellingType.value === 'auction') {
-        advert.set('end_date', Date.now().addHours(auctionDuration.value).toISOString())
-        advert.set('price', firstPrice.value)
-    }
 
     if (selectedCategory === 'dons') {
         advert.set('price', 0)
     }
 
-     for (let file of fileList) {
-         advert.append('files', file.file)
-     }
+    for (let file of fileList) {
+        advert.append('files', file.file)
+    }
     console.log(advert)
     advert.forEach(e => console.log(e))
 
     axios.post('/create', advert, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-    })
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }
+        })
         .then(res => {
             window.location.href = '/'
             // UIkit.notification("CREATED", "succes");

@@ -11,177 +11,185 @@
     <script src="/js/uikit-icons.min.js"></script>
     <script src="/js/moment-with-locales.js"></script>
 </head>
+<style>
+    #profile {
+        max-width: 964px;
+        margin-right: auto;
+        margin-left: auto;
+    }
+
+
+    .fa,
+    .far,
+    .fas {
+        color: #00aaff;
+        font-family: "Font Awesome 5 Free";
+    }
+</style>
 
 <body>
-    <header style="margin-bottom: 10px">
-        <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;">
-            <nav class="uk-navbar uk-navbar-container">
-                <div class="uk-navbar-left">
-                    <a class="uk-navbar-toggle" href="/">
-                        <span uk-icon="icon: arrow-left; ratio: 1.5"></span>
-                    </a>
-                </div>
-                <div class="uk-navbar-center">
-                    <a class="uk-logo" href="/">
-                        <img src="/img/logo-okz.png" width="100" height="30" alt="OKZ">
-                    </a>
-                </div>
-                {{ if .user }}
-                <div class="uk-navbar-right">
-                    <a uk-toggle="target: #offcanvas-flip" class="uk-navbar-toggle">
-                        <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 30px; height: 30px;"></span>
-                    </a>
-                </div>
-                {{ else }}
-                <div class="uk-navbar-right">
-                    <a href="/login" class="uk-navbar-toggle">
-                        <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url(https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png); width: 30px; height: 30px;"></span>
-                    </a>
+    <div id="profile" class="uk-box-shadow-small">
+        <header style="margin-bottom: 10px">
+            <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;">
+                <nav class="uk-navbar uk-navbar-container">
+                    <div class="uk-navbar-left">
+                        <a class="uk-navbar-toggle" href="/">
+                            <span uk-icon="icon: arrow-left; ratio: 1.5"></span>
+                        </a>
+                    </div>
+                    <div class="uk-navbar-center">
+                        <a class="uk-logo" href="/">
+                            <img src="/img/logo-okz.png" width="100" height="30" alt="OKZ">
+                        </a>
+                    </div>
+                    {{ if .user }}
+                    <div class="uk-navbar-right">
+                        <a uk-toggle="target: #offcanvas-flip" class="uk-navbar-toggle">
+                            <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 30px; height: 30px;"></span>
+                        </a>
+                    </div>
+                    {{ else }}
+                    <div class="uk-navbar-right">
+                        <a href="/login" class="uk-navbar-toggle">
+                            <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url(https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png); width: 30px; height: 30px;"></span>
+                        </a>
+                    </div>
+                    {{ end }}
+                </nav>
+            </div>
+            <!-- canvas content -->
+            <div class="uk-offcanvas-content">
+                <!-- right side -->
+                {{ if .user}}
+                <div id="offcanvas-flip" uk-offcanvas="flip: true; overlay: true">
+                    <div class="uk-offcanvas-bar">
+                        <ul class="uk-nav uk-nav-default">
+                            <li class="uk-nav-header">{{ .user.UserName }}</li>
+                            <li>
+                                <a href="/me">
+                                    <span class="uk-margin-small-right" uk-icon="icon: user"></span>Profil</a>
+                            </li>
+                            <li>
+                                <a href="/activités">
+                                    <span class="uk-margin-small-right" uk-icon="icon: comment"></span>Activités</a>
+                            </li>
+                            <li>
+                                <a href="/box">
+                                    <span class="uk-margin-small-right" uk-icon="icon: comment"></span>Messages</a>
+                            </li>
+                            <li>
+                                <a href="/settings">
+                                    <span class="uk-margin-small-right" uk-icon="icon: settings"></span>Modifications</a>
+                            </li>
+                            <li class="uk-nav-divider"></li>
+                            <li>
+                                <a onclick="logout()">
+                                    <span class="uk-margin-small-right" uk-icon="icon: sign-out"></span>Deconnecter</a>
+                            </li>
+                        </ul>
+                    </div>
                 </div>
                 {{ end }}
-            </nav>
-        </div>
-        <!-- canvas content -->
-        <div class="uk-offcanvas-content">
-            <!-- right side -->
-            {{ if .user}}
-            <div id="offcanvas-flip" uk-offcanvas="flip: true; overlay: true">
-                <div class="uk-offcanvas-bar">
-                    <ul class="uk-nav uk-nav-default">
-                        <li class="uk-nav-header">{{ .user.UserName }}</li>
-                        <li><a href="/me"><span class="uk-margin-small-right" uk-icon="icon: user"></span>Profil</a></li>
-                        <li><a href="/activités"><span class="uk-margin-small-right" uk-icon="icon: comment"></span>Activités</a></li>
-                        <li><a href="/box"><span class="uk-margin-small-right" uk-icon="icon: comment"></span>Messages</a></li>
-                        <li><a href="/settings"><span class="uk-margin-small-right" uk-icon="icon: settings"></span>Modifications</a></li>
-                        <li class="uk-nav-divider"></li>
-                        <li><a onclick="logout()"><span class="uk-margin-small-right" uk-icon="icon: sign-out"></span>Deconnecter</a></li>
-                    </ul>
-                </div>
             </div>
-            {{ end }}
-        </div>
-    </header>
-    <main style="margin: 20px 10px">
-        <div class="uk-margin" uk-grid>
-            <div class="uk-text-center uk-margin-auto">
-                <div class="dashboard-profil">
-                    <img data-src="{{ .user.Picture }}" alt="" uk-img style="min-height: 100%">
-                    <p class="uk-text-bold">{{ .user.UserName }}</p>
-                    <p class="uk-text-small">{{ .user.CreatedAt }}</p>
-                    <p class="uk-text-small">Reputation: <strong>9/10</strong></p>
+        </header>
+        <main style="margin: 20px 10px">
+            <div class="uk-margin" uk-grid>
+                <div class="uk-text-center uk-margin-auto">
+                    <div class="dashboard-profil">
+                        <img data-src="{{ .user.Picture }}" alt="" uk-img style="min-height: 100%">
+                        <p class="uk-text-bold">{{ .user.UserName }}</p>
+                        <p class="uk-text-small">{{ .user.CreatedAt }}</p>
+                        <p class="uk-text-small">Reputation:
+                            <strong>9/10</strong>
+                        </p>
+                    </div>
                 </div>
-            </div>
-            <dir class="uk-width-1-1 uk-margin-auto">
-                <div class="user-ads">
-                    <ul uk-tab uk-switcher="animation: uk-animation-fade" uk-grid id="profile-switcher">
-                        <li class="uk-width-1-2"><a href="#">Mes annonces</a></li>
-                        <li class="uk-width-1-2"><a href="#">Mes Favoris</a></li>
-                    </ul>
+                <dir class="uk-width-1-1 uk-margin-auto">
+                    <div class="user-ads">
+                        <ul uk-tab uk-switcher="animation: uk-animation-fade" uk-grid id="profile-switcher">
+                            <li class="uk-width-1-2">
+                                <a href="#">Mes annonces</a>
+                            </li>
+                            <li class="uk-width-1-2">
+                                <a href="#">Mes Favoris</a>
+                            </li>
+                        </ul>
 
-                    <ul class="uk-switcher uk-margin">
-                        <li>
-                            <div class="uk-grid-small uk-child-width-expand@" uk-grid id="ads-field">
-                                {{ range .ads }}
-                                <div class="ad-card uk-width-1-2 uk-width-1-3@s uk-width-1-4@m uk-width-1-6@l">
-                                    <a href="/update-p?a={{ .ShortID }}">
-                                    <div class="uk-card uk-card-default uk-card-small uk-margin-auto">
-                                        <div class="uk-card-media-top uk-inline">
-                                            <img src="{{index .Pictures 0}}" alt="Error: Failed to load image" height="400">
-                                            <div class="uk-overlay uk-overlay-default uk-dark uk-position-top">
-                                                <span uk-icon="icon: location; ratio: 0.7"></span><small class="uk-text-bold">{{ .City }}</small>
-                                            </div>
-                                            {{ if eq .OfferType "auction"}}
-                                            <div class="uk-overlay uk-overlay-default uk-dark uk-position-bottom">
-                                                <div uk-countdown="date: {{.EndDate}}" class="uk-text-center">
-                                                    <span class="uk-countdown-number uk-countdown-days"></span>
-                                                    <span class="uk-countdown-separator">:</span>
-                                                    <span class="uk-countdown-number uk-countdown-hours"></span>
-                                                    <span class="uk-countdown-separator">:</span>
-                                                    <span class="uk-countdown-number uk-countdown-minutes"></span>
-                                                    <span class="uk-countdown-separator">:</span>
-                                                    <span class="uk-countdown-number uk-countdown-seconds"></span>
-                                                </div>
-                                            </div>
-                                            {{ end }}
-                                        </div>
-                                        {{ if .EndDate }}
-                                        <div class="uk-card-badge uk-label"><small>Enchère</small></div>
-                                        {{ end }}
-                                        <div class="uk-card-body">
-                                            <p class="uk-text-small uk-text-truncate">{{ .Title }}</p>
-                                            {{ if gt .Price  0}}
-                                            <p class="uk-text-bold">{{.Price}} FCFA</p>
-                                            {{ else if eq .Category "dons"}}
-                                            <p class="uk-text-bold">Gratuit</p>
-                                            {{ else }}
-                                            <br>
-                                            {{ end }}
-                                            <p class="uk-text-right uk-text-small create-date">{{.CreatedAt}}</p>
-                                        </div>
-                                    </div>
-                                    </a>
-                                </div>
-                                {{ end }}
-                            </div>
-                        </li>
-                        <li>
-                            <div class="uk-grid-small uk-child-width-expand@" uk-grid id="ads-field">
-                                    {{ range .favorites }}
-                                    <div class="ad-card uk-width-1-2 uk-width-1-3@s uk-width-1-4@m uk-width-1-6@l">
-                                        <a href="/watch/?a={{.ShortID}}">
-                                        <div class="uk-card uk-card-default uk-card-small uk-margin-auto">
-                                            <div class="uk-card-media-top uk-inline">
-                                                <img src="{{index .Pictures 0}}" alt="Error: Failed to load image" height="400">
-                                                <div class="uk-overlay uk-overlay-default uk-dark uk-position-top">
-                                                    <span uk-icon="icon: location; ratio: 0.7"></span><small class="uk-text-bold">{{ .City }}</small>
-                                                </div>
-                                                {{ if eq .OfferType "auction"}}
-                                                <div class="uk-overlay uk-overlay-default uk-dark uk-position-bottom">
-                                                    <div uk-countdown="date: {{.EndDate}}" class="uk-text-center">
-                                                        <span class="uk-countdown-number uk-countdown-days"></span>
-                                                        <span class="uk-countdown-separator">:</span>
-                                                        <span class="uk-countdown-number uk-countdown-hours"></span>
-                                                        <span class="uk-countdown-separator">:</span>
-                                                        <span class="uk-countdown-number uk-countdown-minutes"></span>
-                                                        <span class="uk-countdown-separator">:</span>
-                                                        <span class="uk-countdown-number uk-countdown-seconds"></span>
+                        <ul class="uk-switcher uk-margin">
+                            <li>
+                                <div class="uk-grid-small uk-child-width-expand@" uk-grid id="ads-field">
+                                    {{ range .ads }}
+                                    <div class="ad-card uk-width-1-2 uk-width-1-3@s uk-width-1-4@m">
+                                        <a href="/update-p?a={{ .ShortID }}">
+                                            <div class="uk-card uk-card-default uk-card-small uk-margin-auto">
+                                                <div class="uk-card-media-top uk-inline">
+                                                    <img src="{{index .Pictures 0}}" alt="Error: Failed to load image" height="400">
+                                                    <div class="uk-overlay uk-overlay-default uk-dark uk-position-top">
+                                                        <span uk-icon="icon: location; ratio: 0.7"></span>
+                                                        <small class="uk-text-bold">{{ .City }}</small>
                                                     </div>
                                                 </div>
-                                                {{ end }}
+                                                <div class="uk-card-body">
+                                                    <p class="uk-text-small uk-text-truncate">{{ .Title }}</p>
+                                                    {{ if gt .Price 0}}
+                                                    <p class="uk-text-bold">{{.Price}} FCFA</p>
+                                                    {{ else if eq .Category "dons"}}
+                                                    <p class="uk-text-bold">Gratuit</p>
+                                                    {{ else }}
+                                                    <br> {{ end }}
+                                                    <p class="uk-text-right uk-text-small create-date">{{.CreatedAt}}</p>
+                                                </div>
                                             </div>
-                                            {{ if .EndDate }}
-                                            <div class="uk-card-badge uk-label"><small>Enchère</small></div>
-                                            {{ end }}
-                                            <div class="uk-card-body">
-                                                <p class="uk-text-small uk-text-truncate">{{ .Title }}</p>
-                                                {{ if gt .Price  0}}
-                                                <p class="uk-text-bold">{{.Price}} FCFA</p>
-                                                {{ else if eq .Category "dons"}}
-                                                <p class="uk-text-bold">Gratuit</p>
-                                                {{ else }}
-                                                <br>
-                                                {{ end }}
-                                                <p class="uk-text-right uk-text-small create-date">{{.CreatedAt}}</p>
-                                            </div>
-                                        </div>
                                         </a>
                                     </div>
                                     {{ end }}
                                 </div>
-                        </li>
-                    </ul>
-                </div>
-            </dir>
-        </div>
-    </main>
-    <footer>
-        <hr>
-        <div class="uk-text-center">
-            <small>
-                © 2018 OKZ version beta 0.01
-            </small>
-        </div>
-    </footer>
+                            </li>
+                            <li>
+                                <div class="uk-grid-small uk-child-width-expand@" uk-grid id="ads-field">
+                                    {{ range .favorites }}
+                                    <div class="ad-card uk-width-1-2 uk-width-1-3@s uk-width-1-4@m">
+                                        <a href="/watch/?a={{.ShortID}}">
+                                            <div class="uk-card uk-card-default uk-card-hover uk-card-small uk-margin-auto">
+                                                <div class="uk-card-media-top uk-inline">
+                                                    <img src="{{index .Pictures 0}}" alt="Error: Failed to load image" height="400">
+                                                    <div class="uk-overlay uk-overlay-default uk-dark uk-position-top">
+                                                        <span uk-icon="icon: location; ratio: 0.7"></span>
+                                                        <small class="uk-text-bold">{{ .City }}</small>
+                                                    </div>
+
+                                                </div>
+
+                                                <div class="uk-card-body">
+                                                    <p class="uk-text-small uk-text-truncate">{{ .Title }}</p>
+                                                    {{ if gt .Price 0}}
+                                                    <p class="uk-text-bold">{{.Price}} FCFA</p>
+                                                    {{ else if eq .Category "dons"}}
+                                                    <p class="uk-text-bold">Gratuit</p>
+                                                    {{ else }}
+                                                    <br> {{ end }}
+                                                    <p class="uk-text-right uk-text-small create-date">{{.CreatedAt}}</p>
+                                                </div>
+                                            </div>
+                                        </a>
+                                    </div>
+                                    {{ end }}
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </dir>
+            </div>
+        </main>
+        <footer>
+            <hr>
+            <div class="uk-text-center">
+                <small>
+                    © 2018 OKZ version beta 0.01
+                </small>
+            </div>
+        </footer>
+    </div>
     <script src="/js/profile.js"></script>
 </body>
 

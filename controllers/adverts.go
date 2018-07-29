@@ -3,6 +3,7 @@ package controllers
 import (
 	"log"
 	"mime/multipart"
+	"net/smtp"
 	"os"
 	"strconv"
 	"time"
@@ -216,4 +217,39 @@ func createAdvert(ctx iris.Context) {
 		return
 	}
 	log.Println("new ad created ")
+}
+
+func reportAd(ctx iris.Context) {
+	msg := struct {
+		Body    string
+		ShortID string
+	}{}
+	ctx.ReadJSON(&msg)
+	if err := sendReportMessage(msg.Body, msg.ShortID); err != nil {
+		log.Println(err)
+		ctx.StatusCode(iris.StatusInternalServerError)
+		return
+	}
+	log.Println("report message sent to admin")
+}
+
+func sendReportMessage(body, shortID string) error {
+	from := "behoubaokz@gmail.com"
+	pass := "45001685"
+	to := "behouba@gmail.com"
+	msg := "From: " + from + "\n" +
+		"To: " + to + "\n" +
+		"Subject: Salut \n\n" +
+		"Cette annonce viens d'etre signalé par un utilisateur: " + body + "\n" +
+		"short-id: " + shortID + " ."
+
+	err := smtp.SendMail("smtp.gmail.com:587",
+		smtp.PlainAuth("", from, pass, "smtp.gmail.com"),
+		from, []string{to}, []byte(msg))
+
+	if err != nil {
+		log.Printf("smtp error: %s", err)
+		return err
+	}
+	return nil
 }

@@ -21,7 +21,6 @@ type User struct {
 	Pin         string        `json:"pin"`
 	Auth        string        `json:"auth"`
 	FavList     []string      `bson:"favList" json:"favList"`
-	NewMessage  bool          `bson:"new_message" json:"new_message"`
 }
 
 // StoreUserData store new user data into database
@@ -194,32 +193,6 @@ func (u *User) UpdateContact() (err error) {
 
 func (u *User) UpdateUserLocation() (err error) {
 	err = mgoSession.DB("okzdb").C("users").Update(bson.M{"email": u.Email}, bson.M{"$set": bson.M{"location": u.Location}})
-	if err != nil {
-		return
-	}
-	return
-}
-
-func (u *User) GetUserConversations() (conv []Conversation) {
-	err = mgoSession.DB("okzdb").C("conversations").Find(bson.M{"users": u.ID}).Select(bson.M{"thread": bson.M{"$slice": -1}}).All(&conv)
-	if err != nil {
-		return
-	}
-	return
-}
-
-func (u *User) CheckForNewMessage() bool {
-	var user User
-	mgoSession.DB("okzdb").C("users").Find(bson.M{"_id": u.ID}).One(&user)
-	if user.NewMessage == true {
-		return true
-	}
-	return false
-}
-
-
-func (u *User) MessageReaded() (err error) {
-	err = mgoSession.DB("okzdb").C("users").Update(bson.M{"_id": u.ID}, bson.M{"$set": bson.M{"new_message": false}})
 	if err != nil {
 		return
 	}

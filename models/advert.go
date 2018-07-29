@@ -1,6 +1,7 @@
 package models
 
 import (
+	"fmt"
 	"log"
 	"os"
 	"time"
@@ -14,7 +15,6 @@ type Advert struct {
 	Category  string        `form:"category" bson:"category" json:"category"`
 	CreatedAt time.Time     `form:"created_at" bson:"created_at" json:"created_at"`
 	AdType    string        `form:"ad_type" bson:"ad_type" json:"ad_type"`
-	OfferType string        `form:"offer_type" bson:"offer_type" json:"offer_type"`
 	Title     string        `form:"title" bson:"title" json:"title"`
 	City      string        `form:"city" bson:"city" json:"city"`
 	Details   string        `form:"details" bson:"details" json:"details"`
@@ -150,8 +150,20 @@ func ArchiveAdvert(shortID string) (err error) {
 	return
 }
 
+//
 func (a *Advert) UpdateData(shortID string) (err error) {
 	err = mgoSession.DB("okzdb").C("adverts").Update(bson.M{"short_id": shortID}, bson.M{"$set": bson.M{"title": a.Title, "city": a.City, "price": a.Price, "details": a.Details, "contact": a.Contact}})
+	if err != nil {
+		return
+	}
+	return
+}
+
+// SearchAds function query database with user search parameters
+func SearchAds(query, category, city, sort string) (ads []Advert, err error) {
+	likeQuery := query
+	fmt.Println(likeQuery)
+	err = mgoSession.DB("okzdb").C("adverts").Find(bson.M{"$and": []bson.M{bson.M{"category": bson.M{"$regex": category, "$options": "i"}}, bson.M{"city": bson.M{"$regex": city, "$options": "i"}}, bson.M{"$or": []bson.M{bson.M{"title": bson.M{"$regex": likeQuery, "$options": "i"}}, bson.M{"details": bson.M{"$regex": likeQuery, "$options": "i"}}, bson.M{"category": bson.M{"$regex": likeQuery, "$options": "i"}}}}}}).All(&ads)
 	if err != nil {
 		return
 	}

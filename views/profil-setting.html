@@ -12,20 +12,28 @@
     <script src="/js/uikit-icons.min.js"></script>
 </head>
 <style>
-    a:hover{
+    a:hover {
         text-decoration: none;
     }
+
+    #profile-setting {
+        max-width: 964px;
+        margin-right: auto;
+        margin-left: auto;
+    }
 </style>
+
 <body>
-    <header style="margin-bottom: 10px">
-        <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;">
-            <nav class="uk-navbar uk-navbar-container">
-                <div class="uk-navbar-left">
-                    <a class="uk-navbar-toggle" href="/">
-                        <span uk-icon="icon: arrow-left; ratio: 1.5"></span>
-                    </a>
-                </div>
-                <div class="uk-navbar-center">
+    <div id="profile-setting" class="uk-box-shadow-small">
+        <header style="margin-bottom: 10px">
+            <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;">
+                <nav class="uk-navbar uk-navbar-container">
+                    <div class="uk-navbar-left">
+                        <a class="uk-navbar-toggle" href="/">
+                            <span uk-icon="icon: arrow-left; ratio: 1.5"></span>
+                        </a>
+                    </div>
+                    <div class="uk-navbar-center">
                         <a class="uk-logo" href="/">
                             <img src="/img/logo-okz.png" width="100" height="30" alt="OKZ">
                         </a>
@@ -53,63 +61,84 @@
                     <div class="uk-offcanvas-bar">
                         <ul class="uk-nav uk-nav-default">
                             <li class="uk-nav-header">{{ .user.UserName }}</li>
-                            <li><a href="/me"><span class="uk-margin-small-right" uk-icon="icon: user"></span>Profil</a></li>
-                            <li><a href="/activités"><span class="uk-margin-small-right" uk-icon="icon: comment"></span>Activités</a></li>
-                            <li><a href="/box"><span class="uk-margin-small-right" uk-icon="icon: comment"></span>Messages</a></li>
-                            <li><a href="/settings"><span class="uk-margin-small-right" uk-icon="icon: settings"></span>Modifications</a></li>
+                            <li>
+                                <a href="/me">
+                                    <span class="uk-margin-small-right" uk-icon="icon: user"></span>Profil</a>
+                            </li>
+                            <li>
+                                <a href="/activités">
+                                    <span class="uk-margin-small-right" uk-icon="icon: comment"></span>Activités</a>
+                            </li>
+                            <li>
+                                <a href="/box">
+                                    <span class="uk-margin-small-right" uk-icon="icon: comment"></span>Messages</a>
+                            </li>
+                            <li>
+                                <a href="/settings">
+                                    <span class="uk-margin-small-right" uk-icon="icon: settings"></span>Modifications</a>
+                            </li>
                             <li class="uk-nav-divider"></li>
-                            <li><a onclick="logout()"><span class="uk-margin-small-right" uk-icon="icon: sign-out"></span>Deconnecter</a></li>
+                            <li>
+                                <a onclick="logout()">
+                                    <span class="uk-margin-small-right" uk-icon="icon: sign-out"></span>Deconnecter</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
                 {{ end }}
             </div>
-    </header>
-    <main style="margin: 20px 10px">
-        <div id="main-setting" class="uk-margin" uk-grid>
-            <div class="uk-text-center uk-margin-auto">
-                <div class="dashboard-profil">
-                    <img data-src="{{ .user.Picture }}" alt="" uk-img>
-                    <p class="uk-text-bold">{{ .user.UserName }}</p>
-                    <p class="uk-text-small">{{ .user.CreatedAt }}</p>
-                    <p class="uk-text-small">Reputation: <strong>9/10</strong></p>
-                </div>
-            </div>
-            <div class="uk-width-1-1 uk-text-center uk-margin-auto">
-                <div class="user-data" uk-grid>
-                    <div class="user-name uk-width-1-1">
-                        <p class="uk-align-left">Nom</p>
-                        <a class="uk-align-right" href="#user-name-modal" uk-toggle>{{ .user.UserName }} <span uk-icon="icon: arrow-right"></span></a>
+        </header>
+        <main style="margin: 20px 10px">
+            <div id="main-setting" class="uk-margin" uk-grid>
+                <div class="uk-text-center uk-margin-auto">
+                    <div class="dashboard-profil">
+                        <img data-src="{{ .user.Picture }}" alt="" uk-img>
+                        <p class="uk-text-bold">{{ .user.UserName }}</p>
+                        <p class="uk-text-small">{{ .user.CreatedAt }}</p>
+                        <p class="uk-text-small">Reputation:
+                            <strong>9/10</strong>
+                        </p>
                     </div>
-                    <div id="user-name-modal" class="uk-flex-top" uk-modal>
-                        <div class="uk-modal-dialog">
-                            <div class="uk-padding uk-width-1-1 uk-text-center uk-margin-auto">
-                                <div class="uk-text-center uk-margin-auto">
-                                    <div class="dashboard-profil">
-                                        <img data-src="{{ .user.Picture }}" alt="" uk-img>
+                </div>
+                <div class="uk-width-1-1 uk-text-center uk-margin-auto">
+                    <div class="user-data" uk-grid>
+                        <div class="user-name uk-width-1-1">
+                            <p class="uk-align-left">Nom</p>
+                            <a class="uk-align-right" href="#user-name-modal" uk-toggle>{{ .user.UserName }}
+                                <span uk-icon="icon: arrow-right"></span>
+                            </a>
+                        </div>
+                        <div id="user-name-modal" class="uk-flex-top" uk-modal>
+                            <div class="uk-modal-dialog">
+                                <div class="uk-padding uk-width-1-1 uk-text-center uk-margin-auto">
+                                    <div class="uk-text-center uk-margin-auto">
+                                        <div class="dashboard-profil">
+                                            <img data-src="{{ .user.Picture }}" alt="" uk-img>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="uk-width-1-1 uk-text-center uk-margin-auto uk-margin">
-                                    <div class="uk-margin">
-                                        <input class="uk-input" type="text" value="{{ .user.UserName }}" id="userName">
+                                    <div class="uk-width-1-1 uk-text-center uk-margin-auto uk-margin">
+                                        <div class="uk-margin">
+                                            <input class="uk-input" type="text" value="{{ .user.UserName }}" id="userName">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="uk-margin-large-top uk-child-width-expand uk-child-width-1-2" uk-grid>
-                                    <div>
-                                        <a class="uk-button uk-button-danger uk-width-1-1 uk-modal-close">ANNULER</a>
-                                    </div>
-                                    <div>
-                                        <a onclick="updateUserName()" class="uk-button uk-button-primary uk-width-1-1">APPLIQUER</a>
+                                    <div class="uk-margin-large-top uk-child-width-expand uk-child-width-1-2" uk-grid>
+                                        <div>
+                                            <a class="uk-button uk-button-danger uk-width-1-1 uk-modal-close">ANNULER</a>
+                                        </div>
+                                        <div>
+                                            <a onclick="updateUserName()" class="uk-button uk-button-primary uk-width-1-1">APPLIQUER</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="user-tel uk-width-1-1">
-                        <p class="uk-align-left">Telephone</p>
-                        <a class="uk-align-right" href="#contact-modal" uk-toggle>+225 {{ .user.PhoneNumber }} <span uk-icon="icon: arrow-right"></span></a>
-                    </div>
-                    <div id="contact-modal" class="uk-flex-top" uk-modal>
+                        <div class="user-tel uk-width-1-1">
+                            <p class="uk-align-left">Telephone</p>
+                            <a class="uk-align-right" href="#contact-modal" uk-toggle>+225 {{ .user.PhoneNumber }}
+                                <span uk-icon="icon: arrow-right"></span>
+                            </a>
+                        </div>
+                        <div id="contact-modal" class="uk-flex-top" uk-modal>
                             <div class="uk-modal-dialog">
                                 <div class="uk-padding uk-width-1-1 uk-text-center uk-margin">
                                     <div class="uk-width-1-1 uk-text-center uk-margin-auto uk-margin">
@@ -128,64 +157,70 @@
                                 </div>
                             </div>
                         </div>
-                    <div class="user-city uk-width-1-1">
-                        <p class="uk-align-left">Ville</p>
-                        <a class="uk-align-right"  href="#location-modal" uk-toggle>{{ .user.Location }} <span uk-icon="icon: arrow-right"></span></a>
-                    </div>
-                    <div id="location-modal" class="uk-flex-top" uk-modal>
-                        <div class="uk-modal-dialog">
-                            <div class="uk-padding uk-width-1-1 uk-text-center uk-margin">
-                                <div class="uk-width-1-1 uk-text-center uk-margin-auto uk-margin">
-                                    <div class="uk-margin">
-                                        <select class="uk-select" id="location">
-                                            {{ range .cities}}
-                                            <option value="{{.}}">{{.}}</option>
-                                            {{ end }}
-                                        </select>
+                        <div class="user-city uk-width-1-1">
+                            <p class="uk-align-left">Ville</p>
+                            <a class="uk-align-right" href="#location-modal" uk-toggle>{{ .user.Location }}
+                                <span uk-icon="icon: arrow-right"></span>
+                            </a>
+                        </div>
+                        <div id="location-modal" class="uk-flex-top" uk-modal>
+                            <div class="uk-modal-dialog">
+                                <div class="uk-padding uk-width-1-1 uk-text-center uk-margin">
+                                    <div class="uk-width-1-1 uk-text-center uk-margin-auto uk-margin">
+                                        <div class="uk-margin">
+                                            <select class="uk-select" id="location">
+                                                {{ range .cities}}
+                                                <option value="{{.}}">{{.}}</option>
+                                                {{ end }}
+                                            </select>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="uk-margin-large-top uk-child-width-expand uk-child-width-1-2" uk-grid>
-                                    <div>
-                                        <a class="uk-button uk-button-danger uk-width-1-1 uk-modal-close">ANNULER</a>
-                                    </div>
-                                    <div>
-                                        <a onclick="updateUserLocation()" class="uk-button uk-button-primary uk-width-1-1">APPLIQUER</a>
+                                    <div class="uk-margin-large-top uk-child-width-expand uk-child-width-1-2" uk-grid>
+                                        <div>
+                                            <a class="uk-button uk-button-danger uk-width-1-1 uk-modal-close">ANNULER</a>
+                                        </div>
+                                        <div>
+                                            <a onclick="updateUserLocation()" class="uk-button uk-button-primary uk-width-1-1">APPLIQUER</a>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        <div class="user-email uk-width-1-1">
+                            <p class="uk-align-left">Email</p>
+                            <p class="uk-align-right" href="">{{ .user.Email }}
+                                <span uk-icon="icon: arrow-right"></span>
+                            </p>
+                        </div>
                     </div>
-                    <div class="user-email uk-width-1-1">
-                        <p class="uk-align-left">Email</p>
-                        <p class="uk-align-right" href="">{{ .user.Email }} <span uk-icon="icon: arrow-right"></span></p>
+                </div>
+            </div>
+            <div uk-grid id="set-city" style="display: none">
+                <div class="uk-width-1-1 uk-text-center uk-margin-auto uk-margin">
+                    <div class="uk-margin">
+                        <input class="uk-input" value="{{ .user.Location }}" type="text" placeholder="ville">
+                    </div>
+                </div>
+                <div class="uk-margin-large-top uk-child-width-expand uk-child-width-1-2" uk-grid>
+                    <div>
+                        <a class="uk-button uk-button-danger uk-width-1-1 uk-modal-close">ANNULER</a>
+                    </div>
+                    <div>
+                        <a class="uk-button uk-button-primary uk-width-1-1">APPLIQUER</a>
                     </div>
                 </div>
             </div>
-        </div>
-        <div uk-grid id="set-city" style="display: none">
-            <div class="uk-width-1-1 uk-text-center uk-margin-auto uk-margin">
-                <div class="uk-margin">
-                    <input class="uk-input" value="{{ .user.Location }}" type="text" placeholder="ville">
-                </div>
+        </main>
+        <footer>
+            <hr>
+            <div class="uk-text-center">
+                <small>
+                    © 2018 OKZ version beta 0.01
+                </small>
             </div>
-            <div class="uk-margin-large-top uk-child-width-expand uk-child-width-1-2" uk-grid>
-                <div>
-                    <a class="uk-button uk-button-danger uk-width-1-1 uk-modal-close">ANNULER</a>
-                </div>
-                <div>
-                    <a class="uk-button uk-button-primary uk-width-1-1">APPLIQUER</a>
-                </div>
-            </div>
-        </div>
-    </main>
-    <footer>
-        <hr>
-        <div class="uk-text-center">
-            <small>
-                © 2018 OKZ version beta 0.01
-            </small>
-        </div>
-    </footer>
-<script src="/js/profile-setting.js"></script>
+        </footer>
+    </div>
+    <script src="/js/profile-setting.js"></script>
 </body>
+
 </html>
