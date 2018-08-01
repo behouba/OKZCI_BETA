@@ -122,8 +122,8 @@ preview.addEventListener('click', function (e) {
 
 adFormField.addEventListener('submit', e => {
     e.preventDefault()
-    spinner.style.display = 'block'
-    create.style.display = 'none'
+    // spinner.style.display = 'block'
+    // create.style.display = 'none'
 
     let advert = new FormData()
     advert.set('ad_type', adType.value)
@@ -151,8 +151,9 @@ adFormField.addEventListener('submit', e => {
             }
         })
         .then(res => {
-            window.location.href = '/'
-            // UIkit.notification("CREATED", "succes");
+
+            // window.location.href = '/'
+            UIkit.notification("CREATED", "succes");
         })
         .catch(err => {
             spinner.style.display = 'none'

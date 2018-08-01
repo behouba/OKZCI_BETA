@@ -26,11 +26,11 @@ function sendMessageTo(email, name) {
         "body": messageBody.value
     }
     console.log(msg)
+    UIkit.modal('#message-modal').hide()
     axios.post('/send-message', msg)
         .then(res => {
             messageBody.value = ''
             UIkit.notification('Votre message a bien été envoyé', 'success')
-            UIkit.modal('#message-modal').hide()
         })
         .catch(err => {
             UIkit.notification('Echec d\'envoi', 'danger')

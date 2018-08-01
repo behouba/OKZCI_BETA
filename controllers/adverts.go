@@ -5,25 +5,12 @@ import (
 	"mime/multipart"
 	"net/smtp"
 	"os"
-	"strconv"
 	"time"
 
 	"github.com/behouba/OKZ_BETA_0.01/models"
 	"github.com/kataras/iris"
 	shortid "github.com/ventu-io/go-shortid"
 )
-
-func loadMore(ctx iris.Context) {
-	offset, err := strconv.Atoi(ctx.URLParam("offset"))
-	if err != nil {
-		log.Println(err)
-	}
-	ads, err := models.LoadMoreAds(offset)
-	if err != nil {
-		log.Println(err)
-	}
-	ctx.JSON(ads)
-}
 
 func create(ctx iris.Context) {
 	session := models.Sess.Start(ctx).GetString("email")

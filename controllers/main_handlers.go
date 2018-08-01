@@ -9,17 +9,17 @@ import (
 
 func home(ctx iris.Context) {
 	session := models.Sess.Start(ctx).GetString("email")
-	adverts, err := models.GetAds()
-	if err != nil {
-		log.Println(err)
-	}
+	// adverts, err := models.GetAds()
+	// if err != nil {
+	// 	log.Println(err)
+	// }
 	hotAuctions, err := models.GetHotAuction()
 	if err != nil {
 		log.Println(err)
 	}
 	ctx.ViewData("cities", models.Cities)
 	ctx.ViewData("categories", models.Categories)
-	ctx.ViewData("ads", adverts)
+	// ctx.ViewData("ads", adverts)
 	ctx.ViewData("hotAuctions", hotAuctions)
 	if session == "" {
 		ctx.View("index.html")

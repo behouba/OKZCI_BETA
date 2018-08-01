@@ -13,7 +13,7 @@
 </head>
 <style>
     #profile {
-        max-width: 964px;
+        max-width: 1200px;
         margin-right: auto;
         margin-left: auto;
     }
@@ -25,15 +25,36 @@
         color: #00aaff;
         font-family: "Font Awesome 5 Free";
     }
+
+    @media only screen and (min-width: 768px) {
+        /* For desktop: */
+        #mobile-profile {
+            display: none;
+        }
+        #desktop-profile {
+            display: block;
+        }
+
+    }
+
+    @media only screen and (max-width: 768px) {
+        /* For mobile: */
+        #mobile-profile {
+            display: block;
+        }
+        #desktop-profile {
+            display: none;
+        }
+    }
 </style>
 
 <body>
     <div id="profile" class="uk-box-shadow-small">
         <header style="margin-bottom: 10px">
             <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;">
-                <nav class="uk-navbar uk-navbar-container">
+                <nav class="uk-navbar uk-navbar-container" uk-navbar uk-navbar="mode: click">
                     <div class="uk-navbar-left">
-                        <a class="uk-navbar-toggle" href="/">
+                        <a class="uk-navbar-toggle" onclick="backTo()">
                             <span uk-icon="icon: arrow-left; ratio: 1.5"></span>
                         </a>
                     </div>
@@ -43,18 +64,48 @@
                         </a>
                     </div>
                     {{ if .user }}
-                    <div class="uk-navbar-right">
+                    <div class="uk-navbar-right" style="height: 65px;" id="mobile-profile">
                         <a uk-toggle="target: #offcanvas-flip" class="uk-navbar-toggle">
                             <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 30px; height: 30px;"></span>
                         </a>
                     </div>
                     {{ else }}
-                    <div class="uk-navbar-right">
+                    <div class="uk-navbar-right" style="height: 65px;">
                         <a href="/login" class="uk-navbar-toggle">
                             <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url(https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png); width: 30px; height: 30px;"></span>
                         </a>
                     </div>
                     {{ end }}
+                    <!-- Desktop nav -->
+                    <div class="uk-navbar-right" id="desktop-profile">
+                        <ul class="uk-navbar-nav">
+                            <li>
+                                {{ if .user }}
+                                <a href="#">
+                                    <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 40px; height: 40px;"></span>
+                                </a>
+                                <div class="uk-navbar-dropdown">
+                                    <ul class="uk-nav uk-navbar-dropdown-nav">
+                                        <li>
+                                            <a href="/me">Profile</a>
+                                        </li>
+                                        <li>
+                                            <a href="/settings">Reglages</a>
+                                        </li>
+                                        <li>
+                                            <a href="/logout">Deconnexion</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                {{ else }}
+                                <a href="/login" class="uk-navbar-toggle">
+                                    <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url(https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png); width: 40px; height: 40px;"></span>
+                                </a>
+                                {{ end }}
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
                 </nav>
             </div>
             <!-- canvas content -->
@@ -70,16 +121,8 @@
                                     <span class="uk-margin-small-right" uk-icon="icon: user"></span>Profil</a>
                             </li>
                             <li>
-                                <a href="/activités">
-                                    <span class="uk-margin-small-right" uk-icon="icon: comment"></span>Activités</a>
-                            </li>
-                            <li>
-                                <a href="/box">
-                                    <span class="uk-margin-small-right" uk-icon="icon: comment"></span>Messages</a>
-                            </li>
-                            <li>
                                 <a href="/settings">
-                                    <span class="uk-margin-small-right" uk-icon="icon: settings"></span>Modifications</a>
+                                    <span class="uk-margin-small-right" uk-icon="icon: settings"></span>Reglages</a>
                             </li>
                             <li class="uk-nav-divider"></li>
                             <li>
@@ -181,6 +224,29 @@
                 </dir>
             </div>
         </main>
+        <!-- right side -->
+        {{ if .user}}
+        <div id="offcanvas-flip" uk-offcanvas="flip: true; overlay: true">
+            <div class="uk-offcanvas-bar">
+                <ul class="uk-nav uk-nav-default">
+                    <li class="uk-nav-header">{{ .user.UserName }}</li>
+                    <li>
+                        <a href="/me">
+                            <span class="uk-margin-small-right" uk-icon="icon: user"></span>Profil</a>
+                    </li>
+                    <li>
+                        <a href="/settings">
+                            <span class="uk-margin-small-right" uk-icon="icon: settings"></span>Reglages</a>
+                    </li>
+                    <li class="uk-nav-divider"></li>
+                    <li>
+                        <a onclick="logout()">
+                            <span class="uk-margin-small-right" uk-icon="icon: sign-out"></span>Deconnecter</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        {{ end }}
         <footer>
             <hr>
             <div class="uk-text-center">

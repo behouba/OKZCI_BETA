@@ -61,7 +61,7 @@ main {
 }
 
 #main {
-    max-width: 964px;
+    max-width: 1200px;
     margin-right: auto;
     margin-left: auto;
     background: #fff;
@@ -159,6 +159,10 @@ main {
 .ad-card .uk-countdown-number,
 .ad-card .uk-countdown-separator {
     font-size: 1rem;
+}
+
+nav ul {
+    list-style: none;
 }
 
 .ad-card .uk-countdown-number,

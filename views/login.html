@@ -14,9 +14,30 @@
 </head>
 <style>
     #auth {
-        max-width: 964px;
+        max-width: 1200px;
         margin-right: auto;
         margin-left: auto;
+    }
+
+    @media only screen and (min-width: 768px) {
+        /* For desktop: */
+        #mobile-profile {
+            display: none;
+        }
+        #desktop-profile {
+            display: block;
+        }
+
+    }
+
+    @media only screen and (max-width: 768px) {
+        /* For mobile: */
+        #mobile-profile {
+            display: block;
+        }
+        #desktop-profile {
+            display: none;
+        }
     }
 </style>
 
@@ -31,7 +52,7 @@
             </div>
             <div class="uk-margin-large-top">
                 <div class="uk-child-width-auto" uk-grid>
-                    <div class="uk-width-1-1 uk-width-1-2@s uk-margin-auto">
+                    <div class="uk-width-1-1 uk-width-1-2@s uk-width-2-5@s uk-margin-auto">
                         <div class="uk-form-stacked uk-margin uk-margin-left uk-margin-right">
                             <form id="login-form" class="uk-form-stacked">
                                 <legend class="uk-legend uk-text-center">CONNEXION</legend>

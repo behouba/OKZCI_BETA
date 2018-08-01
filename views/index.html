@@ -18,7 +18,7 @@
 <body onload="homePageLoaded()" onoffline="offFunction()">
     <div id="main" class="uk-box-shadow-small">
         <header style="margin-bottom: 10px" id="mobile-header" style="margin: 20px 10px">
-            <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;" class="uk-box-shadow-medium">
+            <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;" class="uk-box-shadow-large">
                 <nav class="uk-navbar uk-navbar-container">
                     <div class="uk-navbar-left" style="height: 65px;">
                         <a uk-toggle="target: #categories-menu" class="uk-navbar-toggle" href="#">
@@ -76,6 +76,7 @@
                             <div class="uk-width-1-1">
                                 <p>Trier par: </p>
                                 <select class="uk-select uk-align-right" onchange="setSort(value)">
+                                    <option>Default</option>
                                     <option>Recents</option>
                                     <option>Prix croissant</option>
                                     <option>Prix decroissant</option>
@@ -97,27 +98,151 @@
         <div>
             <header id="desktop-header">
                 <div class="uk-box-shadow-small">
-                    <nav class="uk-navbar-container uk-margin" uk-navbar>
+                    <nav class="uk-navbar-container uk-margin" uk-navbar uk-navbar="mode: click">
                         <div class="uk-navbar-left">
                             <a class="uk-navbar-item uk-logo" href="/">
                                 <img src="/img/logo-okz.png" width="100" alt="OKZ">
                             </a>
                             <div class="uk-navbar-item">
-                                <form action="javascript:void(0)">
+                                <form id="desk-search-bar">
                                     <div class="uk-inline">
-                                        <span class="uk-form-icon" uk-icon="icon: search"></span>
-                                        <input class="uk-input uk-form-width-medium" type="text" placeholder="Rechercher...">
-                                        <button class="uk-button uk-button-default">Trouver</button>
+                                        <a class="uk-form-icon uk-form-icon-flip" href="#" uk-icon="icon: search" style="background: #00aaff; color: #fff"></a>
+                                        <input class="uk-input uk-form-width-medium" type="search" placeholder="Recherche..." id="desk-search">
                                     </div>
                                 </form>
                             </div>
-
+                            <ul>
+                                <li>
+                                    <div style="font-size: 12px">
+                                        CATEGORIE :
+                                        <a href="#" id="desktop-current-category" class="uk-text-break">TOUTES LES CATEGORIES
+                                        </a>
+                                    </div>
+                                    <div class="uk-navbar-dropdown" uk-drop="boundary: !nav; boundary-align: true; pos: bottom-justify;" id="desktop-category-picker">
+                                        <div class="uk-navbar-dropdown-grid uk-child-width-1-4" uk-grid>
+                                            <div>
+                                                <ul class="uk-nav uk-navbar-dropdown-nav">
+                                                    <li>
+                                                        <a href="#" onclick="setCategory('all')">TOUTES LES CATEGORIES</a>
+                                                    </li>
+                                                    <li class="uk-nav-divider"></li>
+                                                    <li class="uk-nav-header">ELECTRONIQUES</li>
+                                                    {{ range .categories.Electroniques }}
+                                                    <li>
+                                                        <a href="#" onclick="setCategory({{ .Name }})">{{ .Name }}</a>
+                                                    </li>
+                                                    {{ end }}
+                                                    <li class="uk-nav-divider"></li>
+                                                    <li class="uk-nav-header">EMPLOIS</li>
+                                                    {{ range .categories.Emplois }}
+                                                    <li>
+                                                        <a href="#" onclick="setCategory({{ .Name }})">{{ .Name }}</a>
+                                                    </li>
+                                                    {{ end }}
+                                                </ul>
+                                            </div>
+                                            <div>
+                                                <ul class="uk-nav uk-navbar-dropdown-nav">
+                                                    <li class="uk-nav-header">VEHICULES</li>
+                                                    {{ range .categories.Vehicules }}
+                                                    <li>
+                                                        <a href="#" onclick="setCategory({{ .Name }})">{{ .Name }}</a>
+                                                    </li>
+                                                    {{ end }}
+                                                    <li class="uk-nav-divider"></li>
+                                                    <li class="uk-nav-header">INTERIEUR</li>
+                                                    {{ range .categories.Maison }}
+                                                    <li>
+                                                        <a href="#" onclick="setCategory({{ .Name }})">{{ .Name }}</a>
+                                                    </li>
+                                                    {{ end }}
+                                                </ul>
+                                            </div>
+                                            <div>
+                                                <ul class="uk-nav uk-navbar-dropdown-nav">
+                                                    <li class="uk-nav-header">IMMOBILIER</li>
+                                                    {{ range .categories.Immobilier }}
+                                                    <li>
+                                                        <a onclick="setCategory({{ .Name }})">{{ .Name }}</a>
+                                                    </li>
+                                                    {{ end }}
+                                                    <li class="uk-nav-divider"></li>
+                                                    <li class="uk-nav-header">MODE</li>
+                                                    {{ range .categories.Mode }}
+                                                    <li>
+                                                        <a onclick="setCategory({{ .Name }})">{{ .Name }}</a>
+                                                    </li>
+                                                    {{ end }}
+                                                </ul>
+                                            </div>
+                                            <div>
+                                                <ul class="uk-nav uk-navbar-dropdown-nav">
+                                                    <li class="uk-nav-header">SERVICES</li>
+                                                    {{ range .categories.Services }}
+                                                    <li>
+                                                        <a onclick="setCategory({{ .Name }})">{{ .Name }}</a>
+                                                    </li>
+                                                    {{ end }}
+                                                    <li class="uk-nav-divider"></li>
+                                                    <li class="uk-nav-header">LOISIR ET HOBBIES</li>
+                                                    {{ range .categories.Hobby }}
+                                                    <li>
+                                                        <a onclick="setCategory({{ .Name }})">{{ .Name }}</a>
+                                                    </li>
+                                                    {{ end }}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
                         </div>
                         <div class="uk-navbar-right">
-                            <span uk-icon="icon: location; ratio: 0.7"></span>
-                            <a href="">
-                                <strong>{{ .user.Location }}</strong>
-                            </a>
+                            <div style="font-size: 12px; margin-right: 70px">
+                                LOCALITÉ :
+                                <a href="#" id="desktop-current-location">TOUTES LES VILLES
+                                </a>
+                            </div>
+                            <div class="uk-navbar-dropdown" uk-drop="boundary: !nav; boundary-align: true; pos: bottom-justify;" id="desktop-category-picker">
+                                <div class="uk-navbar-dropdown-grid uk-child-width-1-4" uk-grid>
+                                    <div>
+                                        <ul class="uk-nav uk-navbar-dropdown-nav">
+                                            {{ range $i, $city := .cities }} {{if lt $i 10}}
+                                            <li>
+                                                <a href="#" onclick="setDeskCity({{$city}})">{{ $city }}</a>
+                                            </li>
+                                            {{ end }} {{ end }}
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <ul class="uk-nav uk-navbar-dropdown-nav">
+                                            {{ range $i, $city := .cities }} {{if and (gt $i 10) (lt $i 20)}}
+                                            <li>
+                                                <a href="#" onclick="setDeskCity({{$city}})">{{ $city }}</a>
+                                            </li>
+                                            {{ end }} {{ end }}
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <ul class="uk-nav uk-navbar-dropdown-nav">
+                                            {{ range $i, $city := .cities }} {{if and (gt $i 20) (lt $i 30)}}
+                                            <li>
+                                                <a href="#" onclick="setDeskCity({{$city}})">{{ $city }}</a>
+                                            </li>
+                                            {{ end }} {{ end }}
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <ul class="uk-nav uk-navbar-dropdown-nav">
+                                            {{ range $i, $city := .cities }} {{if and (gt $i 30)}}
+                                            <li>
+                                                <a href="#" onclick="setDeskCity({{$city}})">{{ $city }}</a>
+                                            </li>
+                                            {{ end }} {{ end }}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
                             <ul class="uk-navbar-nav">
                                 <li>
                                     {{ if .user }}
@@ -177,7 +302,7 @@
             <!-- adverts listing  -->
             <main>
                 <section style="margin-top: 60px">
-                    <div class="uk-grid-small uk-child-width-expand@ uk-margin uk-text-center" uk-grid id="home-spinner">
+                    <div class="uk-grid-small uk-child-width-expand@ uk-margin uk-text-center" style="margin-top: 240px" uk-grid id="home-spinner">
                         <div class="uk-margin" uk-spinner></div>
                     </div>
                     <!-- <div id="query-data" uk-grid class="uk-child-width-1-2">
@@ -277,6 +402,16 @@
                                         <li class="uk-parent">
                                             <a href="#">EMPLOIS</a>
                                             <ul class="uk-nav-sub">
+                                                {{ range .categories.Emplois}}
+                                                <li>
+                                                    <a onclick="setCategory({{ .Name }})">{{ .Name }}</a>
+                                                </li>
+                                                {{ end }}
+                                            </ul>
+                                        </li>
+                                        <li class="uk-parent">
+                                            <a href="#">INTERIEUR</a>
+                                            <ul class="uk-nav-sub">
                                                 {{ range .categories.Maison}}
                                                 <li>
                                                     <a onclick="setCategory({{ .Name }})">{{ .Name }}</a>
@@ -304,9 +439,6 @@
                                                 {{ end }}
                                             </ul>
                                         </li>
-                                        <li class="uk-nav">
-                                            <a onclick="setCategory({{ .Name }})">OBJETS GRATUITS</a>
-                                        </li>
                                     </ul>
                                 </div>
                             </div>
@@ -321,16 +453,8 @@
                                                 <span class="uk-margin-small-right" uk-icon="icon: user"></span>Profil</a>
                                         </li>
                                         <li>
-                                            <a href="/activités">
-                                                <span class="uk-margin-small-right" uk-icon="icon: comment"></span>Activités</a>
-                                        </li>
-                                        <li>
-                                            <a href="/box">
-                                                <span class="uk-margin-small-right" uk-icon="icon: comment"></span>Messages</a>
-                                        </li>
-                                        <li>
                                             <a href="/settings">
-                                                <span class="uk-margin-small-right" uk-icon="icon: settings"></span>Modifications</a>
+                                                <span class="uk-margin-small-right" uk-icon="icon: settings"></span>Reglages</a>
                                         </li>
                                         <li class="uk-nav-divider"></li>
                                         <li>
