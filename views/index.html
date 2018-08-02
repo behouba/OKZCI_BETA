@@ -17,7 +17,7 @@
 
 <body onload="homePageLoaded()" onoffline="offFunction()">
     <div id="main" class="uk-box-shadow-small">
-        <header style="margin-bottom: 10px" id="mobile-header" style="margin: 20px 10px">
+        <header style="margin-bottom: 10px" id="mobile-header" style="margin: 20px 10px;">
             <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;" class="uk-box-shadow-large">
                 <nav class="uk-navbar uk-navbar-container">
                     <div class="uk-navbar-left" style="height: 65px;">
@@ -106,7 +106,7 @@
                             <div class="uk-navbar-item">
                                 <form id="desk-search-bar">
                                     <div class="uk-inline">
-                                        <a class="uk-form-icon uk-form-icon-flip" href="#" uk-icon="icon: search" style="background: #00aaff; color: #fff"></a>
+                                        <a class="uk-form-icon uk-form-icon-flip" onclick="deskSearBarBtn()" uk-icon="icon: search" style="background: #00aaff; color: #fff"></a>
                                         <input class="uk-input uk-form-width-medium" type="search" placeholder="Recherche..." id="desk-search">
                                     </div>
                                 </form>
@@ -163,14 +163,14 @@
                                                     <li class="uk-nav-header">IMMOBILIER</li>
                                                     {{ range .categories.Immobilier }}
                                                     <li>
-                                                        <a onclick="setCategory({{ .Name }})">{{ .Name }}</a>
+                                                        <a href="#" onclick="setCategory({{ .Name }})">{{ .Name }}</a>
                                                     </li>
                                                     {{ end }}
                                                     <li class="uk-nav-divider"></li>
                                                     <li class="uk-nav-header">MODE</li>
                                                     {{ range .categories.Mode }}
                                                     <li>
-                                                        <a onclick="setCategory({{ .Name }})">{{ .Name }}</a>
+                                                        <a href="#" onclick="setCategory({{ .Name }})">{{ .Name }}</a>
                                                     </li>
                                                     {{ end }}
                                                 </ul>
@@ -180,14 +180,14 @@
                                                     <li class="uk-nav-header">SERVICES</li>
                                                     {{ range .categories.Services }}
                                                     <li>
-                                                        <a onclick="setCategory({{ .Name }})">{{ .Name }}</a>
+                                                        <a href="#" onclick="setCategory({{ .Name }})">{{ .Name }}</a>
                                                     </li>
                                                     {{ end }}
                                                     <li class="uk-nav-divider"></li>
                                                     <li class="uk-nav-header">LOISIR ET HOBBIES</li>
                                                     {{ range .categories.Hobby }}
                                                     <li>
-                                                        <a onclick="setCategory({{ .Name }})">{{ .Name }}</a>
+                                                        <a href="#" onclick="setCategory({{ .Name }})">{{ .Name }}</a>
                                                     </li>
                                                     {{ end }}
                                                 </ul>
@@ -198,7 +198,7 @@
                             </ul>
                         </div>
                         <div class="uk-navbar-right">
-                            <div style="font-size: 12px; margin-right: 70px">
+                            <div style="font-size: 12px; margin-right: 50px">
                                 LOCALITÉ :
                                 <a href="#" id="desktop-current-location">TOUTES LES VILLES
                                 </a>
@@ -207,6 +207,10 @@
                                 <div class="uk-navbar-dropdown-grid uk-child-width-1-4" uk-grid>
                                     <div>
                                         <ul class="uk-nav uk-navbar-dropdown-nav">
+                                            <li>
+                                                <a href="#" onclick="setDeskCity('TOUTES LES VILLES')">TOUTES LES VILLES</a>
+                                            </li>
+                                            <li class="uk-nav-divider"></li>
                                             {{ range $i, $city := .cities }} {{if lt $i 10}}
                                             <li>
                                                 <a href="#" onclick="setDeskCity({{$city}})">{{ $city }}</a>
@@ -277,11 +281,11 @@
         </div>
         <!-- categories slider -->
         <div style="margin: 0px 10px">
-            <section id="auctions-slider" style="margin-bottom: 10px">
+            <section id="auctions-slider" style="margin-bottom: 10px;" class="uk-margin-medium-top uk-margin-xlarge-buttom">
                 <div class="uk-position-relative uk-visible-toggle uk-light" uk-slider="clsActivated: uk-transition-active; center: true">
                     <ul class="uk-slider-items uk-grid">
                         {{ range .hotAuctions }}
-                        <li class="uk-width-3-4">
+                        <li class="uk-width-3-4 uk-width-1-4@m">
                             <a href="http://localhost:8080/watch?a={{ .ShortID }}">
                                 <div class="uk-panel uk-card uk-card-default" style="height: 100%; width: 100%;">
                                     <img src="{{index .Pictures 0}}" alt="">
@@ -299,53 +303,86 @@
                     <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slider-item="next"></a>
                 </div>
             </section>
+            <section id="breadcrumb" style="display: none">
+                <div class="uk-margin-medium-top uk-margin-xlarge-buttom">
+                    <ul class="uk-breadcrumb">
+                        <li>
+                            <a href="/">ACCEUIL</a>
+                        </li>
+                        <li id="category-breadcrumb">
+                            <a href="#">TOUTES LES CATEGORIES</a>
+                        </li>
+                        <li id="location-breadcrumb" class="uk-disabled">
+                            <a>TOUTES LES VILLES</a>
+                        </li>
+                    </ul>
+                </div>
+            </section>
             <!-- adverts listing  -->
             <main>
                 <section style="margin-top: 60px">
-                    <div class="uk-grid-small uk-child-width-expand@ uk-margin uk-text-center" style="margin-top: 240px" uk-grid id="home-spinner">
-                        <div class="uk-margin" uk-spinner></div>
-                    </div>
                     <!-- <div id="query-data" uk-grid class="uk-child-width-1-2">
 
                     </div> -->
-                    <div class="uk-grid-small uk-child-width-expand@" uk-grid id="ads-field" style="display: none">
-                        {{ range .ads }}
-                        <div class="ad-card uk-width-1-2 uk-width-1-3@s uk-width-1-4@m">
-                            <a href="/watch/?a={{.ShortID}}">
-                                <div class="uk-card uk-card-default uk-card-hover uk-card-small uk-margin-auto">
-                                    <div class="uk-card-media-top uk-inline">
-                                        <img src="{{index .Pictures 0}}" alt="Error: Failed to load image" height="400">
-                                        <div class="uk-overlay uk-overlay-default uk-dark uk-position-top">
-                                            <span uk-icon="icon: location; ratio: 0.7"></span>
-                                            <small class="uk-text-bold">{{ .City }}</small>
-                                        </div>
-                                    </div>
-                                    <div class="uk-card-body">
-                                        <p class="uk-text-small uk-text-truncate">{{ .Title }}</p>
-                                        {{ if gt .Price 0}}
-                                        <p class="uk-text-bold">{{.Price}} FCFA</p>
-                                        {{ else if eq .Category "dons"}}
-                                        <p class="uk-text-bold">Gratuit</p>
-                                        {{ else }}
-                                        <br> {{ end }}
-                                        <p class="uk-text-right uk-text-small create-date">{{.CreatedAt}}</p>
-                                    </div>
+                    <div uk-grid>
+                        <div class="uk-width-1-1 uk-width-3-4@m">
+                            <div class="uk-grid-small uk-child-width-expand@ uk-margin uk-text-center" style="margin-top: 240px;" uk-grid id="home-spinner">
+                                <div class="uk-margin" uk-spinner></div>
+                            </div>
+                            <div uk-grid id="listing-title" style="display: none">
+                                <div class="uk-width-1-1">
+                                    <h3 class="uk-align-left" style="color: #00aaff; font-weight: bold" id="category-title">TOUTES LES ANNONCES</h3>
+                                    <form class="uk-align-right">
+                                        <strong>Trier par: </strong>
+                                        <select class="uk-select uk-form-width-small" onchange="setSortDesktop(value)">
+                                            <option>Default</option>
+                                            <option>Recents</option>
+                                            <option>Prix croissant</option>
+                                            <option>Prix decroissant</option>
+                                        </select>
+                                    </form>
                                 </div>
-                            </a>
+                            </div>
+                            <div class="uk-grid-small uk-child-width-expand@" uk-grid id="ads-field" style="display: none">
+                                {{ range .ads }}
+                                <div class="ad-card uk-width-1-2 uk-width-1-3@s uk-width-1-4@m">
+                                    <a href="/watch/?a={{.ShortID}}">
+                                        <div class="uk-card uk-card-default uk-card-hover uk-card-small uk-margin-auto">
+                                            <div class="uk-card-media-top uk-inline">
+                                                <img src="{{index .Pictures 0}}" alt="Error: Failed to load image" height="400">
+                                                <div class="uk-overlay uk-overlay-default uk-dark uk-position-top">
+                                                    <span uk-icon="icon: location; ratio: 0.7"></span>
+                                                    <small class="uk-text-bold">{{ .City }}</small>
+                                                </div>
+                                            </div>
+                                            <div class="uk-card-body">
+                                                <p class="uk-text-small uk-text-truncate">{{ .Title }}</p>
+                                                {{ if gt .Price 0}}
+                                                <p class="uk-text-bold">{{.Price}} FCFA</p>
+                                                {{ else if eq .Category "dons"}}
+                                                <p class="uk-text-bold">Gratuit</p>
+                                                {{ else }}
+                                                <br> {{ end }}
+                                                <p class="uk-text-right uk-text-small create-date">{{.CreatedAt}}</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </div>
+                                {{ end }}
+                            </div>
+                            <div class="uk-text-center uk-margin-large-top" id="loadButton" style="display: none">
+                                <button class="uk-button uk-button-default uk-button-small" onclick="loadMore()">Voir plus</button>
+                            </div>
+                            <div class="uk-text-center uk-margin" style="display: none" id="loadMore-spinner">
+                                <div uk-spinner></div>
+                            </div>
+                            <div class="uk-text-center uk-margin uk-text-center" id="noMoreAds" style="display: none;">
+                                <p>Plus rien a afficher...</p>
+                            </div>
                         </div>
-                        {{ end }}
-                    </div>
-                    <div class="uk-text-center uk-margin" id="loadButton" style="display: none">
-                        <button class="uk-button uk-button-default uk-button-small" onclick="loadMore()">Voir plus</button>
-                    </div>
-                    <div class="uk-text-center uk-margin" style="display: none" id="loadMore-spinner">
-                        <div uk-spinner></div>
-                    </div>
-                    <div id="sticky" style="text-align: center; display: none;">
-                        <a onclick="goCreateAdPage()" class="uk-button uk-button-primary">AJOUTER UNE ANNONCE</a>
-                    </div>
-                    <div class="uk-text-center uk-margin uk-text-center" id="noMoreAds" style="display: none;">
-                        <p>Plus rien a afficher...</p>
+                        <div class="uk-width-1-1 uk-width-1-4@m">
+                            <!-- aside -->
+                        </div>
                     </div>
                     <div id="canvas">
                         <!-- canvas content -->
@@ -478,14 +515,29 @@
                 </script>
                 {{ end }}
             </main>
-            <footer>
+            <footer class="uk-padding-small">
                 <hr>
-                <div class="uk-text-center">
-                    <small>
-                        © 2018 OKZ version beta 0.01
-                    </small>
+                <div class="uk-grid uk-grid-default uk-grid-small" uk-grid style="font-size: 13px;">
+                    <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
+                        <p>
+                            © 2018 OKAZION version beta 0.01
+                        </p>
+                    </div>
+                    <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
+                        <a href="/conditions">
+                            Regles et les conditions d'utilisations
+                        </a>
+                    </div>
+                    <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
+                        <a href="/about-us">
+                            Contactez - nous
+                        </a>
+                    </div>
                 </div>
             </footer>
+            <div id="sticky" style="text-align: center; display: none;">
+                <a onclick="goCreateAdPage()" class="uk-button uk-button-primary">AJOUTER UNE ANNONCE</a>
+            </div>
         </div>
     </div>
     <script src="/js/index.js"></script>

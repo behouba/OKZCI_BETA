@@ -48,7 +48,7 @@
     </div>
     <div id="create" class="uk-box-shadow-small">
         <header style="margin-bottom: 10px">
-            <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;">
+            <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;" class="uk-box-shadow-medium">
                 <nav class="uk-navbar uk-navbar-container" uk-navbar uk-navbar="mode: click">
                     <div class="uk-navbar-left">
                         <a class="uk-navbar-toggle" onclick="backTo()">
@@ -135,8 +135,9 @@
         <div style="margin: 30px 10px;">
             <div id="select-category" class="uk-width-1-2@m uk-margin-auto uk-padding-small">
                 <div>
-                    <h3>CHOISIR LA CATEGORIE</h3>
+                    <h2 class="uk-text-center uk-text-bold">CHOISIR LA CATEGORIE</h2>
                 </div>
+                <hr>
                 <ul class="uk-nav-primary uk-nav-parent-icon" uk-nav>
                     <li class="uk-parent">
                         <a href="#">VEHICULES</a>
@@ -218,14 +219,14 @@
                             {{ end }}
                         </ul>
                     </li>
-                    <li class="uk-parent">
+                    <!-- <li class="uk-parent">
                         <a href="#">Dons gratuit d'objets</a>
                         <ul class="uk-nav-sub">
                             <li>
                                 <a onclick="setCategory('dons')">Donner gratuitement des objets qui ne vous servent plus</a>
                             </li>
                         </ul>
-                    </li>
+                    </li> -->
                 </ul>
             </div>
             <div id="ad-form" class="uk-width-1-2@m uk-margin-auto" style="display:none">
@@ -288,7 +289,8 @@
                     </div>
                     <div class="uk-margin uk-grid-small uk-child-width-expand uk-grid uk-text-center">
                         <label>
-                            <input class="uk-checkbox" type="checkbox" required> J'accepte les regles et les conditions d'utilisations du site
+                            <input class="uk-checkbox" type="checkbox" required> J'accepte
+                            <a href="/conditions"> les regles et les conditions d'utilisations</a> du site
                         </label>
                     </div>
                     <div class="uk-margin">
@@ -297,6 +299,26 @@
                 </form>
             </div>
         </div>
+        <footer class="uk-padding-small">
+            <hr>
+            <div class="uk-grid uk-grid-default uk-grid-small" uk-grid style="font-size: 13px;">
+                <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
+                    <p>
+                        © 2018 OKAZION version beta 0.01
+                    </p>
+                </div>
+                <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
+                    <a href="/conditions">
+                        Regles et les conditions d'utilisations
+                    </a>
+                </div>
+                <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
+                    <a href="/about-us">
+                        Contactez - nous
+                    </a>
+                </div>
+            </div>
+        </footer>
     </div>
 </body>
 <script src="/js/create.js"></script>

@@ -2,7 +2,7 @@
 <html lang="fr">
 
 <head>
-    <title>Title</title>
+    <title>{{ .ad.Title }}</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/css/uikit.min.css" />
@@ -30,6 +30,7 @@
         max-width: 1200px;
         margin-right: auto;
         margin-left: auto;
+        background: #fff;
     }
 
     @media only screen and (min-width: 768px) {
@@ -39,6 +40,20 @@
         }
         #desktop-profile {
             display: block;
+        }
+        #head-info {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        #content {
+            max-width: 1200px;
+            margin-right: auto;
+            margin-left: auto;
+        }
+        #detail {
+            max-width: 1200px;
+            margin-right: auto;
+            margin-left: auto;
         }
 
     }
@@ -51,6 +66,13 @@
         #desktop-profile {
             display: none;
         }
+        #content {
+            padding: 10px;
+        }
+    }
+
+    .uk-navbar-container:not(.uk-navbar-transparent) {
+        background: #ffff;
     }
 </style>
 
@@ -60,10 +82,10 @@
     </div> -->
     <div id="detail" class="uk-box-shadow-small">
         <header style="margin-bottom: 10px">
-            <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;">
+            <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;" class="uk-box-shadow-medium">
                 <nav class="uk-navbar uk-navbar-container" uk-navbar uk-navbar="mode: click">
                     <div class="uk-navbar-left">
-                        <a class="uk-navbar-toggle" onclick="backTo()">
+                        <a class="uk-navbar-toggle" onclick="goBack()">
                             <span uk-icon="icon: arrow-left; ratio: 1.5"></span>
                         </a>
                     </div>
@@ -118,29 +140,34 @@
                 </nav>
             </div>
         </header>
-        <section id="img-carousel">
-            <div uk-slideshow="animation: push; min-height: 250;">
-                <div class="uk-position-relative uk-visible-toggle uk-light">
-                    <ul class="uk-slideshow-items">
-                        {{ range .ad.Pictures }}
-                        <li>
-                            <img src="{{.}}" alt="Image" uk-cover>
-                            <div class="uk-position-bottom uk-position-small  uk-position-small">
-                                <div uk-lightbox>
-                                    <a uk-icon="expand" href="{{.}}" data-type="image"></a>
-                                </div>
+        <div id="content" uk-grid class="uk-margin-medium-top">
+            <div id="img-carousel" class="uk-width-1-1 uk-width-2-3@m">
+                <div uk-slideshow="animation: push; min-height: 250;">
+                    <div class="uk-position-relative uk-visible-toggle uk-light">
+                        <ul class="uk-slideshow-items">
+                            {{ range .ad.Pictures }}
+                            <li>
+                                <img src="{{.}}" alt="Image" uk-cover>
+                            </li>
+                            {{ end }}
+                        </ul>
+                        <div class="uk-position-bottom uk-position-small  uk-position-small">
+                            <div uk-lightbox uk-lightbox="animation: fade">
+                                {{ range $i, $img := .ad.Pictures }} {{ if eq $i 0}}
+                                <a uk-icon="expand" href="{{$img}}" data-type="image"></a>
+                                {{ else }}
+                                <a href="{{$img}}" data-type="image"></a>
+                                {{ end }} {{ end }}
                             </div>
-                        </li>
-                        {{ end }}
-                    </ul>
-                    <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slideshow-item="previous"></a>
-                    <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slideshow-item="next"></a>
+                        </div>
+                        <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slideshow-item="previous"></a>
+                        <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slideshow-item="next"></a>
+                    </div>
                 </div>
             </div>
-        </section>
-        <section style="margin: 20px 10px">
-            <div>
-                <div id="head-info">
+            <!-- <div style="margin: 20px 10px"> -->
+            <div id="head-info" class="uk-width-1-1 uk-width-1-3@m uk-margin-auto">
+                <div>
                     <div style="display: inline">
                         <h2 class="uk-text-bold">{{ .ad.Title }}</h2>
                         <a class="uk-align-right favorites" onclick="addToFavorites({{.ad.ShortID}})">
@@ -165,28 +192,26 @@
                         <div>
                             <a href="#contact-modal" class="uk-button uk-button-primary uk-width-1-1" uk-toggle>Appeler</a>
                         </div>
-                        <div id="contact-modal" class="uk-modal-full" uk-modal>
+                        <div id="contact-modal" uk-modal>
                             <div class="uk-modal-dialog" style="min-height: 100%;">
                                 <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
                                 <div class="uk-grid-collapse uk-child-width-1-1@s uk-flex-middle" uk-grid>
-                                    <div class="uk-padding-large uk-text-center">
+                                    <div class="uk-padding-small uk-text-center">
                                         <div class="uk-margin-auto">
                                             <div class="uk-margin-large-top">
                                                 <img src="{{ .owner.Picture }}" height="150" width="150" class="uk-border-circle" alt="">
                                                 <p class="uk-text-bold">{{ .owner.UserName }}</p>
                                                 <p class="uk-text-small">from July 4, 2018</p>
-                                                <p class="uk-text-small">Reputation:
-                                                    <strong>9/10</strong>
-                                                </p>
                                             </div>
                                         </div>
                                         <h3>+225 {{ .ad.Contact }}</h3>
-                                        <small>Attention s'il vous plait! Ne vous contentez pas d'un paiement anticipé si vous n'êtes
-                                            pas sûr de la fiabilité du vendeur. Lors du calcul en espèces, vérifiez les marchandises
-                                            lors de la rencontre avec le vendeur. Si vous utilisez le service "Transaction
-                                            sécurisée", vérifiez les marchandises avant de définir le statut "Confirmé réception"
-                                            ou lors d'une rencontre avec un représentant du service de livraison.</small>
-                                        <div class="uk-width-1-1 uk-margin-large-top">
+                                        <small>Attention ! Afin d'eviter tous desagrements ou arnaques evitez de conclure une affaire
+                                            avec un mineur, evitez d'effectuer l'achat dans une zone dangereuse et à des
+                                            heures tardives, evitez d'effectuer l'achat en ligne sans avoir au prealable
+                                            vu le produit réelement, evitez tout achat avec une personne d'apparence douteuse
+                                            ou n'ayant pas toutes ses facultés, evitez les paiements par transfert d'argent
+                                            qui vous seront proposés.</small>
+                                        <div class="uk-width-1-1 uk-margin">
                                             <button class="uk-button uk-button-default uk-modal-close" uk-dis>ANNULER</button>
                                             <a href="tel:+225{{ .ad.Contact }}" class="uk-button uk-button-primary">APPELER</a>
                                         </div>
@@ -231,6 +256,10 @@
                         <span>{{ .owner.UserName }}</span>
                     </div>
                 </div>
+            </div>
+            <!-- grid end-->
+
+            <div class="uk-width-1-1 uk-width-2-3@m">
                 <hr>
                 <div id="description" uk-grid class="uk-margin">
                     <p class="uk-text-large uk-text-bold uk-width-1-1">Details</p>
@@ -272,38 +301,50 @@
                         doloremque.
                     </small>
                 </div>
-                <!-- right side -->
-                {{ if .user}}
-                <div id="offcanvas-flip" uk-offcanvas="flip: true; overlay: true">
-                    <div class="uk-offcanvas-bar">
-                        <ul class="uk-nav uk-nav-default">
-                            <li class="uk-nav-header">{{ .user.UserName }}</li>
-                            <li>
-                                <a href="/me">
-                                    <span class="uk-margin-small-right" uk-icon="icon: user"></span>Profil</a>
-                            </li>
-                            <li>
-                                <a href="/settings">
-                                    <span class="uk-margin-small-right" uk-icon="icon: settings"></span>Reglages</a>
-                            </li>
-                            <li class="uk-nav-divider"></li>
-                            <li>
-                                <a onclick="logout()">
-                                    <span class="uk-margin-small-right" uk-icon="icon: sign-out"></span>Deconnecter</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                {{ end }}
             </div>
-            <footer>
-                <hr>
-                <div class="uk-text-center">
-                    <small>
-                        © 2018 OKZ version beta 0.01
-                    </small>
+
+            <!-- right side -->
+            {{ if .user}}
+            <div id="offcanvas-flip" uk-offcanvas="flip: true; overlay: true">
+                <div class="uk-offcanvas-bar">
+                    <ul class="uk-nav uk-nav-default">
+                        <li class="uk-nav-header">{{ .user.UserName }}</li>
+                        <li>
+                            <a href="/me">
+                                <span class="uk-margin-small-right" uk-icon="icon: user"></span>Profil</a>
+                        </li>
+                        <li>
+                            <a href="/settings">
+                                <span class="uk-margin-small-right" uk-icon="icon: settings"></span>Reglages</a>
+                        </li>
+                        <li class="uk-nav-divider"></li>
+                        <li>
+                            <a onclick="logout()">
+                                <span class="uk-margin-small-right" uk-icon="icon: sign-out"></span>Deconnecter</a>
+                        </li>
+                    </ul>
                 </div>
-            </footer>
+            </div>
+            {{ end }}
+        </div>
+        <footer class="uk-padding-small">
+            <hr>
+            <div class="uk-grid uk-grid-default uk-grid-small" uk-grid style="font-size: 13px;">
+                <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
+                    © 2018 OKAZION version beta 0.01
+                </div>
+                <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
+                    <a href="/conditions">
+                        Regles et les conditions d'utilisations
+                    </a>
+                </div>
+                <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
+                    <a href="/about-us">
+                        Contactez - nous
+                    </a>
+                </div>
+            </div>
+        </footer>
         </section>
     </div>
     <!--end vue container -->

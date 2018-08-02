@@ -51,7 +51,7 @@ func GetAds() (ads []Advert, err error) {
 
 // GetHotAuction get auction that are near to their ending
 func GetHotAuction() (ads []Advert, err error) {
-	err = mgoSession.DB("okzdb").C("adverts").Find(bson.M{"offer_type": "auction"}).Limit(10).Sort("end_date").All(&ads)
+	err = mgoSession.DB("okzdb").C("adverts").Find(bson.M{}).Limit(10).Sort("created_at").All(&ads)
 	if err != nil {
 		return
 	}

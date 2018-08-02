@@ -14,8 +14,12 @@ let queryData = document.getElementById("query-data");
 let desktopCurrentCategory = document.getElementById("desktop-current-category");
 let desktopCategoryPicker = document.getElementById("desktop-category-picker");
 let currentDesktopLocation = document.getElementById("desktop-current-location");
-let desktopSearch = document.getElementById("desk-search")
-let desktopSearchBar = document.getElementById("desk-search-bar")
+let desktopSearch = document.getElementById("desk-search");
+let desktopSearchBar = document.getElementById("desk-search-bar");
+let categoryBreadCrumb = document.getElementById("category-breadcrumb");
+let locationBreadCrumb = document.getElementById("location-breadcrumb");
+let listingTitle = document.getElementById("listing-title");
+let categoryTitle = document.getElementById("category-title")
 
 let searchBar = document.getElementById("search-bar");
 let searchNav = document.getElementById("search-nav");
@@ -25,25 +29,40 @@ let searchSetting = document.getElementById("search-setting");
 let createDate = document.getElementsByClassName("create-date");
 
 function homePageLoaded() {
-  homeSpinner.style.display = "none";
-  adsField.style.display = "flex";
-  loadButton.style.display = "block";
-  sticky.style.display = "block";
   if (sessionStorage.getItem("data") !== null && step === 1) {
     adsField.innerHTML = sessionStorage.getItem("data");
     sessionStorage.removeItem("step");
     sessionStorage.removeItem("data");
+    getSearchParams()
   } else {
     searchRequest()
   }
-  console.log("step=", step, "offset=", offset);
+  displayListing()
 }
 
+
+function displayListing() {
+  homeSpinner.style.display = "none";
+  listingTitle.style.display = "flex";
+  adsField.style.display = "flex";
+  sticky.style.display = "block";
+  loadButton.style.display = "block";
+}
 // init google auth api
 function onLoad() {
   gapi.load("auth2", function () {
     gapi.auth2.init();
   });
+}
+
+function getSearchParams() {
+  city = sessionStorage.getItem("city")
+  category = sessionStorage.getItem("category")
+  sort = sessionStorage.getItem("sort")
+  search.value = sessionStorage.getItem("search")
+  currentDesktopLocation.innerText = city.toUpperCase() || 'TOUTES LES VILLES'
+  desktopCurrentCategory.innerText = category.toUpperCase() || 'TOUTES LES CATEGORIES'
+  categoryTitle.innerText = category.toUpperCase() || 'TOUTES LES ANNONCES'
 }
 
 function incrementOffset() {
@@ -85,15 +104,23 @@ function goCreateAdPage() {
 function saveData() {
   sessionStorage.setItem("step", "1");
   sessionStorage.setItem("data", adsField.innerHTML);
+  sessionStorage.setItem("city", city);
+  sessionStorage.setItem("category", category);
+  sessionStorage.setItem("sort", sort);
+  sessionStorage.setItem("search", search.value)
 }
 
 function setCategory(cat) {
   if (cat === "all") {
     category = "";
+    categoryTitle.innerText = "TOUTES LES ANNONCES"
     desktopCurrentCategory.innerText = "TOUTES LES CATEGORIES"
+    categoryBreadCrumb.childNodes[1].innerText = "TOUTES LES CATEGORIES"
   } else {
     category = cat;
     desktopCurrentCategory.innerText = cat.substring(0, 32).toUpperCase()
+    categoryBreadCrumb.childNodes[1].innerText = cat.toUpperCase()
+    categoryTitle.innerText = cat.toUpperCase()
   }
   console.log("categorie", category);
   UIkit.offcanvas("#categories-menu").hide();
@@ -107,10 +134,17 @@ function setCity(c) {
     city = c;
   }
   console.log(city);
+  searchRequest();
 }
 
 function setDeskCity(c) {
-  setCity(c)
+  console.log(c)
+  if (c === "TOUTES LES VILLES") {
+    city = "";
+  } else {
+    city = c;
+  }
+  locationBreadCrumb.childNodes[1].innerText = c.toUpperCase()
   currentDesktopLocation.innerText = c.toUpperCase()
   searchRequest();
 }
@@ -118,6 +152,12 @@ function setDeskCity(c) {
 function setSort(v) {
   sort = v;
   console.log(sort);
+}
+
+function setSortDesktop(v) {
+  sort = v;
+  console.log(sort);
+  searchRequest();
 }
 
 function validateFilter() {
@@ -180,6 +220,11 @@ desktopSearchBar.addEventListener("submit", e => {
   search.value = desktopSearch.value
   searchRequest();
 })
+
+function deskSearBarBtn() {
+  search.value = desktopSearch.value
+  searchRequest();
+}
 
 function loadMore() {
   loadButton.style.display = "none";

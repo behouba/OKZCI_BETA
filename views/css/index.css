@@ -217,6 +217,9 @@ nav ul {
         height: 40px;
         width: auto;
     }
+    #desktop-sorter {
+        display: flex;
+    }
 }
 
 @media only screen and (max-width: 768px) {
@@ -225,6 +228,13 @@ nav ul {
         display: block;
     }
     #desktop-header {
+        display: none;
+    }
+    footer [class*=uk-align] {
+        display: block;
+        margin-bottom: 5px;
+    }
+    #desktop-sorter {
         display: none;
     }
 }

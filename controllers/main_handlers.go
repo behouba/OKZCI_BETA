@@ -37,3 +37,11 @@ func home(ctx iris.Context) {
 func thread(ctx iris.Context) {
 	ctx.View("thread.html")
 }
+
+func aboutUs(ctx iris.Context) {
+	ctx.View("contact.html")
+}
+
+func conditions(ctx iris.Context) {
+	ctx.View("conditions.html")
+}

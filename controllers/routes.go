@@ -39,6 +39,8 @@ func OkzApp() *iris.Application {
 	app.Post("/report", reportAd)
 	app.Get("/search", searchHandler)
 	app.Get("/settings", userSetting)
+	app.Get("/about-us", aboutUs)
+	app.Get("/conditions", conditions)
 	// app.Get("/thread", thread)
 	app.Post("/verification", verification)
 	app.Post("/recovery-verification", recoveryVerification)

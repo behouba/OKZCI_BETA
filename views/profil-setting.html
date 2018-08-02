@@ -47,7 +47,7 @@
 <body>
     <div id="profile-setting" class="uk-box-shadow-small">
         <header style="margin-bottom: 10px">
-            <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;">
+            <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;" class="uk-box-shadow-medium">
                 <nav class="uk-navbar uk-navbar-container" uk-navbar uk-navbar="mode: click">
                     <div class="uk-navbar-left">
                         <a class="uk-navbar-toggle" onclick="backTo()">
@@ -112,9 +112,9 @@
                         <img data-src="{{ .user.Picture }}" alt="" uk-img>
                         <p class="uk-text-bold">{{ .user.UserName }}</p>
                         <p class="uk-text-small">{{ .user.CreatedAt }}</p>
-                        <p class="uk-text-small">Reputation:
+                        <!-- <p class="uk-text-small">Reputation:
                             <strong>9/10</strong>
-                        </p>
+                        </p> -->
                     </div>
                 </div>
                 <div class="uk-width-1-1 uk-text-center uk-margin-auto">
@@ -251,12 +251,24 @@
             </div>
         </div>
         {{ end }}
-        <footer>
+        <footer class="uk-padding-small">
             <hr>
-            <div class="uk-text-center">
-                <small>
-                    © 2018 OKZ version beta 0.01
-                </small>
+            <div class="uk-grid uk-grid-default uk-grid-small" uk-grid style="font-size: 13px;">
+                <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
+                    <p>
+                        © 2018 OKAZION version beta 0.01
+                    </p>
+                </div>
+                <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
+                    <a href="/conditions">
+                        Regles et les conditions d'utilisations
+                    </a>
+                </div>
+                <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
+                    <a href="/about-us">
+                        Contactez - nous
+                    </a>
+                </div>
             </div>
         </footer>
     </div>
