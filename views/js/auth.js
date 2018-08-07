@@ -74,6 +74,7 @@ loginForm.addEventListener('submit', (e) => {
                 window.location.href = "/create"
             } else {
                 window.location.href = "/"
+
             }
         })
         .catch(err => {
@@ -116,6 +117,7 @@ verifForm.addEventListener('submit', (e) => {
                 window.location.href = "/create"
             } else {
                 window.location.href = "/"
+
             }
         })
         .catch(err => {
@@ -173,6 +175,7 @@ updataPasswordForm.addEventListener('submit', e => {
                 window.location.href = "/create"
             } else {
                 window.location.href = "/"
+
             }
         })
         .catch(err => {
@@ -330,6 +333,7 @@ function onGoogleSignIn(googleUser) {
                 window.location.href = "/create"
             } else {
                 window.location.href = "/"
+
             }
         })
         .catch(err => {

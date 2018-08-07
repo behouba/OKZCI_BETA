@@ -2,47 +2,22 @@
 <html lang="fr">
 
 <head>
-    <title>Title</title>
+    <title>{{.user.UserName}}</title>
+    <link rel="icon" href="img/icon-72x72.png">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="google-signin-client_id" content="958526051973-n3qc7e0501vo4uvlll8gq3qcrrdq587b.apps.googleusercontent.com">
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet">
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
+        crossorigin="anonymous">
     <link rel="stylesheet" href="/css/uikit.min.css" />
     <link rel="stylesheet" href="/css/index.css">
+    <link rel="stylesheet" href="/css/profile-setting.css" />
     <script src="/js/axios.min.js"></script>
     <script src="/js/uikit.min.js"></script>
+    <script src="/js/axios.min.js"></script>
     <script src="/js/uikit-icons.min.js"></script>
 </head>
-<style>
-    a:hover {
-        text-decoration: none;
-    }
-
-    #profile-setting {
-        max-width: 1200px;
-        margin-right: auto;
-        margin-left: auto;
-    }
-
-    @media only screen and (min-width: 768px) {
-        /* For desktop: */
-        #mobile-profile {
-            display: none;
-        }
-        #desktop-profile {
-            display: block;
-        }
-
-    }
-
-    @media only screen and (max-width: 768px) {
-        /* For mobile: */
-        #mobile-profile {
-            display: block;
-        }
-        #desktop-profile {
-            display: none;
-        }
-    }
-</style>
 
 <body>
     <div id="profile-setting" class="uk-box-shadow-small">
@@ -61,8 +36,8 @@
                     </div>
                     {{ if .user }}
                     <div class="uk-navbar-right" style="height: 65px;" id="mobile-profile">
-                        <a uk-toggle="target: #offcanvas-flip" class="uk-navbar-toggle">
-                            <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 30px; height: 30px;"></span>
+                        <a uk-toggle="target: #side-profile" class="uk-navbar-toggle">
+                            <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 30px; height: 30px;background-size: cover;"></span>
                         </a>
                     </div>
                     {{ else }}
@@ -78,7 +53,7 @@
                             <li>
                                 {{ if .user }}
                                 <a href="#">
-                                    <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 40px; height: 40px;"></span>
+                                    <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 40px; height: 40px;background-size: cover;"></span>
                                 </a>
                                 <div class="uk-navbar-dropdown">
                                     <ul class="uk-nav uk-navbar-dropdown-nav">
@@ -109,7 +84,17 @@
             <div id="main-setting" class="uk-margin" uk-grid>
                 <div class="uk-text-center uk-margin-auto">
                     <div class="dashboard-profil">
-                        <img data-src="{{ .user.Picture }}" alt="" uk-img>
+
+                        <div class="avatar-upload">
+                            <div class="avatar-edit">
+                                <input type='file' id="imageUpload" accept=".png, .jpg, .jpeg" />
+                                <label for="imageUpload"></label>
+                            </div>
+                            <div class="avatar-preview">
+                                <div id="imagePreview" style="background-image: url({{.user.Picture}});">
+                                </div>
+                            </div>
+                        </div>
                         <p class="uk-text-bold">{{ .user.UserName }}</p>
                         <p class="uk-text-small">{{ .user.CreatedAt }}</p>
                         <!-- <p class="uk-text-small">Reputation:
@@ -230,22 +215,32 @@
         </main>
         <!-- right side -->
         {{ if .user}}
-        <div id="offcanvas-flip" uk-offcanvas="flip: true; overlay: true">
+        <div id="side-profile" uk-offcanvas="flip: true; overlay: true">
             <div class="uk-offcanvas-bar">
-                <ul class="uk-nav uk-nav-default">
-                    <li class="uk-nav-header">{{ .user.UserName }}</li>
+                <ul class="uk-nav uk-nav-default uk-text-bold uk-margin-top">
+                    <li class="uk-nav-header uk-text-center">
+                        <div class="dashboard-profil">
+                            <img data-src="{{ .user.Picture }}" alt="" uk-img style="min-height: 100%">
+                        </div>
+                    </li>
+                    <li class="uk-nav-header uk-text-center uk-margin">{{ .user.UserName }}</li>
+                    <li class="uk-nav-divider"></li>
                     <li>
                         <a href="/me">
-                            <span class="uk-margin-small-right" uk-icon="icon: user"></span>Profil</a>
+                            <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/avatar.svg');"></span>
+                            Profil</a>
                     </li>
+                    <li class="uk-nav-divider"></li>
                     <li>
                         <a href="/settings">
-                            <span class="uk-margin-small-right" uk-icon="icon: settings"></span>Reglages</a>
+                            <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/controls.svg');"></span>
+                            Reglages</a>
                     </li>
                     <li class="uk-nav-divider"></li>
                     <li>
                         <a onclick="logout()">
-                            <span class="uk-margin-small-right" uk-icon="icon: sign-out"></span>Deconnecter</a>
+                            <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/logout.svg');"></span>
+                            Deconnecter</a>
                     </li>
                 </ul>
             </div>
@@ -273,6 +268,7 @@
         </footer>
     </div>
     <script src="/js/profile-setting.js"></script>
+    <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
 </body>
 
 </html>

@@ -26,6 +26,7 @@ func userProfil(ctx iris.Context) {
 	if err != nil {
 		log.Println(err)
 	}
+	ctx.ViewData("adsCount", len(ads))
 	ctx.ViewData("favorites", favorites)
 	ctx.ViewData("ads", ads)
 	ctx.ViewData("user", user)
@@ -113,4 +114,26 @@ func sendMailMessage(body, to, name string) error {
 		return err
 	}
 	return nil
+}
+
+func updateUserProfileImage(ctx iris.Context) {
+	session := models.Sess.Start(ctx).GetString("email")
+	user, err := models.GetUserByEmail(session)
+	if err != nil {
+		log.Println(err)
+		ctx.StatusCode(iris.StatusForbidden)
+		return
+	}
+	path := "/user/" + user.UserName + "/"
+	urls, err := models.UploadFormFilesToAwsS3(ctx, path)
+	if err != nil {
+		ctx.StatusCode(iris.StatusInternalServerError)
+		log.Println(err)
+		return
+	}
+	user.Picture = urls[0]
+	if err := user.UpdateUserData(); err != nil {
+		ctx.StatusCode(iris.StatusInternalServerError)
+		return
+	}
 }

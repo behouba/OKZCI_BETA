@@ -61,6 +61,7 @@ func authentification(ctx iris.Context) {
 	session := models.Sess.Start(ctx)
 	var user models.User
 	ctx.ReadJSON(&user)
+	log.Println(user.Email)
 	err := user.Authenticate()
 	if err != nil {
 		if err.Error() == "must login with google or facebook" {
@@ -72,8 +73,9 @@ func authentification(ctx iris.Context) {
 		ctx.StatusCode(iris.StatusForbidden)
 		return
 	}
-	log.Println("user is authenticated...")
+	log.Println("in login user-email=", user.Email)
 	session.Set("email", user.Email)
+	log.Println("user is authenticated...")
 }
 
 func recovery(ctx iris.Context) {
@@ -197,7 +199,7 @@ func updatePassword(ctx iris.Context) {
 }
 
 func logout(ctx iris.Context) {
-	models.Sess.Start(ctx).Destroy()
+	models.Sess.Destroy(ctx)
 	ctx.Redirect("/", iris.StatusSeeOther)
 }
 

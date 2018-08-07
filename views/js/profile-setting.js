@@ -32,6 +32,10 @@ function updateUserContact() {
         })
 }
 
+function backTo() {
+    window.history.back()
+}
+
 function updateUserLocation() {
     var data = {
         "location": userLocation.value
@@ -40,6 +44,52 @@ function updateUserLocation() {
         .then(res => {
             console.log(res)
             window.location.reload(true)
+        })
+        .catch(err => {
+            console.log(err)
+        })
+}
+
+function logout() {
+
+    axios
+        .get("/logout")
+        .then(res => {
+            console.log("disconnected");
+            window.location.href = "/";
+        })
+        .catch(err => {
+            UIkit.notification("Erreur de reseau...", "warning");
+        });
+}
+
+function readURL(input) {
+    let imageUpload = document.getElementById("imageUpload");
+    if (input.files && input.files[0]) {
+        var reader = new FileReader();
+        reader.onload = function (e) {
+            let preview = document.getElementById("imagePreview");
+            preview.style.backgroundImage = 'url(' + e.target.result + ')';
+        }
+        reader.readAsDataURL(input.files[0]);
+        updateProfileImage(input.files[0])
+    }
+}
+imageUpload.addEventListener('change', function () {
+    readURL(this);
+})
+
+
+function updateProfileImage(file) {
+    var formData = new FormData();
+    formData.set("picture", file)
+    axios.post("/update-profile-pic", formData)
+        .then(res => {
+            UIkit.notification("Photo de profile mis a jour avec succes");
+            setTimeout(() => {
+                console.log('picture updated...');
+                window.location.reload(false);
+            }, 2000);
         })
         .catch(err => {
             console.log(err)

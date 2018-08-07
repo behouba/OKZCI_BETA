@@ -8,7 +8,6 @@ var Cities = []string{
 	"Yamoussoukro",
 	"San-Pédro",
 	"Divo",
-	"Divo",
 	"Korhogo",
 	"Anyama",
 	"Abengourou",

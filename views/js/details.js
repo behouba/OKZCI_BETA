@@ -2,6 +2,14 @@ let history = document.getElementById("history")
 let messageBody = document.getElementById("message-body")
 let fav = document.getElementById("fav")
 let report = document.getElementById("report-body")
+let adPrice = document.getElementById("ad-price")
+
+function numberWithCommas(x) {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+adPrice.innerText = numberWithCommas(adPrice.innerText)
+
 
 function goBack() {
     window.history.back();
@@ -35,6 +43,24 @@ function sendMessageTo(email, name) {
         .catch(err => {
             UIkit.notification('Echec d\'envoi', 'danger')
         })
+}
+
+function logout() {
+    UIkit.notification("Deconnexion en cours...", "success")
+    gapi.auth2.init();
+    let auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+        console.log("User signed out.");
+    });
+    axios
+        .get("/logout")
+        .then(res => {
+            console.log("disconnected");
+            window.location.href = "/";
+        })
+        .catch(err => {
+            UIkit.notification("Erreur de reseau...", "warning");
+        });
 }
 
 function sendReportMessage(shortID) {

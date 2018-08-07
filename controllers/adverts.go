@@ -2,10 +2,7 @@ package controllers
 
 import (
 	"log"
-	"mime/multipart"
 	"net/smtp"
-	"os"
-	"time"
 
 	"github.com/behouba/OKZ_BETA_0.01/models"
 	"github.com/kataras/iris"
@@ -182,21 +179,15 @@ func createAdvert(ctx iris.Context) {
 	ctx.ReadForm(&ad)
 	ad.OwnerID = user.ID
 	ad.ShortID = shortid.MustGenerate()
-	err = os.Mkdir("./public/ad/"+ad.ShortID+"/", os.ModeDir)
+	folder := "/ads/" + ad.ShortID + "/"
+	ad.Pictures, err = models.UploadFormFilesToAwsS3(ctx, folder)
 	if err != nil {
-		log.Println(err)
 		ctx.StatusCode(iris.StatusInternalServerError)
+		log.Println(err)
 		return
 	}
-	_, err = ctx.UploadFormFiles("./public/ad/"+ad.ShortID+"/", func(ctx iris.Context, file *multipart.FileHeader) {
-		path := "http://localhost:8080/pictures/ad/" + ad.ShortID + "/" + file.Filename
-		ad.Pictures = append(ad.Pictures, path)
-		ad.CreatedAt = time.Now()
-	})
-	if err != nil {
-		ctx.StatusCode(iris.StatusInternalServerError)
-		log.Println(err)
-		return
+	if len(ad.Pictures) < 1 {
+		ad.Pictures = append(ad.Pictures,"https://s3.eu-west-3.amazonaws.com/okazion/assets/No-image-available.png")
 	}
 	if err := ad.StoreNewAd(); err != nil {
 		log.Println(err)

@@ -10,6 +10,7 @@ type categories struct {
 	Maison        []catItem
 	Mode          []catItem
 	Hobby         []catItem
+	Autres        []catItem
 }
 
 type catItem struct {
@@ -55,11 +56,11 @@ var Categories = categories{
 		{Name: "Jardinage", Icon: "local_florist"},
 	},
 	Electroniques: []catItem{
-		{Name: "Audio er Videos", Icon: "film"},
+		{Name: "Audio et Videos", Icon: "film"},
 		{Name: "Ordinateur de bureau"},
 		{Name: "Ordinateur de portable"},
 		{Name: "Consoles & Jeux vidéo", Icon: "gamepad"},
-		{Name: "Téléphone", Icon: "mobile"},
+		{Name: "Téléphones & Tablettes", Icon: "mobile"},
 		{Name: "Accesoires Téléphone et tablette", Icon: "usb"},
 		{Name: "Accesoires Ordinateurs", Icon: "usb"},
 	},
@@ -69,5 +70,8 @@ var Categories = categories{
 		{Name: "Vélos", Icon: "bicycle"},
 		{Name: "Sports", Icon: "volleyball-ball"},
 		{Name: "Jeux & Jouets", Icon: "puzzle-piece"},
+	},
+	Autres: []catItem{
+		{Name: "Autres"},
 	},
 }

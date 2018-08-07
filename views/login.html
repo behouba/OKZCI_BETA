@@ -5,12 +5,12 @@
     <title>Title</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="google-signin-client_id" content="958526051973-n3qc7e0501vo4uvlll8gq3qcrrdq587b.apps.googleusercontent.com">
+    <!-- <meta name="google-signin-client_id" content="958526051973-u8p27acgp3nbc9kver68br84s8681i6h.apps.googleusercontent.com"> -->
     <link rel="stylesheet" href="/css/uikit.min.css" />
     <script src="/js/axios.min.js"></script>
     <script src="/js/uikit.min.js"></script>
     <script src="/js/uikit-icons.min.js"></script>
-    <script src="https://apis.google.com/js/platform.js" async defer></script>
+    <!-- <script src="https://apis.google.com/js/platform.js" async defer></script> -->
 </head>
 <style>
     #auth {
@@ -43,7 +43,7 @@
 
 <body>
     <div class="uk-position-center" id="auth-spinner" style="display: none">
-        <img src="/img/logo.gif" />
+        <img src="/img/6.gif">
     </div>
     <div id="auth" class="uk-box-shadow-small">
         <div id="login" class="uk-animation-slide-bottom-small">
@@ -88,8 +88,10 @@
                                 </div>
                                 <div class="uk-margin-large-top uk-text-center">
                                     <small>SE CONNECTER AVEC:</small>
+                                    <p></p>
+                                    <small>Connection avec facebook et google domaine https requis... a implementer plutard en production</small>
                                 </div>
-                                <div class="uk-margin uk-grid-expand" uk-grid>
+                                <!-- <div class="uk-margin uk-grid-expand" uk-grid>
                                     <div class="uk-width-1-2">
                                         <button style="height: 36px;font-size: 12px;border-radius: 1px;box-shadow: 0 2px 4px 0 rgba(0,0,0,.25);box-sizing: border-box;"
                                             class="uk-button uk-button-primary uk-width-1-1 uk-box-shadow-hover-small" onclick="onFacebookLogin()">
@@ -100,7 +102,7 @@
                                     <div class="uk-width-1-2">
                                         <div class="g-signin2" data-width="auto" data-onsuccess="onGoogleSignIn"></div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -249,7 +251,7 @@
         </div>
 
     </div>
-    <script>
+    <!-- <script>
         window.fbAsyncInit = function () {
             FB.init({
                 appId: '157821501758780',
@@ -268,7 +270,7 @@
             js.src = "https://connect.facebook.net/en_US/sdk.js";
             fjs.parentNode.insertBefore(js, fjs);
         }(document, 'script', 'facebook-jssdk'));
-    </script>
+    </script> -->
     <script src="/js/auth.js"></script>
 </body>
 

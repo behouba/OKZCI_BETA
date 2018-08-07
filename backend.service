@@ -1,0 +1,12 @@
+[Unit]
+Description=okz server side code
+
+[Service]
+ExecStart=/home/ubuntu/okz_beta
+WorkingDirectory=/home/ubuntu/
+User=root
+Group=root
+Restart=on-abort
+
+[Install]
+WantedBy=multi-user.target

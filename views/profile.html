@@ -2,12 +2,16 @@
 <html lang="fr">
 
 <head>
-    <title>{{ .user.UserName }}</title>
+    <title>{{.user.UserName}}</title>
     <meta charset="utf-8">
+
+    <link rel="icon" href="img/icon-72x72.png">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/css/uikit.min.css" />
     <link rel="stylesheet" href="/css/index.css">
+    <meta name="google-signin-client_id" content="958526051973-u8p27acgp3nbc9kver68br84s8681i6h.apps.googleusercontent.com">
     <script src="/js/uikit.min.js"></script>
+    <script src="/js/axios.min.js"></script>
     <script src="/js/uikit-icons.min.js"></script>
     <script src="/js/moment-with-locales.js"></script>
 </head>
@@ -65,8 +69,8 @@
                     </div>
                     {{ if .user }}
                     <div class="uk-navbar-right" style="height: 65px;" id="mobile-profile">
-                        <a uk-toggle="target: #offcanvas-flip" class="uk-navbar-toggle">
-                            <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 30px; height: 30px;"></span>
+                        <a uk-toggle="target: #side-profile" class="uk-navbar-toggle">
+                            <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 30px; height: 30px;background-size: cover;"></span>
                         </a>
                     </div>
                     {{ else }}
@@ -82,7 +86,7 @@
                             <li>
                                 {{ if .user }}
                                 <a href="#">
-                                    <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 40px; height: 40px;"></span>
+                                    <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 40px; height: 40px;background-size: cover;"></span>
                                 </a>
                                 <div class="uk-navbar-dropdown">
                                     <ul class="uk-nav uk-navbar-dropdown-nav">
@@ -108,32 +112,6 @@
                 </nav>
                 </nav>
             </div>
-            <!-- canvas content -->
-            <div class="uk-offcanvas-content">
-                <!-- right side -->
-                {{ if .user}}
-                <div id="offcanvas-flip" uk-offcanvas="flip: true; overlay: true">
-                    <div class="uk-offcanvas-bar">
-                        <ul class="uk-nav uk-nav-default">
-                            <li class="uk-nav-header">{{ .user.UserName }}</li>
-                            <li>
-                                <a href="/me">
-                                    <span class="uk-margin-small-right" uk-icon="icon: user"></span>Profil</a>
-                            </li>
-                            <li>
-                                <a href="/settings">
-                                    <span class="uk-margin-small-right" uk-icon="icon: settings"></span>Reglages</a>
-                            </li>
-                            <li class="uk-nav-divider"></li>
-                            <li>
-                                <a onclick="logout()">
-                                    <span class="uk-margin-small-right" uk-icon="icon: sign-out"></span>Deconnecter</a>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                {{ end }}
-            </div>
         </header>
         <main style="margin: 20px 10px">
             <div class="uk-margin" uk-grid>
@@ -141,10 +119,7 @@
                     <div class="dashboard-profil">
                         <img data-src="{{ .user.Picture }}" alt="" uk-img style="min-height: 100%">
                         <p class="uk-text-bold">{{ .user.UserName }}</p>
-                        <p class="uk-text-small">{{ .user.CreatedAt }}</p>
-                        <p class="uk-text-small">Reputation:
-                            <strong>9/10</strong>
-                        </p>
+                        <p class="uk-text-small">Vous avez {{ .adsCount }} annonce(s) en ligne</p>
                     </div>
                 </div>
                 <dir class="uk-width-1-1 uk-margin-auto">
@@ -165,8 +140,8 @@
                                     <div class="ad-card uk-width-1-2 uk-width-1-3@s uk-width-1-4@m">
                                         <a href="/update-p?a={{ .ShortID }}">
                                             <div class="uk-card uk-card-default uk-card-small uk-margin-auto">
-                                                <div class="uk-card-media-top uk-inline">
-                                                    <img src="{{index .Pictures 0}}" alt="Error: Failed to load image" height="400">
+                                                <div class="uk-card-media-top">
+                                                    <img src="{{index .Pictures 0}}" alt="Error: Failed to load image">
                                                     <div class="uk-overlay uk-overlay-default uk-dark uk-position-top">
                                                         <span uk-icon="icon: location; ratio: 0.7"></span>
                                                         <small class="uk-text-bold">{{ .City }}</small>
@@ -176,10 +151,8 @@
                                                     <p class="uk-text-small uk-text-truncate">{{ .Title }}</p>
                                                     {{ if gt .Price 0}}
                                                     <p class="uk-text-bold">{{.Price}} FCFA</p>
-                                                    {{ else if eq .Category "dons"}}
-                                                    <p class="uk-text-bold">Gratuit</p>
                                                     {{ else }}
-                                                    <br> {{ end }}
+                                                    <br/> {{ end }}
                                                     <p class="uk-text-right uk-text-small create-date">{{.CreatedAt}}</p>
                                                 </div>
                                             </div>
@@ -207,10 +180,8 @@
                                                     <p class="uk-text-small uk-text-truncate">{{ .Title }}</p>
                                                     {{ if gt .Price 0}}
                                                     <p class="uk-text-bold">{{.Price}} FCFA</p>
-                                                    {{ else if eq .Category "dons"}}
-                                                    <p class="uk-text-bold">Gratuit</p>
                                                     {{ else }}
-                                                    <br> {{ end }}
+                                                    <br/> {{ end }}
                                                     <p class="uk-text-right uk-text-small create-date">{{.CreatedAt}}</p>
                                                 </div>
                                             </div>
@@ -226,22 +197,32 @@
         </main>
         <!-- right side -->
         {{ if .user}}
-        <div id="offcanvas-flip" uk-offcanvas="flip: true; overlay: true">
+        <div id="side-profile" uk-offcanvas="flip: true; overlay: true">
             <div class="uk-offcanvas-bar">
-                <ul class="uk-nav uk-nav-default">
-                    <li class="uk-nav-header">{{ .user.UserName }}</li>
+                <ul class="uk-nav uk-nav-default uk-text-bold uk-margin-top">
+                    <li class="uk-nav-header uk-text-center">
+                        <div class="dashboard-profil">
+                            <img data-src="{{ .user.Picture }}" alt="" uk-img style="min-height: 100%">
+                        </div>
+                    </li>
+                    <li class="uk-nav-header uk-text-center uk-margin">{{ .user.UserName }}</li>
+                    <li class="uk-nav-divider"></li>
                     <li>
                         <a href="/me">
-                            <span class="uk-margin-small-right" uk-icon="icon: user"></span>Profil</a>
+                            <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/avatar.svg');"></span>
+                            Profil</a>
                     </li>
+                    <li class="uk-nav-divider"></li>
                     <li>
                         <a href="/settings">
-                            <span class="uk-margin-small-right" uk-icon="icon: settings"></span>Reglages</a>
+                            <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/controls.svg');"></span>
+                            Reglages</a>
                     </li>
                     <li class="uk-nav-divider"></li>
                     <li>
                         <a onclick="logout()">
-                            <span class="uk-margin-small-right" uk-icon="icon: sign-out"></span>Deconnecter</a>
+                            <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/logout.svg');"></span>
+                            Deconnecter</a>
                     </li>
                 </ul>
             </div>
@@ -268,6 +249,7 @@
             </div>
         </footer>
     </div>
+    <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
     <script src="/js/profile.js"></script>
 </body>
 

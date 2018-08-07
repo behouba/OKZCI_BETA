@@ -2,10 +2,21 @@
 <html lang="fr">
 
 <head>
-    <title>OKZ</title>
+    <title>Okazion</title>
+    <link rel="manifest" href="manifest.json">
+    <link rel="icon" href="img/icon-72x72.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="OKAZION">
+    <meta name="apple-mobile-web-app-title" content="OKAZION">
+    <meta name="theme-color" content="#00aaff">
+    <meta name="msapplication-navbutton-color" content="#00aaff">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="msapplication-starturl" content="/">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="google-signin-client_id" content="958526051973-n3qc7e0501vo4uvlll8gq3qcrrdq587b.apps.googleusercontent.com">
+    <!-- <meta name="google-signin-client_id" content="958526051973-u8p27acgp3nbc9kver68br84s8681i6h.apps.googleusercontent.com"> -->
     <link rel="stylesheet" href="/css/uikit.min.css" />
     <link rel="stylesheet" href="/css/index.css" />
 
@@ -32,8 +43,8 @@
                     </div>
                     {{ if .user }}
                     <div class="uk-navbar-right" style="height: 65px;">
-                        <a uk-toggle="target: #offcanvas-flip" class="uk-navbar-toggle">
-                            <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 30px; height: 30px;"></span>
+                        <a uk-toggle="target: #side-profile" class="uk-navbar-toggle">
+                            <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 30px; height: 30px;background-size: cover;"></span>
                         </a>
                     </div>
                     {{ else }}
@@ -62,7 +73,7 @@
             <div id="filter-modal" class="uk-modal-full" uk-modal>
                 <div class="uk-modal-dialog">
                     <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
-                    <div class="uk-padding uk-width-1-1 uk-text-center uk-margin-auto">
+                    <div class="uk-padding uk-width-1-1 uk-text-center uk-margin-auto uk-box-shadow-large">
                         <div class="setting-search" uk-grid>
                             <div class="uk-width-1-1">
                                 <p>Ville</p>
@@ -123,17 +134,23 @@
                                             <div>
                                                 <ul class="uk-nav uk-navbar-dropdown-nav">
                                                     <li>
-                                                        <a href="#" onclick="setCategory('all')">TOUTES LES CATEGORIES</a>
+                                                        <a href="#" onclick="setCategory('all')">
+                                                            <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/cat-menu.svg');"></span>
+                                                            TOUTES LES CATEGORIES</a>
                                                     </li>
                                                     <li class="uk-nav-divider"></li>
-                                                    <li class="uk-nav-header">ELECTRONIQUES</li>
+                                                    <li class="uk-nav-header uk-text-bold">
+                                                        <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/electronic.svg');"></span>
+                                                        ELECTRONIQUES</li>
                                                     {{ range .categories.Electroniques }}
                                                     <li>
                                                         <a href="#" onclick="setCategory({{ .Name }})">{{ .Name }}</a>
                                                     </li>
                                                     {{ end }}
                                                     <li class="uk-nav-divider"></li>
-                                                    <li class="uk-nav-header">EMPLOIS</li>
+                                                    <li class="uk-nav-header uk-text-bold">
+                                                        <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/job.svg');"></span>
+                                                        EMPLOIS</li>
                                                     {{ range .categories.Emplois }}
                                                     <li>
                                                         <a href="#" onclick="setCategory({{ .Name }})">{{ .Name }}</a>
@@ -143,14 +160,18 @@
                                             </div>
                                             <div>
                                                 <ul class="uk-nav uk-navbar-dropdown-nav">
-                                                    <li class="uk-nav-header">VEHICULES</li>
+                                                    <li class="uk-nav-header">
+                                                        <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/car.svg');"></span>
+                                                        VEHICULES</li>
                                                     {{ range .categories.Vehicules }}
                                                     <li>
                                                         <a href="#" onclick="setCategory({{ .Name }})">{{ .Name }}</a>
                                                     </li>
                                                     {{ end }}
                                                     <li class="uk-nav-divider"></li>
-                                                    <li class="uk-nav-header">INTERIEUR</li>
+                                                    <li class="uk-nav-header">
+                                                        <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/armchair.svg');"></span>
+                                                        INTERIEUR</li>
                                                     {{ range .categories.Maison }}
                                                     <li>
                                                         <a href="#" onclick="setCategory({{ .Name }})">{{ .Name }}</a>
@@ -160,14 +181,19 @@
                                             </div>
                                             <div>
                                                 <ul class="uk-nav uk-navbar-dropdown-nav">
-                                                    <li class="uk-nav-header">IMMOBILIER</li>
+                                                    <li class="uk-nav-header">
+                                                        <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/house.svg');"></span>
+                                                        IMMOBILIER</li>
                                                     {{ range .categories.Immobilier }}
                                                     <li>
                                                         <a href="#" onclick="setCategory({{ .Name }})">{{ .Name }}</a>
                                                     </li>
                                                     {{ end }}
                                                     <li class="uk-nav-divider"></li>
-                                                    <li class="uk-nav-header">MODE</li>
+                                                    <li class="uk-nav-header">
+                                                        <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/fashion.svg');"></span>
+                                                        MODE
+                                                    </li>
                                                     {{ range .categories.Mode }}
                                                     <li>
                                                         <a href="#" onclick="setCategory({{ .Name }})">{{ .Name }}</a>
@@ -177,19 +203,32 @@
                                             </div>
                                             <div>
                                                 <ul class="uk-nav uk-navbar-dropdown-nav">
-                                                    <li class="uk-nav-header">SERVICES</li>
+                                                    <li class="uk-nav-header">
+                                                        <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/employee.svg');"></span>
+                                                        SERVICES</li>
                                                     {{ range .categories.Services }}
                                                     <li>
                                                         <a href="#" onclick="setCategory({{ .Name }})">{{ .Name }}</a>
                                                     </li>
                                                     {{ end }}
                                                     <li class="uk-nav-divider"></li>
-                                                    <li class="uk-nav-header">LOISIR ET HOBBIES</li>
+                                                    <li class="uk-nav-header">
+                                                        <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/guitar.svg');"></span>
+                                                        LOISIR ET HOBBIES</li>
                                                     {{ range .categories.Hobby }}
                                                     <li>
                                                         <a href="#" onclick="setCategory({{ .Name }})">{{ .Name }}</a>
                                                     </li>
                                                     {{ end }}
+                                                    <li class="uk-nav-divider"></li>
+                                                    <li class="uk-nav-header">
+                                                        {{ range .categories.Autres}}
+                                                        <a href="#" onclick="setCategory({{ .Name }})">
+                                                            <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/alien.svg');"></span>
+                                                            AUTRES
+                                                        </a>
+                                                        {{ end }}
+                                                    </li>
                                                 </ul>
                                             </div>
                                         </div>
@@ -251,7 +290,7 @@
                                 <li>
                                     {{ if .user }}
                                     <a href="#">
-                                        <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 40px; height: 40px;"></span>
+                                        <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 40px; height: 40px; background-size: cover;"></span>
                                     </a>
                                     <div class="uk-navbar-dropdown">
                                         <ul class="uk-nav uk-navbar-dropdown-nav">
@@ -281,7 +320,7 @@
         </div>
         <!-- categories slider -->
         <div style="margin: 0px 10px">
-            <section id="auctions-slider" style="margin-bottom: 10px;" class="uk-margin-medium-top uk-margin-xlarge-buttom">
+            <section id="auctions-slider" style="margin-bottom: 10px; display: none" class="uk-margin-medium-top uk-margin-xlarge-buttom">
                 <div class="uk-position-relative uk-visible-toggle uk-light" uk-slider="clsActivated: uk-transition-active; center: true">
                     <ul class="uk-slider-items uk-grid">
                         {{ range .hotAuctions }}
@@ -303,7 +342,7 @@
                     <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slider-item="next"></a>
                 </div>
             </section>
-            <section id="breadcrumb" style="display: none">
+            <!-- <section id="breadcrumb" style="display: none">
                 <div class="uk-margin-medium-top uk-margin-xlarge-buttom">
                     <ul class="uk-breadcrumb">
                         <li>
@@ -317,7 +356,7 @@
                         </li>
                     </ul>
                 </div>
-            </section>
+            </section> -->
             <!-- adverts listing  -->
             <main>
                 <section style="margin-top: 60px">
@@ -326,13 +365,13 @@
                     </div> -->
                     <div uk-grid>
                         <div class="uk-width-1-1 uk-width-3-4@m">
-                            <div class="uk-grid-small uk-child-width-expand@ uk-margin uk-text-center" style="margin-top: 240px;" uk-grid id="home-spinner">
-                                <div class="uk-margin" uk-spinner></div>
-                            </div>
                             <div uk-grid id="listing-title" style="display: none">
+                                <div class="uk-width-1-1" id="mobile-search-keyword" style="display: none">
+
+                                </div>
                                 <div class="uk-width-1-1">
                                     <h3 class="uk-align-left" style="color: #00aaff; font-weight: bold" id="category-title">TOUTES LES ANNONCES</h3>
-                                    <form class="uk-align-right">
+                                    <form class="uk-align-right" id="desk-sort-by">
                                         <strong>Trier par: </strong>
                                         <select class="uk-select uk-form-width-small" onchange="setSortDesktop(value)">
                                             <option>Default</option>
@@ -343,13 +382,18 @@
                                     </form>
                                 </div>
                             </div>
+                            <div class="uk-grid-small uk-child-width-expand@ uk-margin uk-text-center" uk-grid id="home-spinner">
+                                <div class="uk-margin" style="margin-top: 240px; margin-bottom: 200px;">
+                                    <img src="/img/6.gif">
+                                </div>
+                            </div>
                             <div class="uk-grid-small uk-child-width-expand@" uk-grid id="ads-field" style="display: none">
                                 {{ range .ads }}
                                 <div class="ad-card uk-width-1-2 uk-width-1-3@s uk-width-1-4@m">
                                     <a href="/watch/?a={{.ShortID}}">
                                         <div class="uk-card uk-card-default uk-card-hover uk-card-small uk-margin-auto">
-                                            <div class="uk-card-media-top uk-inline">
-                                                <img src="{{index .Pictures 0}}" alt="Error: Failed to load image" height="400">
+                                            <div class="uk-card-media-top">
+                                                <img src="{{index .Pictures 0}}" alt="Error: Failed to load image">
                                                 <div class="uk-overlay uk-overlay-default uk-dark uk-position-top">
                                                     <span uk-icon="icon: location; ratio: 0.7"></span>
                                                     <small class="uk-text-bold">{{ .City }}</small>
@@ -359,10 +403,8 @@
                                                 <p class="uk-text-small uk-text-truncate">{{ .Title }}</p>
                                                 {{ if gt .Price 0}}
                                                 <p class="uk-text-bold">{{.Price}} FCFA</p>
-                                                {{ else if eq .Category "dons"}}
-                                                <p class="uk-text-bold">Gratuit</p>
                                                 {{ else }}
-                                                <br> {{ end }}
+                                                <br/> {{ end }}
                                                 <p class="uk-text-right uk-text-small create-date">{{.CreatedAt}}</p>
                                             </div>
                                         </div>
@@ -373,11 +415,11 @@
                             <div class="uk-text-center uk-margin-large-top" id="loadButton" style="display: none">
                                 <button class="uk-button uk-button-default uk-button-small" onclick="loadMore()">Voir plus</button>
                             </div>
-                            <div class="uk-text-center uk-margin" style="display: none" id="loadMore-spinner">
+                            <div class="uk-text-center uk-margin uk-margin-large-top" style="display: none; color: #00aaff" id="loadMore-spinner">
                                 <div uk-spinner></div>
                             </div>
-                            <div class="uk-text-center uk-margin uk-text-center" id="noMoreAds" style="display: none;">
-                                <p>Plus rien a afficher...</p>
+                            <div class="uk-text-center uk-text-muted uk-margin uk-text-center uk-margin-large-top" id="noMoreAds" style="display: none;">
+                                <small>Malheureusement, il n'y a plus d'articles...</small>
                             </div>
                         </div>
                         <div class="uk-width-1-1 uk-width-1-4@m">
@@ -389,114 +431,167 @@
                         <div class="uk-offcanvas-content">
                             <!-- left side           -->
                             <div id="categories-menu" uk-offcanvas="overlay: true">
-                                <div class="uk-offcanvas-bar">
-                                    <ul class="uk-nav uk-nav-default" uk-nav>
-                                        <li class="uk-nav-header">CATEGORIES</li>
+                                <div class="uk-offcanvas-bar  uk-text-bold">
+                                    <ul class="uk-nav uk-nav-default  uk-text-primary" uk-nav>
+                                        <li class="uk-nav-header uk-text-center uk-margin">CATEGORIES</li>
                                         <hr>
                                         <li class="uk-nav">
-                                            <a onclick="setCategory('all')">TOUTES LES CATEGORIES</a>
+                                            <a onclick="setCategory('all')">
+                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/cat-menu.svg');"></span>
+                                                TOUTES LES CATEGORIES</a>
                                         </li>
+                                        <li class="uk-nav-divider"></li>
                                         <li class="uk-parent">
-                                            <a href="#">ELECTRONIQUES</a>
+                                            <a href="#">
+                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/electronic.svg');"></span>
+                                                ELECTRONIQUES</a>
                                             <ul class="uk-nav-sub">
                                                 {{ range .categories.Electroniques }}
+                                                <li class="uk-nav-divider"></li>
                                                 <li>
                                                     <a onclick="setCategory({{ .Name }})">{{ .Name }}</a>
                                                 </li>
                                                 {{ end }}
                                             </ul>
                                         </li>
+                                        <li class="uk-nav-divider"></li>
                                         <li class="uk-parent">
-                                            <a href="#">VEHICULES</a>
+                                            <a href="#">
+                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/car.svg');"></span>
+                                                VEHICULES</a>
                                             <ul class="uk-nav-sub">
                                                 {{ range .categories.Vehicules }}
+                                                <li class="uk-nav-divider"></li>
                                                 <li>
                                                     <a onclick="setCategory({{ .Name }})">{{ .Name }}</a>
                                                 </li>
                                                 {{ end }}
                                             </ul>
                                         </li>
+                                        <li class="uk-nav-divider"></li>
                                         <li class="uk-parent">
-                                            <a href="#">IMMOBILIER</a>
+                                            <a href="#">
+                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/house.svg');"></span>
+                                                IMMOBILIER</a>
                                             <ul class="uk-nav-sub">
                                                 {{ range .categories.Immobilier}}
+                                                <li class="uk-nav-divider"></li>
                                                 <li>
                                                     <a onclick="setCategory({{ .Name }})">{{ .Name }}</a>
                                                 </li>
                                                 {{ end }}
                                             </ul>
                                         </li>
+                                        <li class="uk-nav-divider"></li>
                                         <li class="uk-parent">
-                                            <a href="#">SERVICES</a>
+                                            <a href="#">
+                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/employee.svg');"></span>
+                                                SERVICES</a>
                                             <ul class="uk-nav-sub">
                                                 {{ range .categories.Services}}
+                                                <li class="uk-nav-divider"></li>
                                                 <li>
                                                     <a onclick="setCategory({{ .Name }})">{{ .Name }}</a>
                                                 </li>
                                                 {{ end }}
                                             </ul>
                                         </li>
+                                        <li class="uk-nav-divider"></li>
                                         <li class="uk-parent">
-                                            <a href="#">EMPLOIS</a>
+                                            <a href="#">
+                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/job.svg');"></span>
+                                                EMPLOIS</a>
                                             <ul class="uk-nav-sub">
                                                 {{ range .categories.Emplois}}
+                                                <li class="uk-nav-divider"></li>
                                                 <li>
                                                     <a onclick="setCategory({{ .Name }})">{{ .Name }}</a>
                                                 </li>
                                                 {{ end }}
                                             </ul>
                                         </li>
+                                        <li class="uk-nav-divider"></li>
                                         <li class="uk-parent">
-                                            <a href="#">INTERIEUR</a>
+                                            <a href="#">
+                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/armchair.svg');"></span>
+                                                INTERIEUR</a>
                                             <ul class="uk-nav-sub">
                                                 {{ range .categories.Maison}}
+                                                <li class="uk-nav-divider"></li>
                                                 <li>
                                                     <a onclick="setCategory({{ .Name }})">{{ .Name }}</a>
                                                 </li>
                                                 {{ end }}
                                             </ul>
                                         </li>
+                                        <li class="uk-nav-divider"></li>
                                         <li class="uk-parent">
-                                            <a href="#">MODE</a>
+                                            <a href="#">
+                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/fashion.svg');"></span>
+                                                MODE</a>
                                             <ul class="uk-nav-sub">
                                                 {{ range .categories.Mode}}
+                                                <li class="uk-nav-divider"></li>
                                                 <li>
                                                     <a onclick="setCategory({{ .Name }})">{{ .Name }}</a>
                                                 </li>
                                                 {{ end }}
                                             </ul>
                                         </li>
+                                        <li class="uk-nav-divider"></li>
                                         <li class="uk-parent">
-                                            <a href="#">LOISIR ET HOBBIES</a>
+                                            <a href="#">
+                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/guitar.svg');"></span>
+                                                LOISIR ET HOBBIES</a>
                                             <ul class="uk-nav-sub">
                                                 {{ range .categories.Hobby}}
+                                                <li class="uk-nav-divider"></li>
                                                 <li>
                                                     <a onclick="setCategory({{ .Name }})">{{ .Name }}</a>
                                                 </li>
                                                 {{ end }}
                                             </ul>
                                         </li>
+                                        <li class="uk-nav-divider"></li>
+                                        <li class="uk-parent">
+                                            {{ range .categories.Autres}}
+                                            <a onclick="setCategory({{ .Name }})">
+                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/alien.svg');"></span>
+                                                {{.Name}}</a>
+                                            {{ end }}
+                                        </li>
+                                        <li class="uk-nav-divider"></li>
                                     </ul>
                                 </div>
                             </div>
                             <!-- right side -->
                             {{ if .user}}
-                            <div id="offcanvas-flip" uk-offcanvas="flip: true; overlay: true">
+                            <div id="side-profile" uk-offcanvas="flip: true; overlay: true">
                                 <div class="uk-offcanvas-bar">
-                                    <ul class="uk-nav uk-nav-default">
-                                        <li class="uk-nav-header">{{ .user.UserName }}</li>
+                                    <ul class="uk-nav uk-nav-default uk-text-bold uk-margin-top">
+                                        <li class="uk-nav-header uk-text-center">
+                                            <div class="dashboard-profil">
+                                                <img data-src="{{ .user.Picture }}" alt="" uk-img style="min-height: 100%">
+                                            </div>
+                                        </li>
+                                        <li class="uk-nav-header uk-text-center uk-margin">{{ .user.UserName }}</li>
+                                        <li class="uk-nav-divider"></li>
                                         <li>
                                             <a href="/me">
-                                                <span class="uk-margin-small-right" uk-icon="icon: user"></span>Profil</a>
+                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/avatar.svg');"></span>
+                                                Profil</a>
                                         </li>
+                                        <li class="uk-nav-divider"></li>
                                         <li>
                                             <a href="/settings">
-                                                <span class="uk-margin-small-right" uk-icon="icon: settings"></span>Reglages</a>
+                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/controls.svg');"></span>
+                                                Reglages</a>
                                         </li>
                                         <li class="uk-nav-divider"></li>
                                         <li>
                                             <a onclick="logout()">
-                                                <span class="uk-margin-small-right" uk-icon="icon: sign-out"></span>Deconnecter</a>
+                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/logout.svg');"></span>
+                                                Deconnecter</a>
                                         </li>
                                     </ul>
                                 </div>
@@ -536,12 +631,21 @@
                 </div>
             </footer>
             <div id="sticky" style="text-align: center; display: none;">
-                <a onclick="goCreateAdPage()" class="uk-button uk-button-primary">AJOUTER UNE ANNONCE</a>
+                <a onclick="goCreateAdPage()" class="uk-button uk-button-primary sticky-btn">AJOUTER UNE ANNONCE</a>
             </div>
         </div>
     </div>
     <script src="/js/index.js"></script>
-    <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+    <!-- <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script> -->
 </body>
+<script>
+    // Check that service workers are registered
+    if ('serviceWorker' in navigator) {
+        // Use the window load event to keep the page load performant
+        window.addEventListener('load', () => {
+            navigator.serviceWorker.register('sw.js');
+        });
+    }
+</script>
 
 </html>

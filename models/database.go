@@ -2,18 +2,16 @@ package models
 
 import (
 	"log"
-	"time"
 
 	"github.com/kataras/iris/sessions"
-	"github.com/kataras/iris/sessions/sessiondb/redis"
-	"github.com/kataras/iris/sessions/sessiondb/redis/service"
 	"gopkg.in/mgo.v2"
 	// postgresql driver
 )
 
 var mgoSession *mgo.Session
 var err error
-var redisDb *redis.Database
+
+// var redisDb *redis.Database
 
 // var mongoURI = "mongodb://behouba:45001685@okzdb-shard-00-00-fo6si.mongodb.net:27017,okzdb-shard-00-01-fo6si.mongodb.net:27017,okzdb-shard-00-02-fo6si.mongodb.net:27017/admin?replicaSet=OKZDB-shard-0&authSource=admin"
 
@@ -37,25 +35,31 @@ func init() {
 		log.Println(err)
 		panic(err)
 	}
-
 	log.Println("connected to mongodb")
-	redisDb = redis.New(service.Config{
-		Network:     "tcp",
-		Addr:        "127.0.0.1:6379",
-		Password:    "",
-		Database:    "",
-		MaxIdle:     0,
-		MaxActive:   0,
-		IdleTimeout: time.Duration(5) * time.Minute,
-		Prefix:      ""})
+	// redisDb = redis.New(service.DefaultConfig())
 
 	Sess = sessions.New(sessions.Config{
-		Cookie:       "session-okz",
-		Expires:      -1,
+		// Cookie string, the session's client cookie name, for example: "mysessionid"
+		//
+		// Defaults to "irissessionid"
+		Cookie: "mysessionid",
+		// it's time.Duration, from the time cookie is created, how long it can be alive?
+		// 0 means no expire.
+		// -1 means expire when browser closes
+		// or set a value, like 2 hours:
+		Expires: 0,
+		// if you want to invalid cookies on different subdomains
+		// of the same host, then enable it.
+		// Defaults to false.
+		DisableSubdomainPersistence: true,
+		// AllowReclaim will allow to
+		// Destroy and Start a session in the same request handler.
+		// All it does is that it removes the cookie for both `Request` and `ResponseWriter` while `Destroy`
+		// or add a new cookie to `Request` while `Start`.
+		//
+		// Defaults to false.
 		AllowReclaim: true,
-	},
-	)
-
-	Sess.UseDatabase(redisDb)
+	})
+	// Sess.UseDatabase(redisDb)
 
 }

@@ -16,10 +16,9 @@ let desktopCategoryPicker = document.getElementById("desktop-category-picker");
 let currentDesktopLocation = document.getElementById("desktop-current-location");
 let desktopSearch = document.getElementById("desk-search");
 let desktopSearchBar = document.getElementById("desk-search-bar");
-let categoryBreadCrumb = document.getElementById("category-breadcrumb");
-let locationBreadCrumb = document.getElementById("location-breadcrumb");
 let listingTitle = document.getElementById("listing-title");
 let categoryTitle = document.getElementById("category-title")
+let mobileSearchKeyword = document.getElementById("mobile-search-keyword")
 
 let searchBar = document.getElementById("search-bar");
 let searchNav = document.getElementById("search-nav");
@@ -28,11 +27,14 @@ let searchCloseIcon = document.getElementById("search-close-icon");
 let searchSetting = document.getElementById("search-setting");
 let createDate = document.getElementsByClassName("create-date");
 
+
+
 function homePageLoaded() {
   if (sessionStorage.getItem("data") !== null && step === 1) {
     adsField.innerHTML = sessionStorage.getItem("data");
     sessionStorage.removeItem("step");
     sessionStorage.removeItem("data");
+    loadButton.style.display = "block"
     getSearchParams()
   } else {
     searchRequest()
@@ -46,12 +48,12 @@ function displayListing() {
   listingTitle.style.display = "flex";
   adsField.style.display = "flex";
   sticky.style.display = "block";
-  loadButton.style.display = "block";
 }
 // init google auth api
 function onLoad() {
   gapi.load("auth2", function () {
     gapi.auth2.init();
+    console.log("google api loaded...")
   });
 }
 
@@ -71,16 +73,7 @@ function incrementOffset() {
   console.log("offset =", offset)
 }
 
-
 function logout() {
-  // google logout
-  gapi.auth2.init();
-  let auth2 = gapi.auth2.getAuthInstance();
-  auth2.signOut().then(function () {
-    console.log("User signed out.");
-  });
-
-  // server logout
   axios
     .get("/logout")
     .then(res => {
@@ -115,11 +108,9 @@ function setCategory(cat) {
     category = "";
     categoryTitle.innerText = "TOUTES LES ANNONCES"
     desktopCurrentCategory.innerText = "TOUTES LES CATEGORIES"
-    categoryBreadCrumb.childNodes[1].innerText = "TOUTES LES CATEGORIES"
   } else {
     category = cat;
     desktopCurrentCategory.innerText = cat.substring(0, 32).toUpperCase()
-    categoryBreadCrumb.childNodes[1].innerText = cat.toUpperCase()
     categoryTitle.innerText = cat.toUpperCase()
   }
   console.log("categorie", category);
@@ -144,7 +135,6 @@ function setDeskCity(c) {
   } else {
     city = c;
   }
-  locationBreadCrumb.childNodes[1].innerText = c.toUpperCase()
   currentDesktopLocation.innerText = c.toUpperCase()
   searchRequest();
 }
@@ -172,6 +162,8 @@ function searchRequest() {
   adsField.style.display = "none";
   homeSpinner.style.display = "block";
   loadButton.style.display = "none";
+  listingTitle.style.display = 'flex';
+  noMoreAds.style.display = 'none';
   let url =
     "/search?query=" +
     search.value +
@@ -195,8 +187,14 @@ function searchRequest() {
         incrementOffset()
         checkResult(res.data);
       } else {
-        adsField.innerHTML =
-          "<p class='uk-text-center'>Rien a été trouvé pour cette recherche desolé !</p>";
+        listingTitle.style.display = 'none'
+        noMoreAds.style.display = "none";
+        adsField.innerHTML = `<div class="uk-margin uk-text-center" style="margin-top:40px;">
+        <h3>Malheureusement, aucune n'annonce ne correspond a votre recherche !</h3>
+        <div class="uk-margin-small">
+            <img src="/img/nothing_found.png" style="width: 200px; height: 200px">
+        </div>
+    </div>`;
         console.log("nothing found for this search ...");
       }
       homeSpinner.style.display = "none";
@@ -206,12 +204,19 @@ function searchRequest() {
       console.log(err);
       homeSpinner.style.display = "none";
       adsField.style.display = "flex";
+      UIkit.notification("Erreur de reseau...", "warning");
     });
 }
 
 searchBar.addEventListener("submit", e => {
   e.preventDefault();
   console.log(search.value);
+  if (search.value !== "") {
+    mobileSearchKeyword.innerHTML = `<h3 class="uk-align-left" id="keyword-title">Mot clé recherché: <strong style="color: #00aaff; font-weight: bold">« ${search.value} »</strong></h3>`
+    mobileSearchKeyword.style.display = 'block';
+  } else {
+    mobileSearchKeyword.style.display = 'none';
+  }
   searchRequest();
 });
 
@@ -257,6 +262,7 @@ function loadMore() {
       console.log(err);
       loadSpinner.style.display = "none";
       loadButton.style.display = "block";
+      UIkit.notification("Erreur de reseau...", "warning");
     });
 }
 
@@ -282,7 +288,7 @@ function createAdCard(ad) {
     ad.short_id +
     `" onclick="saveData()">
                             <div class="uk-card uk-card-default uk-card-hover uk-card-small uk-margin-auto">
-                                <div class="uk-card-media-top uk-inline">
+                                <div class="uk-card-media-top">
                                     <img src="` +
     ad.pictures[0] +
     `" alt="Error: Failed to load image" height="400">
@@ -299,11 +305,9 @@ function createAdCard(ad) {
     ad.title +
     `</p>`;
   if (ad.price > 0) {
-    html += `<p class="uk-text-bold">` + ad.price + ` FCFA</p>`;
-  } else if (ad.category === "dons") {
-    html += `<p class="uk-text-bold">Gratuit</p>`;
+    html += `<p class="uk-text-bold">` + numberWithCommas(ad.price) + ` FCFA</p>`;
   } else {
-    html += `br`;
+    html += `<br>`;
   }
   html +=
     ` <p class="uk-text-right uk-text-small create-date">` +
@@ -317,10 +321,18 @@ function createAdCard(ad) {
   return html;
 }
 
+
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+
 function clearSearch() {
   searchField.value = "";
   searchSetting.style.display = "inline-flex";
   searchCloseIcon.style.display = "none";
+  mobileSearchKeyword.style.display = "none";
+  searchRequest()
 }
 
 function searchBarFocus() {

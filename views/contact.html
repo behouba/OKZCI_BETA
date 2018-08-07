@@ -8,6 +8,7 @@
     <title>Contactez-nous</title>
     <link rel="stylesheet" href="/css/uikit.min.css" />
     <link rel="stylesheet" href="/css/index.css" />
+    <script src="/js/axios.min.js"></script>
     <script src="/js/uikit.min.js"></script>
     <script src="/js/uikit-icons.min.js"></script>
 </head>
@@ -70,17 +71,17 @@
                 </p>
             </div>
             <div class="uk-padding" uk-grid>
-                <form class="uk-width-1-1 uk-width-1-2@s uk-margin-auto">
+                <form id="contact-form" class="uk-width-1-1 uk-width-1-2@s uk-margin-auto">
                     <legend class="uk-legend uk-text-center">CONTACTEZ-NOUS</legend>
 
                     <div class="uk-margin">
-                        <input class="uk-input" type="text" placeholder="Votre nom" required>
+                        <input class="uk-input" type="text" id="name" placeholder="Votre nom" required>
                     </div>
                     <div class="uk-margin">
-                        <input class="uk-input" type="email" placeholder="Votre email" required>
+                        <input class="uk-input" type="email" id="email" placeholder="Votre email" required>
                     </div>
                     <div class="uk-margin">
-                        <textarea class="uk-textarea" rows="5" placeholder="Message..." required></textarea>
+                        <textarea class="uk-textarea" rows="5" id="body" placeholder="Message..." required></textarea>
                     </div>
                     <div class="uk-margin">
                         <button class="uk-button uk-button-primary uk-width-1-1">ENVOYER</button>
@@ -109,6 +110,28 @@
             </div>
         </footer>
     </div>
+    <script>
+        let contactForm = document.getElementById("contact-form");
+        let userName = document.getElementById("name");
+        let userEmail = document.getElementById("email");
+        let messageBody = document.getElementById("body")
+        contactForm.addEventListener("submit", e => {
+            e.preventDefault()
+            var msg = {
+                "sender": userName.value,
+                "email": userEmail.value,
+                "body": messageBody.value
+            }
+            axios.post("/contact-us", msg)
+                .then(res => {
+                    UIkit.notification("Merci de nous avoir contacté", "success")
+                    contactForm.reset()
+                })
+                .catch(err => {
+                    UIkit.notification("L'envoi du message echoué, veillez reessayer svp...", "danger")
+                })
+        })
+    </script>
 </body>
 
 </html>

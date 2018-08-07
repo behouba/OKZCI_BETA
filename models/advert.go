@@ -111,9 +111,13 @@ func reverse(slice []string) []string {
 
 // DeleteAdvert delete ad from database collection
 func DeleteAdvert(shortID string) (err error) {
-	err = ArchiveAdvert(shortID)
+	ad, err := ArchiveAdvert(shortID)
 	if err != nil {
 		return
+	}
+	err = deleteFromAwsS3(ad.Pictures)
+	if err != nil {
+		log.Println(err)
 	}
 	err = mgoSession.DB("okzdb").C("adverts").Remove(bson.M{"short_id": shortID})
 	if err != nil {
@@ -127,8 +131,7 @@ func DeleteAdvert(shortID string) (err error) {
 }
 
 // ArchiveAdvert put ad on trash collection before delete it
-func ArchiveAdvert(shortID string) (err error) {
-	var ad Advert
+func ArchiveAdvert(shortID string) (ad Advert, err error) {
 	err = mgoSession.DB("okzdb").C("adverts").Find(bson.M{"short_id": shortID}).One(&ad)
 	if err != nil {
 		return

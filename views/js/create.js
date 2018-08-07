@@ -8,7 +8,7 @@ let adForm = document.getElementById('ad-form')
 let adFormField = document.getElementById("ad-form-field")
 let formTitle = document.getElementById("form-title")
 let price = document.getElementById("price")
-let priceValue = document.getElementById("prix")
+let priceValue = document.getElementById("price-value")
 let type = document.getElementById("type")
 let adType = document.getElementById("ad-type")
 let city = document.getElementById("city")
@@ -28,13 +28,20 @@ let selectedCategory = ''
 
 function setType(value) {
     if (value === 'Demande') {
-        auction.style.display = 'none'
         simple.style.display = 'none'
     } else if (value === 'Offre') {
-        auction.style.display = 'none'
         simple.style.display = 'block'
     }
 }
+
+// function numberWithCommas(x) {
+//     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+// }
+
+// function formatPrice() {
+//     priceValue.value = numberWithCommas(priceValue.value)
+// }
+
 
 
 function setCategory(c) {
@@ -180,4 +187,23 @@ adFormField.addEventListener('submit', e => {
 function createPageLoaded() {
     document.getElementById("create-spinner").style.display = 'none'
     document.getElementById("create").style.display = 'block'
+}
+
+function logout() {
+    UIkit.notification("Deconnexion en cours...", "success")
+    gapi.auth2.init();
+    let auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+        console.log("User signed out.");
+    });
+
+    axios
+        .get("/logout")
+        .then(res => {
+            console.log("disconnected");
+            window.location.href = "/";
+        })
+        .catch(err => {
+            UIkit.notification("Erreur de reseau...", "warning");
+        });
 }

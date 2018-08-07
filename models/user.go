@@ -147,6 +147,7 @@ func (u *User) AuthenticateGoogleUser() (err error) {
 	if dbUser.Auth != "google" {
 		return errors.New("user already register with this email but not with google")
 	}
+	mgoSession.DB("okzdb").C("users").Update(bson.M{"email": u.Email}, bson.M{"$set": bson.M{"picture": u.Picture}})
 	return
 }
 
@@ -161,8 +162,9 @@ func (u *User) AuthenticateFbUser() (err error) {
 		return
 	}
 	if dbUser.Auth != "facebook" {
-		return errors.New("user already register with this email but not with facebook")
+		return errors.New("user already registered with this email but not with facebook")
 	}
+	mgoSession.DB("okzdb").C("users").Update(bson.M{"email": u.Email}, bson.M{"$set": bson.M{"picture": u.Picture}})
 	return
 }
 

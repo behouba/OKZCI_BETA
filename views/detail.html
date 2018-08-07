@@ -3,12 +3,15 @@
 
 <head>
     <title>{{ .ad.Title }}</title>
+    <link rel="icon" href="img/icon-72x72.png">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="/css/uikit.min.css" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
         crossorigin="anonymous">
+    <meta name="google-signin-client_id" content="958526051973-n3qc7e0501vo4uvlll8gq3qcrrdq587b.apps.googleusercontent.com">
     <script src="/js/uikit.min.js"></script>
+    <script src="/js/axios.min.js"></script>
     <script src="/js/axios.min.js"></script>
     <script src="/js/uikit-icons.min.js"></script>
 </head>
@@ -33,9 +36,15 @@
         background: #fff;
     }
 
+    .picture-nav {
+        background-color: rgba(0, 0, 0, .09);
+        padding: 10px;
+        z-index: 2;
+    }
+
     @media only screen and (min-width: 768px) {
         /* For desktop: */
-        #mobile-profile {
+        .mobile-profile {
             display: none;
         }
         #desktop-profile {
@@ -58,9 +67,13 @@
 
     }
 
+    img {
+        object-fit: cover;
+    }
+
     @media only screen and (max-width: 768px) {
         /* For mobile: */
-        #mobile-profile {
+        .mobile-profile {
             display: block;
         }
         #desktop-profile {
@@ -95,13 +108,13 @@
                         </a>
                     </div>
                     {{ if .user }}
-                    <div class="uk-navbar-right" style="height: 65px;" id="mobile-profile">
-                        <a uk-toggle="target: #offcanvas-flip" class="uk-navbar-toggle">
-                            <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 30px; height: 30px;"></span>
+                    <div class="uk-navbar-right mobile-profile" style="height: 65px;">
+                        <a uk-toggle="target: #side-profile" class="uk-navbar-toggle">
+                            <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 30px; height: 30px;background-size: cover;"></span>
                         </a>
                     </div>
                     {{ else }}
-                    <div class="uk-navbar-right" style="height: 65px;">
+                    <div class="uk-navbar-right mobile-profile" style="height: 65px;">
                         <a href="/login" class="uk-navbar-toggle">
                             <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url(https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png); width: 30px; height: 30px;"></span>
                         </a>
@@ -113,7 +126,7 @@
                             <li>
                                 {{ if .user }}
                                 <a href="#">
-                                    <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 40px; height: 40px;"></span>
+                                    <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 40px; height: 40px; background-size: cover;"></span>
                                 </a>
                                 <div class="uk-navbar-dropdown">
                                     <ul class="uk-nav uk-navbar-dropdown-nav">
@@ -154,14 +167,14 @@
                         <div class="uk-position-bottom uk-position-small  uk-position-small">
                             <div uk-lightbox uk-lightbox="animation: fade">
                                 {{ range $i, $img := .ad.Pictures }} {{ if eq $i 0}}
-                                <a uk-icon="expand" href="{{$img}}" data-type="image"></a>
+                                <a uk-icon="expand" href="{{$img}}" data-type="image" class="picture-nav"></a>
                                 {{ else }}
                                 <a href="{{$img}}" data-type="image"></a>
                                 {{ end }} {{ end }}
                             </div>
                         </div>
-                        <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slideshow-item="previous"></a>
-                        <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slideshow-item="next"></a>
+                        <a class="uk-position-center-left uk-position-small uk-hidden-hover picture-nav" href="#" uk-slidenav-previous uk-slideshow-item="previous"></a>
+                        <a class="uk-position-center-right uk-position-small uk-hidden-hover picture-nav" href="#" uk-slidenav-next uk-slideshow-item="next"></a>
                     </div>
                 </div>
             </div>
@@ -180,10 +193,9 @@
                         </a>
                     </div>
                     {{ if .ad.Price }}
-                    <p>{{ .ad.Price }} FCFA</p>
+                    <p id="ad-price">{{ .ad.Price }} FCFA</p>
                     {{ else }}
-                    <p>Gratuit </p>
-                    {{ end }}
+                    <br> {{ end }}
 
                 </div>
                 <hr>
@@ -199,18 +211,16 @@
                                     <div class="uk-padding-small uk-text-center">
                                         <div class="uk-margin-auto">
                                             <div class="uk-margin-large-top">
-                                                <img src="{{ .owner.Picture }}" height="150" width="150" class="uk-border-circle" alt="">
+                                                <img src="{{ .owner.Picture }}" style="height: 150px;width: 150px" class="uk-border-circle" alt="">
                                                 <p class="uk-text-bold">{{ .owner.UserName }}</p>
-                                                <p class="uk-text-small">from July 4, 2018</p>
                                             </div>
                                         </div>
                                         <h3>+225 {{ .ad.Contact }}</h3>
-                                        <small>Attention ! Afin d'eviter tous desagrements ou arnaques evitez de conclure une affaire
-                                            avec un mineur, evitez d'effectuer l'achat dans une zone dangereuse et à des
-                                            heures tardives, evitez d'effectuer l'achat en ligne sans avoir au prealable
-                                            vu le produit réelement, evitez tout achat avec une personne d'apparence douteuse
-                                            ou n'ayant pas toutes ses facultés, evitez les paiements par transfert d'argent
-                                            qui vous seront proposés.</small>
+                                        <small>Attention ! Afin d'eviter tous desagrements ou arnaques evitez d'effectuer l'achat
+                                            dans une zone dangereuse et à des heures tardives, evitez d'effectuer l'achat
+                                            en ligne sans avoir au prélable vu le produit réelement, evitez tout achat avec
+                                            une personne d'apparence douteuse ou n'ayant pas toutes ses facultés, evitez
+                                            les paiements par transfert d'argent qui vous seront proposés.</small>
                                         <div class="uk-width-1-1 uk-margin">
                                             <button class="uk-button uk-button-default uk-modal-close" uk-dis>ANNULER</button>
                                             <a href="tel:+225{{ .ad.Contact }}" class="uk-button uk-button-primary">APPELER</a>
@@ -252,7 +262,7 @@
                 <div id="advertiser" class="uk-margin" uk-grid>
                     <small>Mis en ligne par: </small>
                     <div class="uk-width-1-1  uk-inline">
-                        <img class="uk-border-circle" width="40" height="40" src="{{ .owner.Picture }}">
+                        <img class="uk-border-circle" style="width: 40px; height: 40px; margin-right: 10px;" src="{{ .owner.Picture }}">
                         <span>{{ .owner.UserName }}</span>
                     </div>
                 </div>
@@ -269,11 +279,11 @@
                 <div id="social" uk-grid class="uk-margin">
                     <p class="uk-text-primary uk-text-center uk-width-1-1">Partager cette annonce</p>
                     <div class="uk-text-center uk-width-1-1">
-                        <a class="uk-icon-button uk-margin-small-right" href="http://www.facebook.com/sharer.php?u=https://google.com&src=sp" target="blank"
-                            uk-icon="facebook"></a>
-                        <a class="uk-icon-button uk-margin-small-right twitter-share-button" href="https://twitter.com/intent/tweet?text=http://localhost:8080/watch?a={{ .ad.ShortID }}"
+                        <a class="uk-icon-button uk-margin-small-right" style="color:#3B5998" href="http://www.facebook.com/sharer.php?u=https://google.com&src=sp"
+                            target="blank" uk-icon="facebook"></a>
+                        <a class="uk-icon-button uk-margin-small-right twitter-share-button" style="color: #1dcaff" href="https://twitter.com/intent/tweet?text=http://localhost:8080/watch?a={{ .ad.ShortID }}"
                             uk-icon="twitter"></a>
-                        <a onclick="whatsAppShare()" class="uk-icon-button uk-margin-small-right" uk-icon="whatsapp"></a>
+                        <a onclick="whatsAppShare()" class="uk-icon-button uk-margin-small-right" style="color: #25d366" uk-icon="whatsapp"></a>
                     </div>
                     <p class="uk-align-center uk-text-small">
                         <a class="uk-text-danger" href="#report-modal" uk-toggle>Signaler cette annonce</a>
@@ -305,22 +315,32 @@
 
             <!-- right side -->
             {{ if .user}}
-            <div id="offcanvas-flip" uk-offcanvas="flip: true; overlay: true">
+            <div id="side-profile" uk-offcanvas="flip: true; overlay: true">
                 <div class="uk-offcanvas-bar">
-                    <ul class="uk-nav uk-nav-default">
-                        <li class="uk-nav-header">{{ .user.UserName }}</li>
+                    <ul class="uk-nav uk-nav-default uk-text-bold uk-margin-top">
+                        <li class="uk-nav-header uk-text-center">
+                            <div class="dashboard-profil">
+                                <img data-src="{{ .user.Picture }}" alt="" uk-img style="min-height: 100%">
+                            </div>
+                        </li>
+                        <li class="uk-nav-header uk-text-center uk-margin">{{ .user.UserName }}</li>
+                        <li class="uk-nav-divider"></li>
                         <li>
                             <a href="/me">
-                                <span class="uk-margin-small-right" uk-icon="icon: user"></span>Profil</a>
+                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/avatar.svg');"></span>
+                                Profil</a>
                         </li>
+                        <li class="uk-nav-divider"></li>
                         <li>
                             <a href="/settings">
-                                <span class="uk-margin-small-right" uk-icon="icon: settings"></span>Reglages</a>
+                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/controls.svg');"></span>
+                                Reglages</a>
                         </li>
                         <li class="uk-nav-divider"></li>
                         <li>
                             <a onclick="logout()">
-                                <span class="uk-margin-small-right" uk-icon="icon: sign-out"></span>Deconnecter</a>
+                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/logout.svg');"></span>
+                                Deconnecter</a>
                         </li>
                     </ul>
                 </div>
@@ -372,5 +392,6 @@
     </script>
 </body>
 <script src="/js/details.js"></script>
+<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
 
 </html>
