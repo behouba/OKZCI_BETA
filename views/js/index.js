@@ -53,7 +53,6 @@ function displayListing() {
 function onLoad() {
   gapi.load("auth2", function () {
     gapi.auth2.init();
-    console.log("google api loaded...")
   });
 }
 
