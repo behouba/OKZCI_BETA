@@ -15,7 +15,7 @@ import (
 
 var myAwsSess = session.Must(session.NewSession(&aws.Config{
 	Region:      aws.String("eu-west-3"),
-	Credentials: credentials.NewStaticCredentials("AKIAICFHDVQBB23GAQUA", "uiM2mVN5Xd8zgJh/EXw8d2AgFT2aq2KhAOlrum2Q", ""),
+	Credentials: credentials.NewStaticCredentials("", "", ""),
 }))
 
 // UploadFormFilesToAwsS3 used to upload form files to aws S3 bucket
