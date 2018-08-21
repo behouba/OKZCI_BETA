@@ -2,7 +2,7 @@
 Description=okz server side code
 
 [Service]
-ExecStart=/home/ubuntu/okz_beta
+ExecStart=/home/ubuntu/okz_http
 WorkingDirectory=/home/ubuntu/
 User=root
 Group=root

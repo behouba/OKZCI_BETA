@@ -1,0 +1,251 @@
+<header style="margin-bottom: 10px" id="mobile-header" style="margin: 20px 10px;">
+    <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;" class="uk-box-shadow-large">
+        <nav class="uk-navbar uk-navbar-container">
+            <div class="uk-navbar-left" style="height: 65px;">
+                <a uk-toggle="target: #categories-menu" class="uk-navbar-toggle" href="#">
+                    <span uk-navbar-toggle-icon></span>
+                </a>
+            </div>
+            <div class="uk-navbar-center">
+                <a class="uk-logo uk-text-bold" href="/">
+                    <img src="img/okazion.png" width="100" alt="OKZ">
+                </a>
+            </div>
+            {{ if .user }}
+            <div class="uk-navbar-right" style="height: 65px;">
+                <a uk-toggle="target: #side-profile" class="uk-navbar-toggle">
+                    <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}),url('img/user.svg'); width: 28px; height: 28px;background-size: cover;"></span>
+                </a>
+            </div>
+            {{ else }}
+            <div class="uk-navbar-right" style="height: 65px;">
+                <a href="/login" class="uk-navbar-toggle">
+                    <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url('img/no_user.svg'); width: 28px; height: 28px;"></span>
+                </a>
+            </div>
+            {{ end }}
+        </nav>
+        <nav class="uk-navbar-container" uk-navbar id="search-nav">
+            <div class="uk-navbar-center">
+                <form id="search-bar">
+                    <div class="uk-margin uk-inline">
+                        <span class="uk-form-icon" uk-icon="icon: search; ratio: 1"></span>
+                        <input class="uk-input uk-form-width-medium uk-form-medium" type="text" placeholder="Recherche..." oninput="searchBarFocus()"
+                            onsubmit="search(e)" id="search" />
+                        <a class="uk-form-icon uk-form-icon-flip" style="display:none" onclick="clearSearch()" uk-icon="icon: close; ratio: 1" id="search-close-icon"></a>
+                        <a class="uk-form-icon uk-form-icon-flip" uk-toggle href="#filter-modal" uk-icon="icon: settings; ratio: 1" id="search-setting"></a>
+                    </div>
+                </form>
+            </div>
+        </nav>
+    </div>
+    <!--Modal for search setting-->
+    <div id="filter-modal" class="uk-modal-full" uk-modal>
+        <div class="uk-modal-dialog">
+            <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
+            <div class="uk-padding uk-width-1-1 uk-text-center uk-margin-auto uk-box-shadow-large">
+                <div class="setting-search" uk-grid>
+                    <div class="uk-width-1-1">
+                        <p class="uk-text-bold">Ville</p>
+                        <select class="uk-select uk-align-right" onchange="setCity(value)">
+                            <option>Partout</option>
+                            {{ range .cities}}
+                            <option value="{{.}}">{{.}}</option>
+                            {{ end }}
+                        </select>
+                    </div>
+                    <div class="uk-width-1-1">
+                        <p class="uk-text-bold">Trier par: </p>
+                        <select class="uk-select uk-align-right" onchange="setSort(value)">
+                            <option>Recents</option>
+                            <option>Prix croissant</option>
+                            <option>Prix decroissant</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="uk-margin-large-top uk-child-width-expand uk-child-width-1-2" uk-grid>
+                    <div>
+                        <a class="uk-button uk-button-danger uk-width-1-1 uk-modal-close uk-button-small">ANNULER</a>
+                    </div>
+                    <div>
+                        <button class="uk-button uk-button-primary uk-width-1-1 uk-button-small" onclick="validateFilter()">APPLIQUER</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+<div>
+    <header id="desktop-header" class="uk-text-bold">
+        <div class="uk-box-shadow-small">
+            <nav class="uk-navbar-container uk-margin" uk-navbar uk-navbar="mode: click">
+                <div class="uk-navbar-left">
+                    <a class="uk-navbar-item uk-logo uk-text-bold" href="/">
+                        <img src="img/okazion.png" width="100" height="40" alt="OKZ">
+                    </a>
+                    <div class="uk-navbar-item">
+                        <form id="desk-search-bar">
+                            <div class="uk-inline">
+                                <a class="uk-form-icon uk-form-icon-flip" onclick="deskSearBarBtn()" uk-icon="icon: search" style="background: #00aaff; color: #fff;border-radius: 0px 5px 5px 0px;"></a>
+                                <input class="uk-input uk-form-width-medium" type="search" placeholder="Recherche..." id="desk-search">
+                            </div>
+                        </form>
+                    </div>
+                    <ul>
+                        <li>
+                            <div style="font-size: 15px">
+                                CATEGORIE :
+                                <a href="#" id="desktop-current-category" class="uk-text-break">TOUTES LES CATEGORIES
+                                </a>
+                            </div>
+                            <div class="uk-navbar-dropdown" uk-drop="boundary: !nav; boundary-align: true; pos: bottom-justify;" id="desktop-category-picker">
+                                <div class="uk-navbar-dropdown-grid uk-child-width-1-4" uk-grid>
+                                    <div>
+                                        <ul class="uk-nav uk-navbar-dropdown-nav">
+                                            <li>
+                                                <a href="#" onclick="setCategory('all')">
+                                                    <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/cat-menu.svg');"></span>
+                                                    TOUTES LES CATEGORIES</a>
+                                            </li>
+                                            {{ range $i, $cat := .categories }} {{if lt $i 3}}
+                                            <li class="uk-nav-divider"></li>
+                                            <li class="uk-nav-header uk-text-bold">
+                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url({{$cat.Icon}});"></span>
+                                                {{ $cat.Name }}
+                                            </li>
+                                            {{ range $cat.SubCategories }}
+                                            <li>
+                                                <a href="#" onclick="setCategory({{ . }})">{{ . }}</a>
+                                            </li>
+                                            {{ end }} {{ end }} {{ end }}
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <ul class="uk-nav uk-navbar-dropdown-nav">
+                                            {{ range $i, $cat := .categories }} {{if and (gt $i 2) (lt $i 6)}}
+                                            <li class="uk-nav-divider"></li>
+                                            <li class="uk-nav-header uk-text-bold">
+                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url({{$cat.Icon}});"></span>
+                                                {{ $cat.Name }}
+                                            </li>
+                                            {{ range $cat.SubCategories }}
+                                            <li>
+                                                <a href="#" onclick="setCategory({{ . }})">{{ . }}</a>
+                                            </li>
+                                            {{ end }} {{ end }} {{ end }}
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <ul class="uk-nav uk-navbar-dropdown-nav">
+                                            {{ range $i, $cat := .categories }} {{if and (gt $i 5) (lt $i 9)}}
+                                            <li class="uk-nav-divider"></li>
+                                            <li class="uk-nav-header uk-text-bold">
+                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url({{$cat.Icon}});"></span>
+                                                {{ $cat.Name }}
+                                            </li>
+                                            {{ range $cat.SubCategories }}
+                                            <li>
+                                                <a href="#" onclick="setCategory({{ . }})">{{ . }}</a>
+                                            </li>
+                                            {{ end }} {{ end }} {{ end }}
+                                        </ul>
+                                    </div>
+                                    <div>
+                                        <ul class="uk-nav uk-navbar-dropdown-nav">
+                                            {{ range $i, $cat := .categories }} {{if gt $i 8}}
+                                            <li class="uk-nav-divider"></li>
+                                            <li class="uk-nav-header uk-text-bold">
+                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url({{$cat.Icon}});"></span>
+                                                {{ $cat.Name }}
+                                            </li>
+                                            {{ range $cat.SubCategories }}
+                                            <li>
+                                                <a href="#" onclick="setCategory({{ . }})">{{ . }}</a>
+                                            </li>
+                                            {{ end }} {{ end }} {{ end }}
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                </div>
+                <div class="uk-navbar-right">
+                    <div style="font-size: 15px; margin-right: 50px">
+                        LOCALITÉ :
+                        <a href="#" id="desktop-current-location">TOUTES LES VILLES
+                        </a>
+                    </div>
+                    <div class="uk-navbar-dropdown" uk-drop="boundary: !nav; boundary-align: true; pos: bottom-justify;" id="desktop-category-picker">
+                        <div class="uk-navbar-dropdown-grid uk-child-width-1-4" uk-grid>
+                            <div>
+                                <ul class="uk-nav uk-navbar-dropdown-nav">
+                                    <li>
+                                        <a href="#" onclick="setDeskCity('TOUTES LES VILLES')">TOUTES LES VILLES</a>
+                                    </li>
+                                    <li class="uk-nav-divider"></li>
+                                    {{ range $i, $city := .cities }} {{if lt $i 10}}
+                                    <li>
+                                        <a href="#" onclick="setDeskCity({{$city}})">{{ $city }}</a>
+                                    </li>
+                                    {{ end }} {{ end }}
+                                </ul>
+                            </div>
+                            <div>
+                                <ul class="uk-nav uk-navbar-dropdown-nav">
+                                    {{ range $i, $city := .cities }} {{if and (gt $i 10) (lt $i 20)}}
+                                    <li>
+                                        <a href="#" onclick="setDeskCity({{$city}})">{{ $city }}</a>
+                                    </li>
+                                    {{ end }} {{ end }}
+                                </ul>
+                            </div>
+                            <div>
+                                <ul class="uk-nav uk-navbar-dropdown-nav">
+                                    {{ range $i, $city := .cities }} {{if and (gt $i 20) (lt $i 30)}}
+                                    <li>
+                                        <a href="#" onclick="setDeskCity({{$city}})">{{ $city }}</a>
+                                    </li>
+                                    {{ end }} {{ end }}
+                                </ul>
+                            </div>
+                            <div>
+                                <ul class="uk-nav uk-navbar-dropdown-nav">
+                                    {{ range $i, $city := .cities }} {{if and (gt $i 30)}}
+                                    <li>
+                                        <a href="#" onclick="setDeskCity({{$city}})">{{ $city }}</a>
+                                    </li>
+                                    {{ end }} {{ end }}
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="uk-navbar-nav">
+                        <li>
+                            {{ if .user }}
+                            <a href="#">
+                                <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}), url('img/user.svg'); width: 40px; height: 40px; background-size: cover;"></span>
+                            </a>
+                            <div class="uk-navbar-dropdown">
+                                <ul class="uk-nav uk-navbar-dropdown-nav">
+                                    <li>
+                                        <a href="/me">Profile</a>
+                                    </li>
+                                    <li>
+                                        <a href="/settings">Reglages</a>
+                                    </li>
+                                    <li>
+                                        <a href="/logout">Deconnexion</a>
+                                    </li>
+                                </ul>
+                            </div>
+                            {{ else }}
+                            <a href="/login" class="uk-navbar-toggle">
+                                <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url('img/no_user.svg'); width: 40px; height: 40px;"></span>
+                            </a>
+                            {{ end }}
+                        </li>
+                    </ul>
+                </div>
+            </nav>
+        </div>
+    </header>
+</div>

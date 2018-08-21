@@ -38,20 +38,28 @@ function updateAdData() {
         "title": title.value,
         "city": city.value,
         "details": details.value,
-        "price": Number(price.value) || 0,
+        "price": price ? Number(price.value) : 0,
         "contact": contact.value
     }
     console.log(ad)
     axios.post('/update' + location.search, ad)
         .then(res => {
-            UIkit.notification({message: '<span uk-icon=\'icon: check\'></span> Modifié', pos: 'bottom-center', status: 'success'})
+            UIkit.notification({
+                message: '<span uk-icon=\'icon: check\'></span> Modifié',
+                pos: 'bottom-center',
+                status: 'success'
+            })
             cancelUpdate()
             setTimeout(() => {
                 location.href = '/me'
             }, 2000);
         })
         .catch(err => {
-            UIkit.notification({message: '<span uk-icon=\'icon: check\'></span> Echec de mise a jour', pos: 'bottom-center', status: 'danger'})
+            UIkit.notification({
+                message: '<span uk-icon=\'icon: check\'></span> Echec de mise a jour',
+                pos: 'bottom-center',
+                status: 'danger'
+            })
             console.log('error', err)
         })
 }
@@ -60,14 +68,22 @@ function deleteAd() {
     axios.post('/delete' + location.search)
         .then(res => {
             UIkit.modal(modal).hide();
-            UIkit.notification({message: '<span uk-icon=\'icon: check\'></span> Supprimé', pos: 'bottom-center', status: 'success'})
+            UIkit.notification({
+                message: '<span uk-icon=\'icon: check\'></span> Supprimé',
+                pos: 'bottom-center',
+                status: 'success'
+            })
             cancelUpdate()
             setTimeout(() => {
-                location.href = '/me'
-            }, 2000);
+                window.location.href = '/me'
+            }, 1000);
         })
         .catch(err => {
-            UIkit.notification({message: '<span uk-icon=\'icon: check\'></span> Echec de suppression', pos: 'bottom-center', status: 'danger'})
+            UIkit.notification({
+                message: '<span uk-icon=\'icon: check\'></span> Echec de suppression',
+                pos: 'bottom-center',
+                status: 'danger'
+            })
             console.log('error', err)
         })
 }

@@ -6,29 +6,26 @@ import (
 
 	"github.com/behouba/OKZ_BETA_0.01/models"
 	"github.com/kataras/iris"
+	ms "github.com/mitchellh/mapstructure"
 )
 
 func home(ctx iris.Context) {
-	userEmail := models.Sess.Start(ctx).GetString("email")
+	var user models.User
 	ctx.ViewData("cities", models.Cities)
 	ctx.ViewData("categories", models.Categories)
-	log.Println("user-email=", userEmail)
-	if userEmail == "" {
+
+	userMap := session.Start(ctx).Get("user")
+	if userMap == nil {
 		log.Println("user is not logged")
 		ctx.View("index.html")
 		return
 	}
-	user, err := models.GetUserByEmail(userEmail)
+	err := ms.Decode(userMap.(map[string]interface{}), &user)
 	if err != nil {
-		log.Println(err)
+		panic(err)
 	}
 	ctx.ViewData("user", user)
-	log.Println("user is logged")
 	ctx.View("index.html")
-}
-
-func thread(ctx iris.Context) {
-	ctx.View("thread.html")
 }
 
 func aboutUs(ctx iris.Context) {
@@ -72,4 +69,8 @@ func sendUSMessage(sender, email, body string) error {
 		return err
 	}
 	return nil
+}
+
+func googleValidation(ctx iris.Context) {
+	ctx.View("googlec7dfdac89dc40285.html")
 }

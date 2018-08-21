@@ -1,0 +1,30 @@
+<div id="side-profile" uk-offcanvas="flip: true; overlay: true">
+    <div class="uk-offcanvas-bar">
+        <ul class="uk-nav uk-nav-default uk-text-bold uk-margin-top">
+            <li class="uk-nav-header uk-text-center">
+                <div class="dashboard-profil">
+                    <img data-src="{{ .user.Picture }}" onerror="this.src='img/user.svg'" class="" alt="" uk-img style="min-height: 100%">
+                </div>
+            </li>
+            <li class="uk-nav-header uk-text-center uk-margin">{{ .user.UserName }}</li>
+            <li class="uk-nav-divider"></li>
+            <li>
+                <a href="/me">
+                    <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/avatar.svg');"></span>
+                    Profil</a>
+            </li>
+            <li class="uk-nav-divider"></li>
+            <li>
+                <a href="/settings">
+                    <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/controls.svg');"></span>
+                    Reglages</a>
+            </li>
+            <li class="uk-nav-divider"></li>
+            <li>
+                <a onclick="logout()">
+                    <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/logout.svg');"></span>
+                    Deconnecter</a>
+            </li>
+        </ul>
+    </div>
+</div>

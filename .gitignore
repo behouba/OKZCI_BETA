@@ -4,3 +4,4 @@
 /uikit
 /credential
 .ssh/
+*.toml

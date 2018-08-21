@@ -1,9 +1,17 @@
 package models
 
 import (
+	"crypto/tls"
 	"log"
+	"net"
 
+	"github.com/BurntSushi/toml"
+	"github.com/aws/aws-sdk-go/aws"
+	"github.com/aws/aws-sdk-go/aws/credentials"
+	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/kataras/iris/sessions"
+	"github.com/kataras/iris/sessions/sessiondb/redis"
+	"github.com/kataras/iris/sessions/sessiondb/redis/service"
 	"gopkg.in/mgo.v2"
 	// postgresql driver
 )
@@ -11,32 +19,72 @@ import (
 var mgoSession *mgo.Session
 var err error
 
-// var redisDb *redis.Database
-
-// var mongoURI = "mongodb://behouba:45001685@okzdb-shard-00-00-fo6si.mongodb.net:27017,okzdb-shard-00-01-fo6si.mongodb.net:27017,okzdb-shard-00-02-fo6si.mongodb.net:27017/admin?replicaSet=OKZDB-shard-0&authSource=admin"
+var redisDb *redis.Database
 
 // Sess for sessions
 var Sess *sessions.Sessions
 
+// Config hold all credentials and authentification data
+var Config tomlConfig
+
+// Aws session
+var myAwsSess *session.Session
+
+type database struct {
+	URI       string
+	S3ID      string
+	S3Secret  string
+	AwsRegion string
+}
+
+type mailConfig struct {
+	Name         string
+	Email        string
+	Password     string
+	AdminsEmails []string
+	Server       string
+	Port         int
+}
+
+type endPoint struct {
+	Ads   string
+	Users string
+}
+
+type tomlConfig struct {
+	Title      string
+	DB         database   `toml:"database"`
+	MailConfig mailConfig `toml:"mailConfig"`
+	EndPoint   endPoint   `toml:"endPoint"`
+}
+
 func init() {
-	// dialInfo, err := mgo.ParseURL(mongoURI)
-	// if err != nil {
-	// 	log.Println(err)
-	// 	panic(err)
-	// }
-	// tlsConfig := &tls.Config{}
-	// dialInfo.DialServer = func(addr *mgo.ServerAddr) (net.Conn, error) {
-	// 	conn, err := tls.Dial("tcp", addr.String(), tlsConfig)
-	// 	return conn, err
-	// }
-	// mgoSession, err = mgo.DialWithInfo(dialInfo)
-	mgoSession, err = mgo.Dial("localhost")
+
+	_, err := toml.DecodeFile("config.toml", &Config)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	mongoURI := Config.DB.URI + "admin?replicaSet=OKZDB-shard-0&authSource=admin"
+	log.Println(Config.DB.AwsRegion)
+	dialInfo, err := mgo.ParseURL(mongoURI)
+	if err != nil {
+		log.Println(err)
+		panic(err)
+	}
+	tlsConfig := &tls.Config{}
+	dialInfo.DialServer = func(addr *mgo.ServerAddr) (net.Conn, error) {
+		conn, err := tls.Dial("tcp", addr.String(), tlsConfig)
+		return conn, err
+	}
+	mgoSession, err = mgo.DialWithInfo(dialInfo)
+	// mgoSession, err = mgo.Dial("localhost")
 	if err != nil {
 		log.Println(err)
 		panic(err)
 	}
 	log.Println("connected to mongodb")
-	// redisDb = redis.New(service.DefaultConfig())
+	redisDb = redis.New(service.DefaultConfig())
 
 	Sess = sessions.New(sessions.Config{
 		// Cookie string, the session's client cookie name, for example: "mysessionid"
@@ -60,6 +108,11 @@ func init() {
 		// Defaults to false.
 		AllowReclaim: true,
 	})
-	// Sess.UseDatabase(redisDb)
+	Sess.UseDatabase(redisDb)
 
+	// aws session configuration
+	myAwsSess = session.Must(session.NewSession(&aws.Config{
+		Region:      aws.String(Config.DB.AwsRegion),
+		Credentials: credentials.NewStaticCredentials(Config.DB.S3ID, Config.DB.S3Secret, ""),
+	}))
 }

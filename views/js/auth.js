@@ -40,6 +40,13 @@ function displayRecovery() {
     recovery.style.display = 'block'
 }
 
+function onLoad() {
+    gapi.load("auth2", function () {
+        let x = gapi.auth2.init();
+        x.signOut()
+    });
+}
+
 function displayRegister() {
     login.style.display = 'none'
     register.style.display = 'block'
@@ -109,6 +116,7 @@ verifForm.addEventListener('submit', (e) => {
     let code = {
         "pin": pinCode.value
     }
+    console.log(code.pin)
     axios.post("/verification", code)
         .then(res => {
             console.log(res)
@@ -131,19 +139,12 @@ verifForm.addEventListener('submit', (e) => {
                 } else if (code === 500) {
                     UIkit.notification("Une erreur est survenue coté serveur ! \nVeillez reesayer svp", "warning");
                 }
-            } else if (err.request) {
-                UIkit.notification(err.message)
-
-            } else {
-                // Something happened in setting up the request that triggered an Error
-                UIkit.notification(err.message)
             }
         })
 
 })
 
 // password update 
-
 updataPasswordForm.addEventListener('submit', e => {
     e.preventDefault()
     if (newPassword.value.length < 4) {

@@ -1,77 +1,122 @@
 package models
 
-// adverts main categories
-type categories struct {
-	Vehicules     []catItem
-	Electroniques []catItem
-	Immobilier    []catItem
-	Services      []catItem
-	Emplois       []catItem
-	Maison        []catItem
-	Mode          []catItem
-	Hobby         []catItem
-	Autres        []catItem
-}
-
 type catItem struct {
-	Name string
-	Icon string
+	Name          string
+	Icon          string
+	SubCategories []string
 }
 
 // Categories and their sub-categories
-var Categories = categories{
-	Vehicules: []catItem{
-		{Name: "Voitures"},
-		{Name: "Motos"},
-		{Name: "Pièces et accessoires"},
+var Categories = []catItem{
+	catItem{
+		Name: "VEHICULES",
+		Icon: "icons/car.svg",
+		SubCategories: []string{
+			"Voitures",
+			"Motos et engins a roues",
+			"Pièces et accessoires",
+		},
 	},
-	Immobilier: []catItem{
-		{Name: "Ventes immobilières"},
-		{Name: "Locations"},
-		{Name: "Colocations"},
-		{Name: "Bureaux et Commerces"},
+	catItem{
+		Name: "ELECTRONIQUES",
+		Icon: "icons/electronic.svg",
+		SubCategories: []string{
+			"Audios et Videos",
+			"Ordinateurs de bureau",
+			"Ordinateurs portable",
+			"Consoles & Jeux vidéo",
+			"Téléphones & Tablettes",
+			"Accesoires Téléphones et tablettes",
+			"Accesoires Ordinateurs",
+		},
 	},
-	Emplois: []catItem{
-		{Name: "Offre d'emploi", Icon: "work"},
+	catItem{
+		Name: "IMMOBILIER",
+		Icon: "icons/house.svg",
+		SubCategories: []string{
+			"Ventes immobilières",
+			"Locations immobilières",
+			"Colocations",
+			"Bureaux et Commerces",
+		},
 	},
-	Services: []catItem{
-		{Name: "Prestations de services"},
-		{Name: "Cours particuliers", Icon: "chalkboard-teacher"},
-		{Name: "Covoiturage", Icon: "directions_car"},
-		{Name: "Réparation et entretien de machines"},
-		{Name: "Autres prestations de services", Icon: "servicestack"},
+	catItem{
+		Name: "EMPLOIS",
+		Icon: "icons/job.svg",
+		SubCategories: []string{
+			"Offres d'emplois",
+			"Recherches d'emplois",
+			"Formations",
+		},
 	},
-	Mode: []catItem{
-		{Name: "Vêtements et accesoires Homme", Icon: "tshirt"},
-		{Name: "Vêtements et accesoires Femme", Icon: "tshirt"},
-		{Name: "Vêtements et accesoires Enfants", Icon: "tshirt"},
-		{Name: "Montres & Bijoux", Icon: "watch"},
-		{Name: "Santé et beauté", Icon: "health"},
-		{Name: "Equipement bébé", Icon: "icon"},
+	catItem{
+		Name: "SERVICES",
+		Icon: "icons/employee.svg",
+		SubCategories: []string{
+			"Prestations de services",
+			"Cours particuliers",
+			"Covoiturage",
+			"Réparations et entretiens",
+			"Autres prestations de services",
+		},
 	},
-	Maison: []catItem{
-		{Name: "Electroménager", Icon: "tv"},
-		{Name: "Ameublement", Icon: "home"},
-		{Name: "Décoration", Icon: "all_inbox"},
-		{Name: "Jardinage", Icon: "local_florist"},
+	catItem{
+		Name: "MODE",
+		Icon: "icons/fashion.svg",
+		SubCategories: []string{
+			"Vêtements et accesoires Hommes",
+			"Vêtements et accesoires Femmes",
+			"Vêtements et accesoires Enfants",
+			"Montres & Bijoux",
+			"Santé et beauté",
+			"Equipements pour bébé",
+		},
 	},
-	Electroniques: []catItem{
-		{Name: "Audio et Videos", Icon: "film"},
-		{Name: "Ordinateur de bureau"},
-		{Name: "Ordinateur de portable"},
-		{Name: "Consoles & Jeux vidéo", Icon: "gamepad"},
-		{Name: "Téléphones & Tablettes", Icon: "mobile"},
-		{Name: "Accesoires Téléphone et tablette", Icon: "usb"},
-		{Name: "Accesoires Ordinateurs", Icon: "usb"},
+	catItem{
+		Name: "INTERIEUR",
+		Icon: "icons/armchair.svg",
+		SubCategories: []string{
+			"Ameublement",
+			"Décoration",
+			"Jardinage",
+		},
 	},
-	Hobby: []catItem{
-		{Name: "Livres", Icon: "book"},
-		{Name: "Animaux", Icon: "paw"},
-		{Name: "Vélos", Icon: "bicycle"},
-		{Name: "Sports", Icon: "volleyball-ball"},
-		{Name: "Jeux & Jouets", Icon: "puzzle-piece"},
+	catItem{
+		Name: "ÉLECTROMÉNAGERS",
+		Icon: "icons/washer.svg",
+		SubCategories: []string{
+			"Téléviseurs",
+			"Refrigerateurs",
+			"Cuisinères",
+			"Climatiseurs et Ventilateurs",
+			"Machines a laver",
+			"Autres électroménager",
+		},
 	},
-	Autres: []catItem{
-		{Name: "Autres"},
+	catItem{
+		Name: "ÉVÉNEMENTS",
+		Icon: "icons/fireworks.svg",
+		SubCategories: []string{
+			"Événements culturels",
+			"Concerts",
+			"Événements Sportifs",
+			"Autres Événements",
+		},
+	},
+	catItem{
+		Name: "HOBBIES",
+		Icon: "icons/guitar.svg",
+		SubCategories: []string{
+			"Livres",
+			"Animaux",
+			"Vélos",
+			"Sports",
+			"Jeux & Jouets",
+		},
+	},
+	catItem{
+		Name:          "AUTRES CATEGORIES",
+		Icon:          "icons/alien.svg",
+		SubCategories: []string{"Autres categories"},
 	},
 }

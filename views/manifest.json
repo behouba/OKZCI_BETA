@@ -1,13 +1,13 @@
 {
-  "name": "OKAZION",
-  "short_name": "OKAZION",
-  "lang": "fr",
+  "name": "Okazion",
+  "short_name": "Okazion",
   "theme_color": "#00aaff",
   "background_color": "#ffffff",
   "display": "standalone",
   "Scope": "/",
   "start_url": "/",
-  "icons": [{
+  "icons": [
+    {
       "src": "images/icons/icon-72x72.png",
       "sizes": "72x72",
       "type": "image/png"

@@ -2,46 +2,53 @@ package controllers
 
 import (
 	"log"
-	"net/smtp"
+	"mime/multipart"
+	"os"
 
 	"github.com/behouba/OKZ_BETA_0.01/models"
 	"github.com/kataras/iris"
+	"gopkg.in/mgo.v2/bson"
 )
 
 func userProfil(ctx iris.Context) {
-	session := models.Sess.Start(ctx).GetString("email")
-	if session == "" {
+	email := session.Start(ctx).GetString("email")
+	user, err := models.GetUserByEmail(email)
+	if err != nil {
+		log.Println(err)
 		ctx.Redirect("/", iris.StatusSeeOther)
-		return
 	}
-	user, err := models.GetUserByEmail(session)
-	if err != nil {
-		log.Println(err)
-	}
-	ads, err := models.GetUserAdsByUserID(user.ID)
-	if err != nil {
-		log.Println(err)
-	}
-	favorites, err := models.GetFavoritesAdsByUserID(user.ID)
-	if err != nil {
-		log.Println(err)
-	}
-	ctx.ViewData("adsCount", len(ads))
-	ctx.ViewData("favorites", favorites)
-	ctx.ViewData("ads", ads)
 	ctx.ViewData("user", user)
 	ctx.View("profile.html")
 }
 
-func userSetting(ctx iris.Context) {
-	session := models.Sess.Start(ctx).GetString("email")
-	if session == "" {
-		ctx.Redirect("/", iris.StatusSeeOther)
-		return
-	}
-	user, err := models.GetUserByEmail(session)
+func userAds(ctx iris.Context) {
+	id := bson.ObjectIdHex(ctx.URLParam("id"))
+	ads, count, err := models.GetUserAdsByUserID(id)
 	if err != nil {
 		log.Println(err)
+	}
+	favorites, err := models.GetFavoritesAdsByUserID(id)
+	if err != nil {
+		log.Println(err)
+	}
+	data := struct {
+		Ads       []models.Advert `json:"ads"`
+		Favorites []models.Advert `json:"fav"`
+		Count     int             `json:"count"`
+	}{
+		Ads:       ads,
+		Favorites: favorites,
+		Count:     count,
+	}
+	ctx.JSON(data)
+}
+
+func userSetting(ctx iris.Context) {
+	email := session.Start(ctx).GetString("email")
+	user, err := models.GetUserByEmail(email)
+	if err != nil {
+		log.Println(err)
+		ctx.Redirect("/", iris.StatusSeeOther)
 	}
 	ctx.ViewData("cities", models.Cities)
 	ctx.ViewData("user", user)
@@ -53,87 +60,57 @@ func userSetting(ctx iris.Context) {
 func updateUserName(ctx iris.Context) {
 	var user models.User
 	ctx.ReadJSON(&user)
-	user.Email = models.Sess.Start(ctx).GetString("email")
-	err := user.UpdateUserName()
-	if err != nil {
+	user.Email = session.Start(ctx).Get("user").(map[string]interface{})["email"].(string)
+	if err := user.UpdateUserName(); err != nil {
 		ctx.StatusCode(iris.StatusInternalServerError)
 	}
+	session.Start(ctx).Set("user", user)
 }
 
 func updateUserContact(ctx iris.Context) {
 	var user models.User
 	ctx.ReadJSON(&user)
-	user.Email = models.Sess.Start(ctx).GetString("email")
+	user.Email = session.Start(ctx).Get("user").(map[string]interface{})["email"].(string)
 	err := user.UpdateContact()
 	if err != nil {
 		ctx.StatusCode(iris.StatusInternalServerError)
 	}
+	session.Start(ctx).Set("user", user)
 }
 
 func updateUserLocation(ctx iris.Context) {
 	var user models.User
 	ctx.ReadJSON(&user)
-	user.Email = models.Sess.Start(ctx).GetString("email")
-	err := user.UpdateUserLocation()
-	if err != nil {
+	user.Email = session.Start(ctx).Get("user").(map[string]interface{})["email"].(string)
+
+	if err := user.UpdateUserLocation(); err != nil {
 		ctx.StatusCode(iris.StatusInternalServerError)
 	}
-}
-
-func messagesHandler(ctx iris.Context) {
-	msg := struct {
-		To        string `json:"to"`
-		OwnerName string `json:"ownerName"`
-		Body      string `json:"body"`
-	}{}
-	ctx.ReadJSON(&msg)
-	log.Println(msg.To, msg.OwnerName)
-	if err := sendMailMessage(msg.Body, msg.To, msg.OwnerName); err != nil {
-		log.Println(err)
-		ctx.StatusCode(iris.StatusInternalServerError)
-		return
-	}
-	log.Println("message envoyé")
-}
-
-func sendMailMessage(body, to, name string) error {
-	from := "behoubaokz@gmail.com"
-	pass := "45001685"
-
-	msg := "From: " + from + "\n" +
-		"To: " + to + "\n" +
-		"Subject: Salut " + name + "\n\n" +
-		"Vous venez de recevoir un message concernant une de vos annonces en ligne: " + body
-
-	err := smtp.SendMail("smtp.gmail.com:587",
-		smtp.PlainAuth("", from, pass, "smtp.gmail.com"),
-		from, []string{to}, []byte(msg))
-
-	if err != nil {
-		log.Printf("smtp error: %s", err)
-		return err
-	}
-	return nil
+	session.Start(ctx).Set("user", user)
 }
 
 func updateUserProfileImage(ctx iris.Context) {
-	session := models.Sess.Start(ctx).GetString("email")
-	user, err := models.GetUserByEmail(session)
+	var user models.User
+	user.Email = session.Start(ctx).GetString("email")
+	userID := session.Start(ctx).GetString("userID")
+	err := os.RemoveAll("./public/u/" + userID)
 	if err != nil {
 		log.Println(err)
-		ctx.StatusCode(iris.StatusForbidden)
-		return
 	}
-	path := "/user/" + user.UserName + "/"
-	urls, err := models.UploadFormFilesToAwsS3(ctx, path)
+	err = os.Mkdir("./public/u/"+userID+"/", os.ModeDir)
 	if err != nil {
-		ctx.StatusCode(iris.StatusInternalServerError)
 		log.Println(err)
-		return
-	}
-	user.Picture = urls[0]
-	if err := user.UpdateUserData(); err != nil {
 		ctx.StatusCode(iris.StatusInternalServerError)
 		return
 	}
+	_, err = ctx.UploadFormFiles("./public/u/"+userID+"/", func(ctx iris.Context, file *multipart.FileHeader) {
+		path := endPoint.Users + userID + "/" + file.Filename
+		user.Picture = path
+	})
+	if err := user.UpdateUserProfileImage(); err != nil {
+		log.Println(err)
+		ctx.StatusCode(iris.StatusInternalServerError)
+		return
+	}
+	session.Start(ctx).Set("user", user)
 }

@@ -3,14 +3,24 @@ a:hover {
 }
 
 #profile-setting {
-    max-width: 1200px;
     margin-right: auto;
     margin-left: auto;
 }
 
+footer .uk-grid>* {
+    margin-left: 0px;
+}
+
+.user-name,
+.user-tel,
+.user-city,
+.user-email {
+    padding-left: 0px;
+}
+
 @media only screen and (min-width: 768px) {
     /* For desktop: */
-    #mobile-profile {
+    .mobile-profile {
         display: none;
     }
     #desktop-profile {
@@ -89,7 +99,7 @@ a:hover {
 
 @media only screen and (max-width: 768px) {
     /* For mobile: */
-    #mobile-profile {
+    .mobile-profile {
         display: block;
     }
     #desktop-profile {

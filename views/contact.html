@@ -2,32 +2,54 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Contactez-nous</title>
-    <link rel="stylesheet" href="/css/uikit.min.css" />
-    <link rel="stylesheet" href="/css/index.css" />
-    <script src="/js/axios.min.js"></script>
-    <script src="/js/uikit.min.js"></script>
-    <script src="/js/uikit-icons.min.js"></script>
+    {{ render "components/common-head.html"}}
 </head>
 <style>
     #contact {
-        max-width: 1200px;
         margin-right: auto;
         margin-left: auto;
+    }
+
+    #contact-spinner {
+        position: fixed !important;
+        width: 100%;
+        height: 100%;
+        z-index: 5;
+        background-color: rgba(119, 117, 117, 0.3);
+        display: none;
+    }
+
+    #contact-spinner img {
+        display: block;
+        margin: 40% auto 10% auto;
+    }
+
+    h1,
+    .uk-legend {
+        color: #00aaff;
+    }
+
+    @media only screen and (max-width: 1192px) {
+        /* For mobile: */
+        .uk-padding {
+            padding: 10px;
+        }
     }
 </style>
 
 <body>
-    <div id="contact" class="uk-box-shadow-small">
+    <div class="uk-position-center uk-text-center" id="contact-spinner">
+        <img src="img/spinner.gif" />
+        <p class="uk-margin">Envoi du message en cours...</p>
+    </div>
+    <div id="contact">
         <header id="desktop-header">
             <div class="uk-box-shadow-small">
                 <nav class="uk-navbar-container uk-margin" uk-navbar uk-navbar="mode: click">
                     <div class="uk-navbar-left">
                         <a class="uk-navbar-item uk-logo" href="/">
-                            <img src="/img/logo-okz.png" width="100" alt="OKZ">
+                            <img src="img/okazion.png" width="100" alt="OKZ">
                         </a>
                     </div>
                 </nav>
@@ -38,7 +60,7 @@
                 <nav class="uk-navbar-container uk-margin" uk-navbar uk-navbar="mode: click">
                     <div class="uk-navbar-center">
                         <a class="uk-navbar-item uk-logo" href="/">
-                            <img src="/img/logo-okz.png" width="100" alt="OKZ">
+                            <img src="img/okazion.png" width="100" alt="OKZ">
                         </a>
                     </div>
                 </nav>
@@ -46,27 +68,32 @@
         </header>
         <main>
             <div class="uk-padding">
-                <h1>A PROPOS DU SITE OKAZION</h1>
-                <P>
-                    Lorem ipsum dolor, sit amet consectetur adipisicing elit. Asperiores vero qui quis quaerat eligendi optio expedita aut iure,
-                    reprehenderit repellat facilis quas, consectetur aperiam laborum cumque corrupti quibusdam ducimus ratione.
-                    Excepturi vero sint ad possimus nulla hic, quas, eius, ipsum repellat consequuntur quidem ut laboriosam
-                    voluptatem incidunt similique nostrum ipsa. Fuga aspernatur delectus iste a saepe, harum explicabo enim
-                    nam? Maiores similique ut magnam quo dolores omnis illum pariatur reprehenderit libero quos voluptas,
-                    explicabo laudantium vitae, quibusdam consequatur nostrum perspiciatis voluptatibus recusandae. Saepe,
-                    expedita! Aut recusandae nisi distinctio ea! Aperiam. Ab ratione laboriosam saepe est, id, eligendi mollitia
-                    et aut vitae excepturi recusandae, unde voluptatum minima reprehenderit ipsum? Corporis eligendi, sapiente
-                    dicta cumque aperiam itaque vitae ratione sint tempore natus. Quia saepe sunt consequatur perspiciatis
-                    deleniti quo ea voluptatibus iusto exercitationem suscipit, illo non laboriosam eius eum nihil omnis
-                    voluptatum. Praesentium nobis velit reprehenderit officiis repudiandae, temporibus vel et amet?
+                <h1 class="uk-text-center">A PROPOS DU SITE OKAZION</h1>
+                <P>Nous sommes une equipe de jeunes développeurs ivoiriens. A travers certains constats de l'environnement du
+                    pays, étant soucieux d'apporter des idées nouvelles et innovantes dans le domaine des services en ligne,
+                    nous avons décidé de mettre notre savoir-faire au service de nos populations. De fait, le nombre croissant
+                    d'objets ou produits qui affluent considérablement chez soi ou ailleurs sans qu'on ne puisse en retirer
+                    un avantage pécunier sont un manque à gagner pour la population. En outre, l'achat immédiat d'un article
+                    ou objet désiré peut s'avérer une erreur dans les minutes ou les jours qui suivront ou encore peut nous
+                    déplaire de bien des façons. De plus, il n'est pas aisé de trouver des occasions inédites d'obtenir certains
+                    articles et services que l'on désire. Toutes ces raisons et bien d'autres ont suscité un engouement et
+                    constitué un challenge important à relever. Mais rien n'est plus beau et digne, à notre avis, que de
+                    contribuer à épauler ou à aider son semblable afin de lui rendre la vie moins pénible. Fort de ce constat,
+                    nous avons pris à bras-le-corps la ferme résolution de créer une plateforme web facile d'utilisation
+                    et accessible à tous. Okazion apportera une nouvelle manière de percevoir et d'utiliser un site de petites
+                    d'annonces; tout en offrant aux utilisateurs une plateforme dynamique sur laquelle les utilisateurs pourront
+                    interagir favorablement. Afin de réaliser toutes les missions que nous nous sommes assignées, nous serons
+                    toujours à l'écoute de vos besoins et procéderons au fur et à mesure à des améliorations en parallèle
+                    au fil du temps.
                 </P>
             </div>
             <div class="uk-padding">
-                <h1>SOUHAITEZ-VOUS NOUS CONTACTER ?</h1>
+                <h1 class="uk-text-center">SOUHAITEZ-VOUS NOUS CONTACTER ?</h1>
                 <p>
-                    Nous sommes ouvert à tous nos utilisateurs. Il est expédient que nous soyons à votre écoute et repondrons à vos attentes
-                    avec célérité. Nous sommes disponibles pour vous. Vous pouvez nous contacter grace au formulaire ci-dessous.</p>
-                <p>En outre, pour une meilleure interaction avec vous, toutes suggestions tendant à améliorer le site seront
+                    Nous sommes ouvert à tous nos utilisateurs. Il est expédient que nous soyons à votre écoute et répondrons à vos attentes
+                    avec célérité. Nous sommes disponibles pour vous. Vous pouvez nous contacter grâce au formulaire ci-dessous.
+                </p>
+                <p>En outre, pour une meilleure interaction avec vous, toutes suggestions tendant à améliorer le site seront
                     la bienvenue.
                 </p>
             </div>
@@ -88,29 +115,26 @@
                     </div>
                 </form>
             </div>
-        </main>
-        <footer class="uk-padding-small">
-            <hr>
-            <div class="uk-grid uk-grid-default uk-grid-small" uk-grid style="font-size: 13px;">
-                <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
-                    <p>
-                        © 2018 OKAZION version beta 0.01
-                    </p>
-                </div>
-                <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
-                    <a href="/conditions">
-                        Regles et les conditions d'utilisations
-                    </a>
-                </div>
-                <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
-                    <a href="/about-us">
-                        Contactez - nous
-                    </a>
+            <div id="succes-modal" uk-modal>
+                <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical rounded-border">
+                    <button class="uk-modal-close-default" type="button" uk-close></button>
+                    <div class="uk-modal-body uk-grid uk-child-width-1-1" uk-grid>
+                        <div class=" uk-text-center">
+                            <img src="icons/checked.svg" style="height: 100px; width: 100px" alt="">
+                        </div>
+                        <div class="uk-text-center">
+                            <h2>Votre message a été envoyé !</h2>
+                            <small class="uk-text-muted">Merci de nous avoir contacté, nous vous répondrons dans les plus brefs délais s'il y a lieu</small>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </footer>
+        </main>
+        {{ render "components/footer.html"}}
     </div>
     <script>
+        let contactSpinner = document.getElementById("contact-spinner")
+        let succesModal = document.getElementById("succes-modal")
         let contactForm = document.getElementById("contact-form");
         let userName = document.getElementById("name");
         let userEmail = document.getElementById("email");
@@ -122,12 +146,15 @@
                 "email": userEmail.value,
                 "body": messageBody.value
             }
+            contactSpinner.style.display = 'block';
             axios.post("/contact-us", msg)
                 .then(res => {
-                    UIkit.notification("Merci de nous avoir contacté", "success")
+                    contactSpinner.style.display = 'none';
+                    UIkit.modal(succesModal).show();
                     contactForm.reset()
                 })
                 .catch(err => {
+                    contactSpinner.style.display = 'none';
                     UIkit.notification("L'envoi du message echoué, veillez reessayer svp...", "danger")
                 })
         })

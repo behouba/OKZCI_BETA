@@ -3,6 +3,9 @@ let messageBody = document.getElementById("message-body")
 let fav = document.getElementById("fav")
 let report = document.getElementById("report-body")
 let adPrice = document.getElementById("ad-price")
+let userName = document.getElementById("user-name")
+let userEmail = document.getElementById("user-email")
+let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 function numberWithCommas(x) {
     return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -24,13 +27,16 @@ function showHistory() {
     }
 }
 
-function sendMessageTo(email, name) {
+function sendMessage1(userName, userEmail, OwnerEmail, OwnerName) {
     if (messageBody.value.length < 15) {
         return UIkit.notification('Message trop court', 'danger')
     }
     var msg = {
-        "to": email,
-        "ownerName": name,
+        "userName": userName,
+        "userEmail": userEmail,
+        "ownerEmail": OwnerEmail,
+        "url": location.href,
+        "ownerName": OwnerName,
         "body": messageBody.value
     }
     console.log(msg)
@@ -41,26 +47,55 @@ function sendMessageTo(email, name) {
             UIkit.notification('Votre message a bien été envoyé', 'success')
         })
         .catch(err => {
-            UIkit.notification('Echec d\'envoi', 'danger')
+            if (err.response) {
+                let code = err.response.status
+                console.log(code)
+                if (code === 403) {
+                    UIkit.notification("Vous n'etes pas autorisé a envoyer un email, merci de vous connecter svp ", "warning");
+                } else if (code === 500) {
+                    UIkit.notification("Une erreur est survenue coté serveur ! \nVeillez reesayer svp", "warning");
+                }
+            }
         })
 }
 
-function logout() {
-    UIkit.notification("Deconnexion en cours...", "success")
-    gapi.auth2.init();
-    let auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-        console.log("User signed out.");
-    });
-    axios
-        .get("/logout")
+function sendMessage2(OwnerEmail, OwnerName) {
+    if (messageBody.value.length < 15) {
+        return UIkit.notification('Message trop court', 'danger')
+    }
+    if (userName.value === '' || userEmail.value === '') {
+        return UIkit.notification('Veillez reseigner correctement votre nom et votre email', 'danger')
+    }
+    if (!userEmail.value.match(emailRegex)) {
+        return UIkit.notification('Address email non valid', 'warning')
+    }
+    var msg = {
+        "ownerEmail": OwnerEmail,
+        "ownerName": OwnerName,
+        "body": messageBody.value,
+        "url": location.href
+    }
+
+    msg.userName = userName.value
+    msg.userEmail = userEmail.value
+    console.log(msg)
+    UIkit.modal('#message-modal').hide()
+    axios.post('/send-message', msg)
         .then(res => {
-            console.log("disconnected");
-            window.location.href = "/";
+            messageBody.value = ''
+            UIkit.notification('Votre message a bien été envoyé', 'success')
         })
         .catch(err => {
-            UIkit.notification("Erreur de reseau...", "warning");
-        });
+            if (err.response) {
+                let code = err.response.status
+                console.log(code)
+                if (code === 403) {
+                    UIkit.notification("Vous n'etes pas autorisé a envoyer un email, merci de vous connecter svp ", "warning");
+                } else if (code === 500) {
+                    UIkit.notification("Une erreur est survenue coté serveur ! \nVeillez reesayer svp", "warning");
+                }
+            }
+        })
 }
 
 function sendReportMessage(shortID) {
@@ -79,7 +114,15 @@ function sendReportMessage(shortID) {
             UIkit.notification('Merci d\'avoir signalé nous allons verifier cette annonce', 'success')
         })
         .catch(err => {
-            UIkit.notification('Echec d\'envoi', 'danger')
+            if (err.response) {
+                let code = err.response.status
+                console.log(code)
+                if (code === 403) {
+                    UIkit.notification("Vous n'etes pas autorisé a signaler une annonce, merci de vous connecter svp ", "warning");
+                } else if (code === 500) {
+                    UIkit.notification("Une erreur est survenue coté serveur ! \nVeillez reesayer svp", "warning");
+                }
+            }
         })
 
 }
@@ -103,15 +146,12 @@ function addFav(ad) {
     fav.classList.add("fas")
     axios.post("/add-fav", ad)
         .then(res => {
-            UIkit.notification({
-                message: '<span uk-icon=\'icon: check\'></span> Ajoutée de votre liste de favoris',
-                pos: 'bottom-center',
-                status: 'success'
-            })
+            UIkit.notification('<span uk-icon=\'icon: check\'></span> Ajoutée de votre liste de favoris', 'success')
             console.log(res)
         })
         .catch(err => {
             console.log(err)
+            UIkit.notification("Vous devez être inscrit avant d'ajouter des favoris", "danger")
             fav.classList.remove("fas")
             fav.classList.add("far")
         })
@@ -122,11 +162,7 @@ function removeFav(ad) {
     fav.classList.add("far")
     axios.post("/remove-fav", ad)
         .then(res => {
-            UIkit.notification({
-                message: '<span uk-icon=\'icon: check\'></span> Retirée de votre liste de favoris',
-                pos: 'bottom-center',
-                status: 'success'
-            })
+            UIkit.notification('<span uk-icon=\'icon: check\'></span> Retirée de votre liste de favoris', 'success')
             console.log(res)
         })
         .catch(err => {

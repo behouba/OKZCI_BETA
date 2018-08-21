@@ -2,41 +2,38 @@ package controllers
 
 import (
 	"log"
-	"net/smtp"
+	"mime/multipart"
+
+	"os"
+	"time"
+
+	"gopkg.in/mgo.v2/bson"
 
 	"github.com/behouba/OKZ_BETA_0.01/models"
 	"github.com/kataras/iris"
+	ms "github.com/mitchellh/mapstructure"
 	shortid "github.com/ventu-io/go-shortid"
 )
 
 func create(ctx iris.Context) {
-	session := models.Sess.Start(ctx).GetString("email")
-	ctx.ViewData("cities", models.Cities)
-	ctx.ViewData("categories", models.Categories)
-	if session == "" {
+	var user models.User
+	userMap := session.Start(ctx).Get("user")
+	if userMap == nil {
 		ctx.View("login.html")
 		return
 	}
-	user, err := models.GetUserByEmail(session)
+
+	err := ms.Decode(userMap.(map[string]interface{}), &user)
 	if err != nil {
 		log.Println(err)
 	}
+	ctx.ViewData("cities", models.Cities)
+	ctx.ViewData("categories", models.Categories)
 	ctx.ViewData("user", user)
 	ctx.View("create.html")
 }
 
 func updateAdvert(ctx iris.Context) {
-	email := models.Sess.Start(ctx).GetString("email")
-	if email == "" {
-		log.Println(email)
-		ctx.StatusCode(iris.StatusForbidden)
-		return
-	}
-	if ok := ctx.URLParamExists("a"); !ok {
-		log.Println(ok)
-		ctx.StatusCode(iris.StatusForbidden)
-		return
-	}
 	adShortID := ctx.URLParam("a")
 	var ad models.Advert
 	ctx.ReadJSON(&ad)
@@ -57,22 +54,17 @@ func isAdFavorite(favList []string, adShortID string) bool {
 }
 
 func watch(ctx iris.Context) {
-	if ok := ctx.URLParamExists("a"); !ok {
-		ctx.Redirect("/", iris.StatusSeeOther)
-		return
-	}
 	adShortID := ctx.URLParam("a")
-
 	ad, owner, err := models.GetAdByShortID(adShortID)
 	if err != nil {
 		log.Println(err)
 		ctx.StatusCode(iris.StatusNotFound)
+		return
 	}
-	userEmail := models.Sess.Start(ctx).GetString("email")
-	user, err := models.GetUserByEmail(userEmail)
-	if err != nil {
-		log.Println(err)
-	} else {
+	var user models.User
+	userMap := session.Start(ctx).Get("user")
+	if userMap != nil {
+		ms.Decode(userMap.(map[string]interface{}), &user)
 		ctx.ViewData("user", user)
 	}
 	ctx.ViewData("isFav", isAdFavorite(user.FavList, ad.ShortID))
@@ -82,17 +74,12 @@ func watch(ctx iris.Context) {
 }
 
 func deleteAdvert(ctx iris.Context) {
-	email := models.Sess.Start(ctx).GetString("email")
-	if email == "" {
-		log.Println(email)
-		ctx.StatusCode(iris.StatusForbidden)
-		return
-	}
-	if ok := ctx.URLParamExists("a"); !ok {
-		log.Println(ok)
-		ctx.StatusCode(iris.StatusForbidden)
-		return
-	}
+	// adShortID := ctx.URLParam("a")
+	// err := models.DeleteAdvert(adShortID)
+	// if err != nil {
+	// 	log.Println(err)
+	// 	return
+	// }
 	adShortID := ctx.URLParam("a")
 	err := models.DeleteAdvert(adShortID)
 	if err != nil {
@@ -102,132 +89,115 @@ func deleteAdvert(ctx iris.Context) {
 }
 
 func updatePage(ctx iris.Context) {
-	email := models.Sess.Start(ctx).GetString("email")
-	if email == "" {
-		ctx.Redirect("/", iris.StatusSeeOther)
-		return
-	}
-	if ok := ctx.URLParamExists("a"); !ok {
-		ctx.Redirect("/", iris.StatusSeeOther)
-		return
-	}
+	userMap := session.Start(ctx).Get("user").(map[string]interface{})
 	adShortID := ctx.URLParam("a")
 
-	ad, owner, err := models.GetAdByShortID(adShortID)
-	if err != nil || owner.Email != email {
+	ad, user, err := models.GetAdByShortID(adShortID)
+	if err != nil {
 		ctx.StatusCode(iris.StatusNotFound)
 		return
 	}
-	ctx.ViewData("user", owner)
+	if user.Email != userMap["email"].(string) {
+		ctx.Redirect("/", iris.StatusSeeOther)
+	}
+	ctx.ViewData("user", user)
 	ctx.ViewData("cities", models.Cities)
 	ctx.ViewData("ad", ad)
 	ctx.View("update-ad.html")
 }
 
 func addFav(ctx iris.Context) {
-	session := models.Sess.Start(ctx).GetString("email")
-	user, err := models.GetUserByEmail(session)
-	if err != nil {
-		ctx.StatusCode(iris.StatusForbidden)
-		log.Println(err)
-		return
+	var user models.User
+	userMap := session.Start(ctx).Get("user").(map[string]interface{})
+
+	if err := ms.Decode(userMap, &user); err != nil {
+		panic(err)
 	}
 	ad := struct {
 		ShortID string
 	}{}
 	ctx.ReadJSON(&ad)
-	err = user.AddFavorite(ad.ShortID)
-	if err != nil {
+
+	if err := user.AddFavorite(ad.ShortID); err != nil {
 		ctx.StatusCode(iris.StatusForbidden)
 		log.Println(err)
 		return
 	}
+	session.Start(ctx).Set("user", user)
 	log.Println("fav added", ad.ShortID, user.UserName)
 }
 
 func removeFav(ctx iris.Context) {
-	session := models.Sess.Start(ctx).GetString("email")
-	user, err := models.GetUserByEmail(session)
-	if err != nil {
-		ctx.StatusCode(iris.StatusForbidden)
-		log.Println(err)
-		return
+	var user models.User
+	userMap := session.Start(ctx).Get("user").(map[string]interface{})
+
+	if err := ms.Decode(userMap, &user); err != nil {
+		panic(err)
 	}
 	ad := struct {
 		ShortID string
 	}{}
 	ctx.ReadJSON(&ad)
-	err = user.RemoveFavorite(ad.ShortID)
-	if err != nil {
+
+	if err := user.RemoveFavorite(ad.ShortID); err != nil {
 		ctx.StatusCode(iris.StatusForbidden)
 		log.Println(err)
 		return
 	}
+	session.Start(ctx).Set("user", user)
 	log.Println("fav removed", ad.ShortID, user.UserName)
 }
 
 func createAdvert(ctx iris.Context) {
-	session := models.Sess.Start(ctx).GetString("email")
-	user, err := models.GetUserByEmail(session)
+	var err error
+	ad := models.Advert{}
+
+	userMap := session.Start(ctx).Get("user").(map[string]interface{})
+
+	ctx.ReadForm(&ad)
+	ad.OwnerID = bson.ObjectIdHex(userMap["ID"].(string))
+	ad.ShortID = shortid.MustGenerate()
+	err = os.Mkdir("./public/ad/"+ad.ShortID+"/", os.ModeDir)
 	if err != nil {
 		log.Println(err)
-		log.Println("must be login to create ad")
-		ctx.StatusCode(iris.StatusForbidden)
+		ctx.StatusCode(iris.StatusInternalServerError)
 		return
 	}
-	ad := models.Advert{}
-	ctx.ReadForm(&ad)
-	ad.OwnerID = user.ID
-	ad.ShortID = shortid.MustGenerate()
-	folder := "/ads/" + ad.ShortID + "/"
-	ad.Pictures, err = models.UploadFormFilesToAwsS3(ctx, folder)
+	_, err = ctx.UploadFormFiles("./public/ad/"+ad.ShortID+"/", func(ctx iris.Context, file *multipart.FileHeader) {
+		path := endPoint.Ads + ad.ShortID + "/" + file.Filename
+		ad.Pictures = append(ad.Pictures, path)
+		ad.CreatedAt = time.Now()
+	})
 	if err != nil {
 		ctx.StatusCode(iris.StatusInternalServerError)
 		log.Println(err)
 		return
-	}
-	if len(ad.Pictures) < 1 {
-		ad.Pictures = append(ad.Pictures,"https://s3.eu-west-3.amazonaws.com/okazion/assets/No-image-available.png")
 	}
 	if err := ad.StoreNewAd(); err != nil {
 		log.Println(err)
 		ctx.StatusCode(iris.StatusInternalServerError)
 		return
 	}
+	// upload to aws s3
+	// ad.Pictures, err = models.UploadFormFilesToAwsS3(ctx, folder)
+	// if err != nil {
+	// 	ctx.StatusCode(iris.StatusInternalServerError)
+	// 	log.Println(err)
+	// 	return
+	// }
+	// if len(ad.Pictures) < 1 {
+	// 	ad.Pictures = append(ad.Pictures, "img/blank.png")
+	// }
+	// if err := ad.StoreNewAd(); err != nil {
+	// 	log.Println(err)
+	// 	ctx.StatusCode(iris.StatusInternalServerError)
+	// 	return
+	// }
+	resp := struct {
+		ShortID string `json:"shortID"`
+	}{
+		ShortID: ad.ShortID,
+	}
+	ctx.JSON(resp)
 	log.Println("new ad created ")
-}
-
-func reportAd(ctx iris.Context) {
-	msg := struct {
-		Body    string
-		ShortID string
-	}{}
-	ctx.ReadJSON(&msg)
-	if err := sendReportMessage(msg.Body, msg.ShortID); err != nil {
-		log.Println(err)
-		ctx.StatusCode(iris.StatusInternalServerError)
-		return
-	}
-	log.Println("report message sent to admin")
-}
-
-func sendReportMessage(body, shortID string) error {
-	from := "behoubaokz@gmail.com"
-	pass := "45001685"
-	to := "behouba@gmail.com"
-	msg := "From: " + from + "\n" +
-		"To: " + to + "\n" +
-		"Subject: Salut \n\n" +
-		"Cette annonce viens d'etre signalé par un utilisateur: " + body + "\n" +
-		"short-id: " + shortID + " ."
-
-	err := smtp.SendMail("smtp.gmail.com:587",
-		smtp.PlainAuth("", from, pass, "smtp.gmail.com"),
-		from, []string{to}, []byte(msg))
-
-	if err != nil {
-		log.Printf("smtp error: %s", err)
-		return err
-	}
-	return nil
 }

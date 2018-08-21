@@ -3,7 +3,6 @@ package controllers
 import (
 	"log"
 	"math/rand"
-	"net/smtp"
 	"strconv"
 
 	"github.com/behouba/OKZ_BETA_0.01/models"
@@ -13,9 +12,28 @@ import (
 )
 
 func blockAuthPages(ctx iris.Context) {
-	session := models.Sess.Start(ctx).GetString("email")
-	if session != "" {
+	user := session.Start(ctx).Get("user")
+	if user != nil {
 		ctx.Redirect("/", iris.StatusSeeOther)
+		return
+	}
+	ctx.Next()
+}
+
+func checkAuthSatuts(ctx iris.Context) {
+	user := session.Start(ctx).Get("user")
+	if user == nil {
+		ctx.Redirect("/", iris.StatusSeeOther)
+		return
+	}
+	ctx.Values().Set("userMap", user)
+	ctx.Next()
+}
+
+func checkAjaxAuthStatus(ctx iris.Context) {
+	user := session.Start(ctx).Get("user")
+	if user == nil {
+		ctx.StatusCode(iris.StatusForbidden)
 		return
 	}
 	ctx.Next()
@@ -26,7 +44,7 @@ func login(ctx iris.Context) {
 }
 
 func googleAuth(ctx iris.Context) {
-	session := models.Sess.Start(ctx)
+	session := session.Start(ctx)
 	var user models.User
 	ctx.ReadJSON(&user)
 	// set auth type as google
@@ -38,11 +56,13 @@ func googleAuth(ctx iris.Context) {
 		return
 	}
 	log.Println("google user is authenticated...")
+	session.Set("user", user)
+	session.Set("email", user.Email)
 	session.Set("email", user.Email)
 }
 
 func facebookAuth(ctx iris.Context) {
-	session := models.Sess.Start(ctx)
+	session := session.Start(ctx)
 	var user models.User
 	ctx.ReadJSON(&user)
 	// set auth type as google
@@ -54,11 +74,13 @@ func facebookAuth(ctx iris.Context) {
 		return
 	}
 	log.Println("facebook user is authenticated...")
+	session.Set("user", user)
+	session.Set("email", user.Email)
 	session.Set("email", user.Email)
 }
 
 func authentification(ctx iris.Context) {
-	session := models.Sess.Start(ctx)
+	session := session.Start(ctx)
 	var user models.User
 	ctx.ReadJSON(&user)
 	log.Println(user.Email)
@@ -73,9 +95,10 @@ func authentification(ctx iris.Context) {
 		ctx.StatusCode(iris.StatusForbidden)
 		return
 	}
-	log.Println("in login user-email=", user.Email)
+	log.Println("user is logged in as user-email=", user)
+	session.Set("user", user)
 	session.Set("email", user.Email)
-	log.Println("user is authenticated...")
+	session.Set("email", user.Email)
 }
 
 func recovery(ctx iris.Context) {
@@ -99,7 +122,7 @@ func recovery(ctx iris.Context) {
 		log.Println("error in trying to update user data", err)
 		ctx.StatusCode(iris.StatusInternalServerError)
 	}
-	err = sendVerificationMail("hello from okz website", user.Email, user.Pin)
+	err = sendVerificationMail(user.Email, user.Pin)
 	if err != nil {
 		log.Println(err)
 		ctx.StatusCode(iris.StatusInternalServerError)
@@ -110,7 +133,7 @@ func recovery(ctx iris.Context) {
 func register(ctx iris.Context) {
 	var newUser models.User
 	ctx.ReadJSON(&newUser)
-	log.Println(newUser)
+	// log.Println(newUser)
 	// should make a nice looking verification email after
 	if ok := newUser.AlreadyUser(); ok {
 		ctx.StatusCode(iris.StatusForbidden)
@@ -118,7 +141,7 @@ func register(ctx iris.Context) {
 	}
 	newUser.Pin = strconv.Itoa(int(rand.Float32() * 9999))
 
-	err := sendVerificationMail("hello from okz website", newUser.Email, newUser.Pin)
+	err := sendVerificationMail(newUser.Email, newUser.Pin)
 	if err != nil {
 		log.Println(err)
 		ctx.StatusCode(iris.StatusInternalServerError)
@@ -133,7 +156,7 @@ func register(ctx iris.Context) {
 		log.Println("can't hash password", err)
 	}
 	// default placeholder image for users
-	newUser.Picture = "http://icons.iconarchive.com/icons/graphicloads/flat-finance/256/person-icon.png"
+	newUser.Picture = "img/user.svg"
 	// set authentification type as email
 	newUser.Auth = "email"
 	if err := newUser.StoreUserData(); err != nil {
@@ -145,12 +168,17 @@ func register(ctx iris.Context) {
 
 func verification(ctx iris.Context) {
 	var u models.User
-	session := models.Sess.Start(ctx)
+	session := session.Start(ctx)
 	c := struct {
 		Pin string `json:"pin"`
 	}{}
 
 	ctx.ReadJSON(&c)
+
+	if c.Pin == "" {
+		ctx.StatusCode(iris.StatusForbidden)
+		return
+	}
 	err := u.CheckPinCode(c.Pin)
 	if err != nil {
 		ctx.StatusCode(iris.StatusForbidden)
@@ -158,6 +186,7 @@ func verification(ctx iris.Context) {
 		return
 	}
 	log.Println("pin code is valid")
+	session.Set("user", u)
 	session.Set("email", u.Email)
 }
 
@@ -167,7 +196,10 @@ func recoveryVerification(ctx iris.Context) {
 		Pin string
 	}{}
 	ctx.ReadJSON(&c)
-	log.Println(c)
+	if c.Pin == "" {
+		ctx.StatusCode(iris.StatusForbidden)
+		return
+	}
 	err := u.CheckPinCode(c.Pin)
 	if err != nil {
 		ctx.StatusCode(iris.StatusForbidden)
@@ -178,7 +210,7 @@ func recoveryVerification(ctx iris.Context) {
 }
 
 func updatePassword(ctx iris.Context) {
-	session := models.Sess.Start(ctx)
+	session := session.Start(ctx)
 	var user models.User
 	ctx.ReadJSON(&user)
 	hashPass, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.MinCost)
@@ -194,35 +226,13 @@ func updatePassword(ctx iris.Context) {
 		ctx.StatusCode(iris.StatusInternalServerError)
 		return
 	}
-	log.Println("password updated")
+	log.Println("password updated for user = ", user)
+	session.Set("user", user)
 	session.Set("email", user.Email)
+	session.Set("userID", user.ID.String())
 }
 
 func logout(ctx iris.Context) {
-	models.Sess.Destroy(ctx)
+	session.Destroy(ctx)
 	ctx.Redirect("/", iris.StatusSeeOther)
-}
-
-// sendVerificationMail send email with pin code to users
-// should make a nice looking email
-func sendVerificationMail(body, to, pin string) error {
-	from := "behoubaokz@gmail.com"
-	pass := "45001685"
-
-	msg := "From: " + from + "\n" +
-		"To: " + to + "\n" +
-		"Subject: Hello there\n\n" +
-		"Votre de code de verification: " + pin
-
-	err := smtp.SendMail("smtp.gmail.com:587",
-		smtp.PlainAuth("", from, pass, "smtp.gmail.com"),
-		from, []string{to}, []byte(msg))
-
-	if err != nil {
-		log.Printf("smtp error: %s", err)
-		return err
-	}
-
-	log.Print("email to user")
-	return nil
 }

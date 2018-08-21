@@ -1,0 +1,59 @@
+<header class="uk-text-bold">
+    <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;" class="uk-box-shadow-medium">
+        <nav class="uk-navbar uk-navbar-container" uk-navbar uk-navbar="mode: click">
+            <div class="uk-navbar-left">
+                <a class="uk-navbar-toggle" onclick="window.history.back()">
+                    <span uk-icon="icon: arrow-left; ratio: 1.5"></span>
+                </a>
+            </div>
+            <div class="uk-navbar-center">
+                <a class="uk-logo" href="/">
+                    <img src="img/okazion.png" width="100" height="30" alt="OKZ">
+                </a>
+            </div>
+            {{ if .user }}
+            <div class="uk-navbar-right mobile-profile" style="height: 65px;">
+                <a uk-toggle="target: #side-profile" class="uk-navbar-toggle">
+                    <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}), url('img/user.svg'); width: 30px; height: 30px;background-size: cover;"></span>
+                </a>
+            </div>
+            {{ else }}
+            <div class="uk-navbar-right mobile-profile" style="height: 65px;">
+                <a href="/login" class="uk-navbar-toggle">
+                    <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url('img/no_user.svg'); width: 30px; height: 30px;"></span>
+                </a>
+            </div>
+            {{ end }}
+            <!-- Desktop nav -->
+            <div class="uk-navbar-right" id="desktop-profile">
+                <ul class="uk-navbar-nav">
+                    <li>
+                        {{ if .user }}
+                        <a href="#">
+                            <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}) , url('img/user.svg'); width: 40px; height: 40px; background-size: cover;"></span>
+                        </a>
+                        <div class="uk-navbar-dropdown">
+                            <ul class="uk-nav uk-navbar-dropdown-nav">
+                                <li>
+                                    <a href="/me">Profile</a>
+                                </li>
+                                <li>
+                                    <a href="/settings">Reglages</a>
+                                </li>
+                                <li>
+                                    <a href="/logout">Deconnexion</a>
+                                </li>
+                            </ul>
+                        </div>
+                        {{ else }}
+                        <a href="/login" class="uk-navbar-toggle">
+                            <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url('img/no_user.svg'); width: 40px; height: 40px;"></span>
+                        </a>
+                        {{ end }}
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        </nav>
+    </div>
+</header>

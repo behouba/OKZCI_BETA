@@ -3,83 +3,16 @@
 
 <head>
     <title>{{.user.UserName}}</title>
-    <link rel="icon" href="img/icon-72x72.png">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="google-signin-client_id" content="958526051973-n3qc7e0501vo4uvlll8gq3qcrrdq587b.apps.googleusercontent.com">
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans:300" rel="stylesheet">
-    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN"
-        crossorigin="anonymous">
-    <link rel="stylesheet" href="/css/uikit.min.css" />
-    <link rel="stylesheet" href="/css/index.css">
+    {{ render "components/common-head.html"}}
     <link rel="stylesheet" href="/css/profile-setting.css" />
-    <script src="/js/axios.min.js"></script>
-    <script src="/js/uikit.min.js"></script>
-    <script src="/js/axios.min.js"></script>
-    <script src="/js/uikit-icons.min.js"></script>
+    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <script src="/js/cleave.min.js"></script>
+    <script src="/js/cleave-phone.ci.js"></script>
 </head>
 
 <body>
-    <div id="profile-setting" class="uk-box-shadow-small">
-        <header style="margin-bottom: 10px">
-            <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;" class="uk-box-shadow-medium">
-                <nav class="uk-navbar uk-navbar-container" uk-navbar uk-navbar="mode: click">
-                    <div class="uk-navbar-left">
-                        <a class="uk-navbar-toggle" onclick="backTo()">
-                            <span uk-icon="icon: arrow-left; ratio: 1.5"></span>
-                        </a>
-                    </div>
-                    <div class="uk-navbar-center">
-                        <a class="uk-logo" href="/">
-                            <img src="/img/logo-okz.png" width="100" height="30" alt="OKZ">
-                        </a>
-                    </div>
-                    {{ if .user }}
-                    <div class="uk-navbar-right" style="height: 65px;" id="mobile-profile">
-                        <a uk-toggle="target: #side-profile" class="uk-navbar-toggle">
-                            <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 30px; height: 30px;background-size: cover;"></span>
-                        </a>
-                    </div>
-                    {{ else }}
-                    <div class="uk-navbar-right" style="height: 65px;">
-                        <a href="/login" class="uk-navbar-toggle">
-                            <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url(https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png); width: 30px; height: 30px;"></span>
-                        </a>
-                    </div>
-                    {{ end }}
-                    <!-- Desktop nav -->
-                    <div class="uk-navbar-right" id="desktop-profile">
-                        <ul class="uk-navbar-nav">
-                            <li>
-                                {{ if .user }}
-                                <a href="#">
-                                    <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 40px; height: 40px;background-size: cover;"></span>
-                                </a>
-                                <div class="uk-navbar-dropdown">
-                                    <ul class="uk-nav uk-navbar-dropdown-nav">
-                                        <li>
-                                            <a href="/me">Profile</a>
-                                        </li>
-                                        <li>
-                                            <a href="/settings">Reglages</a>
-                                        </li>
-                                        <li>
-                                            <a href="/logout">Deconnexion</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                {{ else }}
-                                <a href="/login" class="uk-navbar-toggle">
-                                    <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url(https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png); width: 40px; height: 40px;"></span>
-                                </a>
-                                {{ end }}
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-                </nav>
-            </div>
-        </header>
+    <div id="profile-setting">
+        {{ render "components/common-navbar1.html" }}
         <main style="margin: 20px 10px">
             <div id="main-setting" class="uk-margin" uk-grid>
                 <div class="uk-text-center uk-margin-auto">
@@ -91,7 +24,7 @@
                                 <label for="imageUpload"></label>
                             </div>
                             <div class="avatar-preview">
-                                <div id="imagePreview" style="background-image: url({{.user.Picture}});">
+                                <div id="imagePreview" style="background-image: url({{.user.Picture}}), url('img/user.svg');">
                                 </div>
                             </div>
                         </div>
@@ -111,11 +44,11 @@
                             </a>
                         </div>
                         <div id="user-name-modal" class="uk-flex-top" uk-modal>
-                            <div class="uk-modal-dialog">
+                            <div class="uk-modal-dialog uk-margin-auto-vertical rounded-border">
                                 <div class="uk-padding uk-width-1-1 uk-text-center uk-margin-auto">
                                     <div class="uk-text-center uk-margin-auto">
                                         <div class="dashboard-profil">
-                                            <img data-src="{{ .user.Picture }}" alt="" uk-img>
+                                            <img data-src="{{ .user.Picture }}" onerror="this.src='img/user.svg'" alt="" uk-img>
                                         </div>
                                     </div>
                                     <div class="uk-width-1-1 uk-text-center uk-margin-auto uk-margin">
@@ -123,13 +56,9 @@
                                             <input class="uk-input" type="text" value="{{ .user.UserName }}" id="userName">
                                         </div>
                                     </div>
-                                    <div class="uk-margin-large-top uk-child-width-expand uk-child-width-1-2" uk-grid>
-                                        <div>
-                                            <a class="uk-button uk-button-danger uk-width-1-1 uk-modal-close">ANNULER</a>
-                                        </div>
-                                        <div>
-                                            <a onclick="updateUserName()" class="uk-button uk-button-primary uk-width-1-1">APPLIQUER</a>
-                                        </div>
+                                    <div class="uk-width-1-1">
+                                        <button class="uk-button uk-button-default uk-modal-close uk-button-small">ANNULER</button>
+                                        <a onclick="updateUserName()" class="uk-button uk-button-danger uk-button-small">VALIDER</a>
                                     </div>
                                 </div>
                             </div>
@@ -141,20 +70,16 @@
                             </a>
                         </div>
                         <div id="contact-modal" class="uk-flex-top" uk-modal>
-                            <div class="uk-modal-dialog">
+                            <div class="uk-modal-dialog uk-margin-auto-vertical rounded-border">
                                 <div class="uk-padding uk-width-1-1 uk-text-center uk-margin">
                                     <div class="uk-width-1-1 uk-text-center uk-margin-auto uk-margin">
                                         <div class="uk-margin">
-                                            <input class="uk-input" type="number" maxlength="8" value="{{ .user.PhoneNumber }}" id="contact" placeholder="Contact">
+                                            <input class="uk-input contact-input" type="text" minlength="8" value="{{ .user.PhoneNumber }}" id="contact" placeholder="Contact">
                                         </div>
                                     </div>
-                                    <div class="uk-margin-large-top uk-child-width-expand uk-child-width-1-2" uk-grid>
-                                        <div>
-                                            <a class="uk-button uk-button-danger uk-width-1-1 uk-modal-close">ANNULER</a>
-                                        </div>
-                                        <div>
-                                            <a onclick="updateUserContact()" class="uk-button uk-button-primary uk-width-1-1">APPLIQUER</a>
-                                        </div>
+                                    <div class="uk-width-1-1">
+                                        <button class="uk-button uk-button-default uk-modal-close uk-button-small">ANNULER</button>
+                                        <a onclick="updateUserContact()" class="uk-button uk-button-danger uk-button-small">VALIDER</a>
                                     </div>
                                 </div>
                             </div>
@@ -166,24 +91,21 @@
                             </a>
                         </div>
                         <div id="location-modal" class="uk-flex-top" uk-modal>
-                            <div class="uk-modal-dialog">
+                            <div class="uk-modal-dialog uk-margin-auto-vertical rounded-border">
                                 <div class="uk-padding uk-width-1-1 uk-text-center uk-margin">
                                     <div class="uk-width-1-1 uk-text-center uk-margin-auto uk-margin">
                                         <div class="uk-margin">
                                             <select class="uk-select" id="location">
-                                                {{ range .cities}}
+                                                <option value="{{.user.Location}}">{{.user.Location}}</option>
+                                                {{ $city := .user.Location}} {{ range .cities}} {{ if ne . $city }}
                                                 <option value="{{.}}">{{.}}</option>
-                                                {{ end }}
+                                                {{end }} {{ end }}
                                             </select>
                                         </div>
                                     </div>
-                                    <div class="uk-margin-large-top uk-child-width-expand uk-child-width-1-2" uk-grid>
-                                        <div>
-                                            <a class="uk-button uk-button-danger uk-width-1-1 uk-modal-close">ANNULER</a>
-                                        </div>
-                                        <div>
-                                            <a onclick="updateUserLocation()" class="uk-button uk-button-primary uk-width-1-1">APPLIQUER</a>
-                                        </div>
+                                    <div class="uk-width-1-1">
+                                        <button class="uk-button uk-button-default uk-modal-close uk-button-small">ANNULER</button>
+                                        <a onclick="updateUserLocation()" class="uk-button uk-button-danger uk-button-small">VALIDER</a>
                                     </div>
                                 </div>
                             </div>
@@ -214,58 +136,7 @@
             </div>
         </main>
         <!-- right side -->
-        {{ if .user}}
-        <div id="side-profile" uk-offcanvas="flip: true; overlay: true">
-            <div class="uk-offcanvas-bar">
-                <ul class="uk-nav uk-nav-default uk-text-bold uk-margin-top">
-                    <li class="uk-nav-header uk-text-center">
-                        <div class="dashboard-profil">
-                            <img data-src="{{ .user.Picture }}" alt="" uk-img style="min-height: 100%">
-                        </div>
-                    </li>
-                    <li class="uk-nav-header uk-text-center uk-margin">{{ .user.UserName }}</li>
-                    <li class="uk-nav-divider"></li>
-                    <li>
-                        <a href="/me">
-                            <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/avatar.svg');"></span>
-                            Profil</a>
-                    </li>
-                    <li class="uk-nav-divider"></li>
-                    <li>
-                        <a href="/settings">
-                            <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/controls.svg');"></span>
-                            Reglages</a>
-                    </li>
-                    <li class="uk-nav-divider"></li>
-                    <li>
-                        <a onclick="logout()">
-                            <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/logout.svg');"></span>
-                            Deconnecter</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-        {{ end }}
-        <footer class="uk-padding-small">
-            <hr>
-            <div class="uk-grid uk-grid-default uk-grid-small" uk-grid style="font-size: 13px;">
-                <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
-                    <p>
-                        © 2018 OKAZION version beta 0.01
-                    </p>
-                </div>
-                <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
-                    <a href="/conditions">
-                        Regles et les conditions d'utilisations
-                    </a>
-                </div>
-                <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
-                    <a href="/about-us">
-                        Contactez - nous
-                    </a>
-                </div>
-            </div>
-        </footer>
+        {{ if .user}} {{ render "components/side-profile.html"}} {{ end }} {{ render "components/footer.html"}}
     </div>
     <script src="/js/profile-setting.js"></script>
     <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>

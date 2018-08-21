@@ -1,6 +1,8 @@
 let create = document.getElementById("create")
 let spinner = document.getElementById("create-spinner")
 
+let newAdURL = document.getElementById("new-ad-url")
+let successModal = document.getElementById("success-modal")
 let auction = document.getElementById("auction")
 let simple = document.getElementById("price-simple")
 let category = document.getElementById('select-category')
@@ -74,6 +76,7 @@ function setCategory(c) {
 
 function backTo() {
     if (steps === 1) {
+        window.scrollTo(0, 0)
         adFormField.reset()
         category.style.display = 'block'
         adForm.style.display = 'none'
@@ -110,6 +113,16 @@ function handleFileSelect(event) {
     }
 }
 
+function createAgain() {
+    steps = 1
+    backTo()
+    UIkit.modal(successModal).hide();
+}
+
+function goToHomePage() {
+    backTo()
+    window.location.href = '/'
+}
 
 files.addEventListener('change', handleFileSelect)
 
@@ -131,10 +144,21 @@ adFormField.addEventListener('submit', e => {
     e.preventDefault()
     // spinner.style.display = 'block'
     // create.style.display = 'none'
+    if (title.value.length < 3) {
+        UIkit.notification("Le titre de l'annonce est trop court !", "danger")
+        return
+    }
+    if (contact.value.replace(/ /g, '').length !== 8) {
+        UIkit.notification("Numero de téléphone invalid !", "danger")
+        return
+    }
+
+    // remove all ',' from price to make it convertible into int64
+    priceValue.value = priceValue.value.replace(/,/g, '')
 
     let advert = new FormData()
     advert.set('ad_type', adType.value)
-    advert.set('title', title.value)
+    advert.set('title', capitalizeFirstLetter(title.value))
     advert.set('city', city.value)
     advert.set('details', details.value)
     advert.set('category', selectedCategory)
@@ -142,25 +166,26 @@ adFormField.addEventListener('submit', e => {
     advert.set('price', priceValue.value)
     advert.set('contact', contact.value)
 
-    if (selectedCategory === 'dons') {
-        advert.set('price', 0)
-    }
-
     for (let file of fileList) {
         advert.append('files', file.file)
     }
     console.log(advert)
     advert.forEach(e => console.log(e))
-
+    create.style.display = 'none'
+    spinner.style.display = 'block'
     axios.post('/create', advert, {
             headers: {
                 'Content-Type': 'multipart/form-data'
             }
         })
         .then(res => {
-
-            // window.location.href = '/'
-            UIkit.notification("CREATED", "succes");
+            console.log(res.data);
+            let url = "https://www.okazion.ci/watch?a=" + res.data.shortID;
+            newAdURL.href = url;
+            newAdURL.innerText = url;
+            spinner.style.display = 'none';
+            create.style.display = 'block';
+            UIkit.modal(successModal).show();
         })
         .catch(err => {
             spinner.style.display = 'none'
@@ -169,41 +194,36 @@ adFormField.addEventListener('submit', e => {
                 let code = err.response.status
                 console.log(code)
                 if (code === 403) {
-                    UIkit.notification("ceci est interdit", "warning");
+                    UIkit.notification("le serveur a bloqué la publication de cette annonce. Veillez nous contacter", "warning");
                 } else if (code === 500) {
                     UIkit.notification("Une erreur est survenue coté serveur ! \nVeillez reesayer svp", "warning");
                 }
             } else if (err.request) {
-                UIkit.notification(err.message)
+                UIkit.notification(err.message, "danger")
 
             } else {
                 // Something happened in setting up the request that triggered an Error
-                UIkit.notification(err.message)
+                UIkit.notification(err.message, "danger")
             }
         })
 })
 
+function capitalizeFirstLetter(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 function createPageLoaded() {
     document.getElementById("create-spinner").style.display = 'none'
     document.getElementById("create").style.display = 'block'
 }
 
-function logout() {
-    UIkit.notification("Deconnexion en cours...", "success")
-    gapi.auth2.init();
-    let auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-        console.log("User signed out.");
-    });
 
-    axios
-        .get("/logout")
-        .then(res => {
-            console.log("disconnected");
-            window.location.href = "/";
-        })
-        .catch(err => {
-            UIkit.notification("Erreur de reseau...", "warning");
-        });
-}
+var cleave = new Cleave('.price-input', {
+    numeral: true,
+    numeralThousandsGroupStyle: 'thousand'
+});
+
+var contactCleave = new Cleave('.contact-input', {
+    phone: true,
+    phoneRegionCode: 'CI'
+});

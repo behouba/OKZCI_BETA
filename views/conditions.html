@@ -2,31 +2,36 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Contactez-nous</title>
-    <link rel="stylesheet" href="/css/uikit.min.css" />
-    <link rel="stylesheet" href="/css/index.css" />
-    <script src="/js/uikit.min.js"></script>
-    <script src="/js/uikit-icons.min.js"></script>
+    {{ render "components/common-head.html"}}
 </head>
 <style>
     #contact {
-        max-width: 1200px;
         margin-right: auto;
         margin-left: auto;
+    }
+
+    h1,
+    h3 {
+        color: #00AAFF;
+    }
+
+    @media only screen and (max-width: 1192px) {
+        /* For mobile: */
+        .uk-padding-large {
+            padding: 10px;
+        }
     }
 </style>
 
 <body>
-    <div id="contact" class="uk-box-shadow-small">
+    <div id="contact">
         <header id="desktop-header">
             <div class="uk-box-shadow-small">
                 <nav class="uk-navbar-container uk-margin" uk-navbar uk-navbar="mode: click">
                     <div class="uk-navbar-left">
                         <a class="uk-navbar-item uk-logo" href="/">
-                            <img src="/img/logo-okz.png" width="100" alt="OKZ">
+                            <img src="img/okazion.png" width="100" alt="OKZ">
                         </a>
                     </div>
                 </nav>
@@ -37,7 +42,7 @@
                 <nav class="uk-navbar-container uk-margin" uk-navbar uk-navbar="mode: click">
                     <div class="uk-navbar-center">
                         <a class="uk-navbar-item uk-logo" href="/">
-                            <img src="/img/logo-okz.png" width="100" alt="OKZ">
+                            <img src="img/okazion.png" width="100" alt="OKZ">
                         </a>
                     </div>
                 </nav>
@@ -47,87 +52,55 @@
             <div class="uk-padding-large">
                 <h1 class="uk-text-center uk-text-bold">REGLES ET CONDITIONS D'UTILISATIONS DU SITE</h1>
                 <P>
-                    Afin de permettre a nos utilisateurs de benrficier d'un service  efficace exempt de litiges, Nous vous prions de vous conformer
-                    aux regles suivantes:
+                    Afin de vous offrir un service  efficace exempt de litiges, Nous vous prions de vous conformer aux regles suivantes:
                 </P>
                 <ol>
-                    <li>il est formellement toutes personnes de moins de 16 ans de publier des annonces sur le site. Ces derniers
-                        qui souhaiterait publier des annonces, devront se faire assister d'une personne majeure.
-                    </li>
-                    <li>
-                        Veillez vous assurer de la bonne qualité des photos afin pour toucher le maximum de personnes et faciler l'attrait pour vos
-                        annonces
-                    </li>
-                    <li>
-                        Veillez vous assurer de donner les contacts et informations exactes  indispensables aux acheteurs.
-                    </li>
                     <li>
                         Il est interdits de publier sur le site des produits ou des articles volés ainsi que objets interdits par la loi.
-                    </li>
-                    <li>
-                        Veillez vous assurer de fournir une description complete et détaillée pour chaque annonce.
                     </li>
                     <li>
                         Les annonces qui peuvent heurter la sensibilité ou tout autre produits à caractère sexuel sont interdits de publication sur
                         le site
                     </li>
                     <li>
-                        Le vendeur doit s assurer de la qualite des produits avant de les poster Si tant est que certains produits peuvent perdre
-                        de leur superbe depuis la date de publication jusqu'a l'achat, le vendeur doit notifier aux clients
-                        le pourquoi de cette alteration et user de compromis , si possible pour conclure la vente
+                        Veuillez vous assurer de fournir une description complète et détaillée pour chaque annonce.
                     </li>
                     <li>
-                        Les produits et biens vendus doivent bel et bien  appartenir à "l'annonceur". Nous déclinons toute responsabilité quant au
-                        droit d'appartenance desdit produits
+                        Veuillez vous assurer de donner les contacts et des informations exactes indispensables aux acheteurs.
+                    </li>
+                    <li>
+                        Veuillez vous assurer de la bonne qualité des photos afin pour toucher le maximum de personnes et faciliter l'attrait pour
+                        vos annonces
+                    </li>
+                    <li>
+                        Veuillez vous assurer de la qualité des produits avant de les publier. Si tant est que certains produits peuvent perdre de
+                        leur superbe depuis la date de publication jusqu'a l'achat, le vendeur doit notifier aux clients
+                        le pourquoi de cette altération et user de compromis
                     </li>
                 </ol>
                 <hr>
                 <h3 class="uk-text-bold">A L'ENDROIT DES ANNONCEURS</h3>
                 <p>
-                    Une très bonne qualité de photo est un atout indéniable pour attirer le plus d'acheteurs. Nous exhortons les utilisateurs
-                    à bien vouloir mettre en avant des photos de belle facture. Les photos de pietre qualite peuvent susciter
-                    des mécontentements auprès des deux parties. Par consequent, soucieux de la bonne conclusion de vos affaires
-                    et d'une utilisation efficiente du site  nous vous prions de mettre sur le site des photos que vous trouverez
-                    tres avantageuse pour realiser votre  vente.
-                </p>
+                    Une photo de très bonne qualité est un atout indéniable pour attirer les visiteurs à voir vos annonces. Par contre, Les photos
+                    de qualité médiocre peuvent faire une mauvaise publicité. Par conséquent, soucieux de vous offrir une
+                    meilleure expérience d’utilisation sur le site Okazion nous vous recommandons de mettre sur le site des
+                    photos de bonne qualité et plusieurs si possible. </p>
                 <hr>
                 <h3 class="uk-text-bold">ASTUCES POUR EVITER LES ARNAQUES</h3>
                 <p>Afin d'eviter tous desagrements ou arnaques evitez : </p>
                 <ul>
-                    <li>
-                        De conclure une affaire avec un mineur.
-                    </li>
                     <li>D'effectuer l'achat dans une zone dangereuse et à des heures tardives.
                     </li>
                     <li>D'effectuer l'achat en ligne  sans avoir au prealable vu le produit réelement.
                     </li>
-                    <li>Tout achat avec une personne d'apparence douteuse ou n'ayant pas toutes ses facultés. </li>
+                    <li>Tout achat avec une personne d'apparence douteuse ou n'ayant pas toutes ses facultés.</li>
                     <li>
                         Les paiements par transfert d'argent qui vous seront proposés.
                     </li>
                 </ul>
             </div>
         </main>
-        <footer class="uk-padding-small">
-            <hr>
-            <div class="uk-grid uk-grid-default uk-grid-small" uk-grid style="font-size: 13px;">
-                <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
-                    <p>
-                        © 2018 OKAZION version beta 0.01
-                    </p>
-                </div>
-                <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
-                    <a href="/conditions">
-                        Regles et les conditions d'utilisations
-                    </a>
-                </div>
-                <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
-                    <a href="/about-us">
-                        Contactez - nous
-                    </a>
-                </div>
-            </div>
-        </footer>
+        {{ render "components/footer.html"}}
     </div>
 </body>
 

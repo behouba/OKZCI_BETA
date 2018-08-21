@@ -42,7 +42,7 @@ func (a *Advert) StoreNewAd() (err error) {
 
 // GetAds method retreive advert from database
 func GetAds() (ads []Advert, err error) {
-	err = mgoSession.DB("okzdb").C("adverts").Find(bson.M{}).Limit(8).Sort("city").All(&ads)
+	err = mgoSession.DB("okzdb").C("adverts").Find(bson.M{}).Limit(60).Sort("city").All(&ads)
 	if err != nil {
 		return
 	}
@@ -72,7 +72,8 @@ func GetAdByShortID(shortID string) (ad Advert, Owner User, err error) {
 }
 
 // GetUserAdsByUserID get adverts of current user
-func GetUserAdsByUserID(userID bson.ObjectId) (ads []Advert, err error) {
+func GetUserAdsByUserID(userID bson.ObjectId) (ads []Advert, count int, err error) {
+	count, _ = mgoSession.DB("okzdb").C("adverts").Find(bson.M{"owner_id": userID}).Count()
 	err = mgoSession.DB("okzdb").C("adverts").Find(bson.M{"owner_id": userID}).Sort("-created_at").All(&ads)
 	if err != nil {
 		return
@@ -111,14 +112,14 @@ func reverse(slice []string) []string {
 
 // DeleteAdvert delete ad from database collection
 func DeleteAdvert(shortID string) (err error) {
-	ad, err := ArchiveAdvert(shortID)
+	_, err = ArchiveAdvert(shortID)
 	if err != nil {
 		return
 	}
-	err = deleteFromAwsS3(ad.Pictures)
-	if err != nil {
-		log.Println(err)
-	}
+	// err = deleteFromAwsS3(ad.Pictures)
+	// if err != nil {
+	// 	log.Println(err)
+	// }
 	err = mgoSession.DB("okzdb").C("adverts").Remove(bson.M{"short_id": shortID})
 	if err != nil {
 		return
@@ -156,22 +157,22 @@ func (a *Advert) UpdateData(shortID string) (err error) {
 func SearchAds(query string, category string, city string, sort string, skip int) (ads []Advert, err error) {
 	switch sort {
 	case "Recents":
-		err = mgoSession.DB("okzdb").C("adverts").Find(bson.M{"$and": []bson.M{bson.M{"category": bson.M{"$regex": category, "$options": "i"}}, bson.M{"city": bson.M{"$regex": city, "$options": "i"}}, bson.M{"$or": []bson.M{bson.M{"title": bson.M{"$regex": query, "$options": "i"}}, bson.M{"details": bson.M{"$regex": query, "$options": "i"}}, bson.M{"category": bson.M{"$regex": query, "$options": "i"}}}}}}).Skip(skip).Limit(8).Sort("-created_at").All(&ads)
+		err = mgoSession.DB("okzdb").C("adverts").Find(bson.M{"$and": []bson.M{bson.M{"category": bson.M{"$regex": category, "$options": "i"}}, bson.M{"city": bson.M{"$regex": city, "$options": "i"}}, bson.M{"$or": []bson.M{bson.M{"title": bson.M{"$regex": query, "$options": "i"}}, bson.M{"details": bson.M{"$regex": query, "$options": "i"}}, bson.M{"category": bson.M{"$regex": query, "$options": "i"}}}}}}).Skip(skip).Limit(60).Sort("-created_at").All(&ads)
 		if err != nil {
 			return
 		}
 	case "Prix croissant":
-		err = mgoSession.DB("okzdb").C("adverts").Find(bson.M{"$and": []bson.M{bson.M{"category": bson.M{"$regex": category, "$options": "i"}}, bson.M{"city": bson.M{"$regex": city, "$options": "i"}}, bson.M{"$or": []bson.M{bson.M{"title": bson.M{"$regex": query, "$options": "i"}}, bson.M{"details": bson.M{"$regex": query, "$options": "i"}}, bson.M{"category": bson.M{"$regex": query, "$options": "i"}}}}}}).Skip(skip).Limit(8).Sort("+price").All(&ads)
+		err = mgoSession.DB("okzdb").C("adverts").Find(bson.M{"$and": []bson.M{bson.M{"category": bson.M{"$regex": category, "$options": "i"}}, bson.M{"city": bson.M{"$regex": city, "$options": "i"}}, bson.M{"$or": []bson.M{bson.M{"title": bson.M{"$regex": query, "$options": "i"}}, bson.M{"details": bson.M{"$regex": query, "$options": "i"}}, bson.M{"category": bson.M{"$regex": query, "$options": "i"}}}}}}).Skip(skip).Limit(60).Sort("+price").All(&ads)
 		if err != nil {
 			return
 		}
 	case "Prix decroissant":
-		err = mgoSession.DB("okzdb").C("adverts").Find(bson.M{"$and": []bson.M{bson.M{"category": bson.M{"$regex": category, "$options": "i"}}, bson.M{"city": bson.M{"$regex": city, "$options": "i"}}, bson.M{"$or": []bson.M{bson.M{"title": bson.M{"$regex": query, "$options": "i"}}, bson.M{"details": bson.M{"$regex": query, "$options": "i"}}, bson.M{"category": bson.M{"$regex": query, "$options": "i"}}}}}}).Skip(skip).Limit(8).Sort("-price").All(&ads)
+		err = mgoSession.DB("okzdb").C("adverts").Find(bson.M{"$and": []bson.M{bson.M{"category": bson.M{"$regex": category, "$options": "i"}}, bson.M{"city": bson.M{"$regex": city, "$options": "i"}}, bson.M{"$or": []bson.M{bson.M{"title": bson.M{"$regex": query, "$options": "i"}}, bson.M{"details": bson.M{"$regex": query, "$options": "i"}}, bson.M{"category": bson.M{"$regex": query, "$options": "i"}}}}}}).Skip(skip).Limit(60).Sort("-price").All(&ads)
 		if err != nil {
 			return
 		}
 	default:
-		err = mgoSession.DB("okzdb").C("adverts").Find(bson.M{"$and": []bson.M{bson.M{"category": bson.M{"$regex": category, "$options": "i"}}, bson.M{"city": bson.M{"$regex": city, "$options": "i"}}, bson.M{"$or": []bson.M{bson.M{"title": bson.M{"$regex": query, "$options": "i"}}, bson.M{"details": bson.M{"$regex": query, "$options": "i"}}, bson.M{"category": bson.M{"$regex": query, "$options": "i"}}}}}}).Skip(skip).Limit(8).Sort("-short_id").All(&ads)
+		err = mgoSession.DB("okzdb").C("adverts").Find(bson.M{"$and": []bson.M{bson.M{"category": bson.M{"$regex": category, "$options": "i"}}, bson.M{"city": bson.M{"$regex": city, "$options": "i"}}, bson.M{"$or": []bson.M{bson.M{"title": bson.M{"$regex": query, "$options": "i"}}, bson.M{"details": bson.M{"$regex": query, "$options": "i"}}, bson.M{"category": bson.M{"$regex": query, "$options": "i"}}}}}}).Skip(skip).Limit(60).Sort("-created_at").All(&ads)
 		if err != nil {
 			return
 		}

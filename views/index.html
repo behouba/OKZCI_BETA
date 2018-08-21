@@ -3,323 +3,15 @@
 
 <head>
     <title>Okazion</title>
-    <link rel="manifest" href="manifest.json">
-    <link rel="icon" href="img/icon-72x72.png">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="application-name" content="OKAZION">
-    <meta name="apple-mobile-web-app-title" content="OKAZION">
-    <meta name="theme-color" content="#00aaff">
-    <meta name="msapplication-navbutton-color" content="#00aaff">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <meta name="msapplication-starturl" content="/">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <!-- <meta name="google-signin-client_id" content="958526051973-u8p27acgp3nbc9kver68br84s8681i6h.apps.googleusercontent.com"> -->
-    <link rel="stylesheet" href="/css/uikit.min.css" />
-    <link rel="stylesheet" href="/css/index.css" />
-
-    <script src="/js/uikit.min.js"></script>
-    <script src="/js/uikit-icons.min.js"></script>
-    <script src="/js/axios.min.js"></script>
-    <script src="/js/moment-with-locales.js"></script>
+    {{ render "components/common-head.html"}}
 </head>
 
 <body onload="homePageLoaded()" onoffline="offFunction()">
-    <div id="main" class="uk-box-shadow-small">
-        <header style="margin-bottom: 10px" id="mobile-header" style="margin: 20px 10px;">
-            <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;" class="uk-box-shadow-large">
-                <nav class="uk-navbar uk-navbar-container">
-                    <div class="uk-navbar-left" style="height: 65px;">
-                        <a uk-toggle="target: #categories-menu" class="uk-navbar-toggle" href="#">
-                            <span uk-navbar-toggle-icon></span>
-                        </a>
-                    </div>
-                    <div class="uk-navbar-center">
-                        <a class="uk-logo" href="/">
-                            <img src="/img/logo-okz.png" width="100" height="30" alt="OKZ">
-                        </a>
-                    </div>
-                    {{ if .user }}
-                    <div class="uk-navbar-right" style="height: 65px;">
-                        <a uk-toggle="target: #side-profile" class="uk-navbar-toggle">
-                            <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 30px; height: 30px;background-size: cover;"></span>
-                        </a>
-                    </div>
-                    {{ else }}
-                    <div class="uk-navbar-right" style="height: 65px;">
-                        <a href="/login" class="uk-navbar-toggle">
-                            <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url(https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png); width: 30px; height: 30px;"></span>
-                        </a>
-                    </div>
-                    {{ end }}
-                </nav>
-                <nav class="uk-navbar-container" uk-navbar id="search-nav">
-                    <div class="uk-navbar-center">
-                        <form id="search-bar">
-                            <div class="uk-margin uk-inline">
-                                <span class="uk-form-icon" uk-icon="icon: search; ratio: 1"></span>
-                                <input class="uk-input uk-form-width-medium uk-form-medium" type="text" placeholder="Recherche..." oninput="searchBarFocus()"
-                                    onsubmit="search(e)" id="search" />
-                                <a class="uk-form-icon uk-form-icon-flip" style="display:none" onclick="clearSearch()" uk-icon="icon: close; ratio: 1" id="search-close-icon"></a>
-                                <a class="uk-form-icon uk-form-icon-flip" uk-toggle href="#filter-modal" uk-icon="icon: settings; ratio: 1" id="search-setting"></a>
-                            </div>
-                        </form>
-                    </div>
-                </nav>
-            </div>
-            <!--Modal for search setting-->
-            <div id="filter-modal" class="uk-modal-full" uk-modal>
-                <div class="uk-modal-dialog">
-                    <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
-                    <div class="uk-padding uk-width-1-1 uk-text-center uk-margin-auto uk-box-shadow-large">
-                        <div class="setting-search" uk-grid>
-                            <div class="uk-width-1-1">
-                                <p>Ville</p>
-                                <select class="uk-select uk-align-right" onchange="setCity(value)">
-                                    <option>Partout</option>
-                                    {{ range .cities}}
-                                    <option value="{{.}}">{{.}}</option>
-                                    {{ end }}
-                                </select>
-                            </div>
-                            <div class="uk-width-1-1">
-                                <p>Trier par: </p>
-                                <select class="uk-select uk-align-right" onchange="setSort(value)">
-                                    <option>Default</option>
-                                    <option>Recents</option>
-                                    <option>Prix croissant</option>
-                                    <option>Prix decroissant</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="uk-margin-large-top uk-child-width-expand uk-child-width-1-2" uk-grid>
-                            <div>
-                                <a class="uk-button uk-button-danger uk-width-1-1 uk-modal-close">ANNULER</a>
-                            </div>
-                            <div>
-                                <button class="uk-button uk-button-primary uk-width-1-1" onclick="validateFilter()">APPLIQUER</button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </header>
-        <div>
-            <header id="desktop-header">
-                <div class="uk-box-shadow-small">
-                    <nav class="uk-navbar-container uk-margin" uk-navbar uk-navbar="mode: click">
-                        <div class="uk-navbar-left">
-                            <a class="uk-navbar-item uk-logo" href="/">
-                                <img src="/img/logo-okz.png" width="100" alt="OKZ">
-                            </a>
-                            <div class="uk-navbar-item">
-                                <form id="desk-search-bar">
-                                    <div class="uk-inline">
-                                        <a class="uk-form-icon uk-form-icon-flip" onclick="deskSearBarBtn()" uk-icon="icon: search" style="background: #00aaff; color: #fff"></a>
-                                        <input class="uk-input uk-form-width-medium" type="search" placeholder="Recherche..." id="desk-search">
-                                    </div>
-                                </form>
-                            </div>
-                            <ul>
-                                <li>
-                                    <div style="font-size: 12px">
-                                        CATEGORIE :
-                                        <a href="#" id="desktop-current-category" class="uk-text-break">TOUTES LES CATEGORIES
-                                        </a>
-                                    </div>
-                                    <div class="uk-navbar-dropdown" uk-drop="boundary: !nav; boundary-align: true; pos: bottom-justify;" id="desktop-category-picker">
-                                        <div class="uk-navbar-dropdown-grid uk-child-width-1-4" uk-grid>
-                                            <div>
-                                                <ul class="uk-nav uk-navbar-dropdown-nav">
-                                                    <li>
-                                                        <a href="#" onclick="setCategory('all')">
-                                                            <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/cat-menu.svg');"></span>
-                                                            TOUTES LES CATEGORIES</a>
-                                                    </li>
-                                                    <li class="uk-nav-divider"></li>
-                                                    <li class="uk-nav-header uk-text-bold">
-                                                        <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/electronic.svg');"></span>
-                                                        ELECTRONIQUES</li>
-                                                    {{ range .categories.Electroniques }}
-                                                    <li>
-                                                        <a href="#" onclick="setCategory({{ .Name }})">{{ .Name }}</a>
-                                                    </li>
-                                                    {{ end }}
-                                                    <li class="uk-nav-divider"></li>
-                                                    <li class="uk-nav-header uk-text-bold">
-                                                        <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/job.svg');"></span>
-                                                        EMPLOIS</li>
-                                                    {{ range .categories.Emplois }}
-                                                    <li>
-                                                        <a href="#" onclick="setCategory({{ .Name }})">{{ .Name }}</a>
-                                                    </li>
-                                                    {{ end }}
-                                                </ul>
-                                            </div>
-                                            <div>
-                                                <ul class="uk-nav uk-navbar-dropdown-nav">
-                                                    <li class="uk-nav-header">
-                                                        <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/car.svg');"></span>
-                                                        VEHICULES</li>
-                                                    {{ range .categories.Vehicules }}
-                                                    <li>
-                                                        <a href="#" onclick="setCategory({{ .Name }})">{{ .Name }}</a>
-                                                    </li>
-                                                    {{ end }}
-                                                    <li class="uk-nav-divider"></li>
-                                                    <li class="uk-nav-header">
-                                                        <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/armchair.svg');"></span>
-                                                        INTERIEUR</li>
-                                                    {{ range .categories.Maison }}
-                                                    <li>
-                                                        <a href="#" onclick="setCategory({{ .Name }})">{{ .Name }}</a>
-                                                    </li>
-                                                    {{ end }}
-                                                </ul>
-                                            </div>
-                                            <div>
-                                                <ul class="uk-nav uk-navbar-dropdown-nav">
-                                                    <li class="uk-nav-header">
-                                                        <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/house.svg');"></span>
-                                                        IMMOBILIER</li>
-                                                    {{ range .categories.Immobilier }}
-                                                    <li>
-                                                        <a href="#" onclick="setCategory({{ .Name }})">{{ .Name }}</a>
-                                                    </li>
-                                                    {{ end }}
-                                                    <li class="uk-nav-divider"></li>
-                                                    <li class="uk-nav-header">
-                                                        <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/fashion.svg');"></span>
-                                                        MODE
-                                                    </li>
-                                                    {{ range .categories.Mode }}
-                                                    <li>
-                                                        <a href="#" onclick="setCategory({{ .Name }})">{{ .Name }}</a>
-                                                    </li>
-                                                    {{ end }}
-                                                </ul>
-                                            </div>
-                                            <div>
-                                                <ul class="uk-nav uk-navbar-dropdown-nav">
-                                                    <li class="uk-nav-header">
-                                                        <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/employee.svg');"></span>
-                                                        SERVICES</li>
-                                                    {{ range .categories.Services }}
-                                                    <li>
-                                                        <a href="#" onclick="setCategory({{ .Name }})">{{ .Name }}</a>
-                                                    </li>
-                                                    {{ end }}
-                                                    <li class="uk-nav-divider"></li>
-                                                    <li class="uk-nav-header">
-                                                        <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/guitar.svg');"></span>
-                                                        LOISIR ET HOBBIES</li>
-                                                    {{ range .categories.Hobby }}
-                                                    <li>
-                                                        <a href="#" onclick="setCategory({{ .Name }})">{{ .Name }}</a>
-                                                    </li>
-                                                    {{ end }}
-                                                    <li class="uk-nav-divider"></li>
-                                                    <li class="uk-nav-header">
-                                                        {{ range .categories.Autres}}
-                                                        <a href="#" onclick="setCategory({{ .Name }})">
-                                                            <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/alien.svg');"></span>
-                                                            AUTRES
-                                                        </a>
-                                                        {{ end }}
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="uk-navbar-right">
-                            <div style="font-size: 12px; margin-right: 50px">
-                                LOCALITÉ :
-                                <a href="#" id="desktop-current-location">TOUTES LES VILLES
-                                </a>
-                            </div>
-                            <div class="uk-navbar-dropdown" uk-drop="boundary: !nav; boundary-align: true; pos: bottom-justify;" id="desktop-category-picker">
-                                <div class="uk-navbar-dropdown-grid uk-child-width-1-4" uk-grid>
-                                    <div>
-                                        <ul class="uk-nav uk-navbar-dropdown-nav">
-                                            <li>
-                                                <a href="#" onclick="setDeskCity('TOUTES LES VILLES')">TOUTES LES VILLES</a>
-                                            </li>
-                                            <li class="uk-nav-divider"></li>
-                                            {{ range $i, $city := .cities }} {{if lt $i 10}}
-                                            <li>
-                                                <a href="#" onclick="setDeskCity({{$city}})">{{ $city }}</a>
-                                            </li>
-                                            {{ end }} {{ end }}
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <ul class="uk-nav uk-navbar-dropdown-nav">
-                                            {{ range $i, $city := .cities }} {{if and (gt $i 10) (lt $i 20)}}
-                                            <li>
-                                                <a href="#" onclick="setDeskCity({{$city}})">{{ $city }}</a>
-                                            </li>
-                                            {{ end }} {{ end }}
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <ul class="uk-nav uk-navbar-dropdown-nav">
-                                            {{ range $i, $city := .cities }} {{if and (gt $i 20) (lt $i 30)}}
-                                            <li>
-                                                <a href="#" onclick="setDeskCity({{$city}})">{{ $city }}</a>
-                                            </li>
-                                            {{ end }} {{ end }}
-                                        </ul>
-                                    </div>
-                                    <div>
-                                        <ul class="uk-nav uk-navbar-dropdown-nav">
-                                            {{ range $i, $city := .cities }} {{if and (gt $i 30)}}
-                                            <li>
-                                                <a href="#" onclick="setDeskCity({{$city}})">{{ $city }}</a>
-                                            </li>
-                                            {{ end }} {{ end }}
-                                        </ul>
-                                    </div>
-                                </div>
-                            </div>
-                            <ul class="uk-navbar-nav">
-                                <li>
-                                    {{ if .user }}
-                                    <a href="#">
-                                        <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 40px; height: 40px; background-size: cover;"></span>
-                                    </a>
-                                    <div class="uk-navbar-dropdown">
-                                        <ul class="uk-nav uk-navbar-dropdown-nav">
-                                            <li>
-                                                <a href="/me">Profile</a>
-                                            </li>
-                                            <li>
-                                                <a href="/settings">Reglages</a>
-                                            </li>
-                                            <li>
-                                                <a href="/logout">Deconnexion</a>
-                                            </li>
-                                        </ul>
-                                    </div>
-                                    {{ else }}
-                                    <a href="/login" class="uk-navbar-toggle">
-                                        <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url(https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png); width: 40px; height: 40px;"></span>
-                                    </a>
-                                    {{ end }}
-                                </li>
-                            </ul>
-                        </div>
-                    </nav>
-                </div>
-            </header>
-
-        </div>
+    <div id="main">
+        {{ render "components/home-navbar.html"}}
         <!-- categories slider -->
         <div style="margin: 0px 10px">
+            <div id="ads-top" style="height: 50px;"></div>
             <section id="auctions-slider" style="margin-bottom: 10px; display: none" class="uk-margin-medium-top uk-margin-xlarge-buttom">
                 <div class="uk-position-relative uk-visible-toggle uk-light" uk-slider="clsActivated: uk-transition-active; center: true">
                     <ul class="uk-slider-items uk-grid">
@@ -342,27 +34,8 @@
                     <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slider-item="next"></a>
                 </div>
             </section>
-            <!-- <section id="breadcrumb" style="display: none">
-                <div class="uk-margin-medium-top uk-margin-xlarge-buttom">
-                    <ul class="uk-breadcrumb">
-                        <li>
-                            <a href="/">ACCEUIL</a>
-                        </li>
-                        <li id="category-breadcrumb">
-                            <a href="#">TOUTES LES CATEGORIES</a>
-                        </li>
-                        <li id="location-breadcrumb" class="uk-disabled">
-                            <a>TOUTES LES VILLES</a>
-                        </li>
-                    </ul>
-                </div>
-            </section> -->
-            <!-- adverts listing  -->
             <main>
-                <section style="margin-top: 60px">
-                    <!-- <div id="query-data" uk-grid class="uk-child-width-1-2">
-
-                    </div> -->
+                <section style="margin-top: 20px">
                     <div uk-grid>
                         <div class="uk-width-1-1 uk-width-3-4@m">
                             <div uk-grid id="listing-title" style="display: none">
@@ -370,11 +43,10 @@
 
                                 </div>
                                 <div class="uk-width-1-1">
-                                    <h3 class="uk-align-left" style="color: #00aaff; font-weight: bold" id="category-title">TOUTES LES ANNONCES</h3>
+                                    <h3 class="uk-align-left uk-text-bold" style="color: #00aaff;" id="category-title">TOUTES LES ANNONCES</h3>
                                     <form class="uk-align-right" id="desk-sort-by">
                                         <strong>Trier par: </strong>
-                                        <select class="uk-select uk-form-width-small" onchange="setSortDesktop(value)">
-                                            <option>Default</option>
+                                        <select class="uk-select uk-form-width-small" style="width: 160px" onchange="setSortDesktop(value)">
                                             <option>Recents</option>
                                             <option>Prix croissant</option>
                                             <option>Prix decroissant</option>
@@ -383,8 +55,8 @@
                                 </div>
                             </div>
                             <div class="uk-grid-small uk-child-width-expand@ uk-margin uk-text-center" uk-grid id="home-spinner">
-                                <div class="uk-margin" style="margin-top: 240px; margin-bottom: 200px;">
-                                    <img src="/img/6.gif">
+                                <div class="uk-margin" style="margin-top: 150px; margin-bottom: 150px;">
+                                    <img src="img/spinner.gif">
                                 </div>
                             </div>
                             <div class="uk-grid-small uk-child-width-expand@" uk-grid id="ads-field" style="display: none">
@@ -415,10 +87,10 @@
                             <div class="uk-text-center uk-margin-large-top" id="loadButton" style="display: none">
                                 <button class="uk-button uk-button-default uk-button-small" onclick="loadMore()">Voir plus</button>
                             </div>
-                            <div class="uk-text-center uk-margin uk-margin-large-top" style="display: none; color: #00aaff" id="loadMore-spinner">
-                                <div uk-spinner></div>
+                            <div class="uk-text-center uk-margin-large-top" style="display: none;" id="loadMore-spinner">
+                                <img src="img/spinner.gif" style="width: 50px; height: 50px;">
                             </div>
-                            <div class="uk-text-center uk-text-muted uk-margin uk-text-center uk-margin-large-top" id="noMoreAds" style="display: none;">
+                            <div class="uk-text-center uk-text-muted uk-text-center uk-margin-large-top" id="noMoreAds" style="display: none;">
                                 <small>Malheureusement, il n'y a plus d'articles...</small>
                             </div>
                         </div>
@@ -441,202 +113,42 @@
                                                 TOUTES LES CATEGORIES</a>
                                         </li>
                                         <li class="uk-nav-divider"></li>
+                                        {{ range .categories }}
                                         <li class="uk-parent">
                                             <a href="#">
-                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/electronic.svg');"></span>
-                                                ELECTRONIQUES</a>
-                                            <ul class="uk-nav-sub">
-                                                {{ range .categories.Electroniques }}
-                                                <li class="uk-nav-divider"></li>
-                                                <li>
-                                                    <a onclick="setCategory({{ .Name }})">{{ .Name }}</a>
-                                                </li>
-                                                {{ end }}
-                                            </ul>
-                                        </li>
-                                        <li class="uk-nav-divider"></li>
-                                        <li class="uk-parent">
-                                            <a href="#">
-                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/car.svg');"></span>
-                                                VEHICULES</a>
-                                            <ul class="uk-nav-sub">
-                                                {{ range .categories.Vehicules }}
-                                                <li class="uk-nav-divider"></li>
-                                                <li>
-                                                    <a onclick="setCategory({{ .Name }})">{{ .Name }}</a>
-                                                </li>
-                                                {{ end }}
-                                            </ul>
-                                        </li>
-                                        <li class="uk-nav-divider"></li>
-                                        <li class="uk-parent">
-                                            <a href="#">
-                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/house.svg');"></span>
-                                                IMMOBILIER</a>
-                                            <ul class="uk-nav-sub">
-                                                {{ range .categories.Immobilier}}
-                                                <li class="uk-nav-divider"></li>
-                                                <li>
-                                                    <a onclick="setCategory({{ .Name }})">{{ .Name }}</a>
-                                                </li>
-                                                {{ end }}
-                                            </ul>
-                                        </li>
-                                        <li class="uk-nav-divider"></li>
-                                        <li class="uk-parent">
-                                            <a href="#">
-                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/employee.svg');"></span>
-                                                SERVICES</a>
-                                            <ul class="uk-nav-sub">
-                                                {{ range .categories.Services}}
-                                                <li class="uk-nav-divider"></li>
-                                                <li>
-                                                    <a onclick="setCategory({{ .Name }})">{{ .Name }}</a>
-                                                </li>
-                                                {{ end }}
-                                            </ul>
-                                        </li>
-                                        <li class="uk-nav-divider"></li>
-                                        <li class="uk-parent">
-                                            <a href="#">
-                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/job.svg');"></span>
-                                                EMPLOIS</a>
-                                            <ul class="uk-nav-sub">
-                                                {{ range .categories.Emplois}}
-                                                <li class="uk-nav-divider"></li>
-                                                <li>
-                                                    <a onclick="setCategory({{ .Name }})">{{ .Name }}</a>
-                                                </li>
-                                                {{ end }}
-                                            </ul>
-                                        </li>
-                                        <li class="uk-nav-divider"></li>
-                                        <li class="uk-parent">
-                                            <a href="#">
-                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/armchair.svg');"></span>
-                                                INTERIEUR</a>
-                                            <ul class="uk-nav-sub">
-                                                {{ range .categories.Maison}}
-                                                <li class="uk-nav-divider"></li>
-                                                <li>
-                                                    <a onclick="setCategory({{ .Name }})">{{ .Name }}</a>
-                                                </li>
-                                                {{ end }}
-                                            </ul>
-                                        </li>
-                                        <li class="uk-nav-divider"></li>
-                                        <li class="uk-parent">
-                                            <a href="#">
-                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/fashion.svg');"></span>
-                                                MODE</a>
-                                            <ul class="uk-nav-sub">
-                                                {{ range .categories.Mode}}
-                                                <li class="uk-nav-divider"></li>
-                                                <li>
-                                                    <a onclick="setCategory({{ .Name }})">{{ .Name }}</a>
-                                                </li>
-                                                {{ end }}
-                                            </ul>
-                                        </li>
-                                        <li class="uk-nav-divider"></li>
-                                        <li class="uk-parent">
-                                            <a href="#">
-                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/guitar.svg');"></span>
-                                                LOISIR ET HOBBIES</a>
-                                            <ul class="uk-nav-sub">
-                                                {{ range .categories.Hobby}}
-                                                <li class="uk-nav-divider"></li>
-                                                <li>
-                                                    <a onclick="setCategory({{ .Name }})">{{ .Name }}</a>
-                                                </li>
-                                                {{ end }}
-                                            </ul>
-                                        </li>
-                                        <li class="uk-nav-divider"></li>
-                                        <li class="uk-parent">
-                                            {{ range .categories.Autres}}
-                                            <a onclick="setCategory({{ .Name }})">
-                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/alien.svg');"></span>
+                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url({{.Icon}});"></span>
                                                 {{.Name}}</a>
-                                            {{ end }}
+                                            <ul class="uk-nav-sub">
+                                                {{ range .SubCategories }}
+                                                <li class="uk-nav-divider"></li>
+                                                <li>
+                                                    <a onclick="setCategory({{ . }})">{{ . }}</a>
+                                                </li>
+                                                {{ end }}
+                                            </ul>
                                         </li>
                                         <li class="uk-nav-divider"></li>
+                                        {{ end }}
                                     </ul>
                                 </div>
                             </div>
                             <!-- right side -->
-                            {{ if .user}}
-                            <div id="side-profile" uk-offcanvas="flip: true; overlay: true">
-                                <div class="uk-offcanvas-bar">
-                                    <ul class="uk-nav uk-nav-default uk-text-bold uk-margin-top">
-                                        <li class="uk-nav-header uk-text-center">
-                                            <div class="dashboard-profil">
-                                                <img data-src="{{ .user.Picture }}" alt="" uk-img style="min-height: 100%">
-                                            </div>
-                                        </li>
-                                        <li class="uk-nav-header uk-text-center uk-margin">{{ .user.UserName }}</li>
-                                        <li class="uk-nav-divider"></li>
-                                        <li>
-                                            <a href="/me">
-                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/avatar.svg');"></span>
-                                                Profil</a>
-                                        </li>
-                                        <li class="uk-nav-divider"></li>
-                                        <li>
-                                            <a href="/settings">
-                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/controls.svg');"></span>
-                                                Reglages</a>
-                                        </li>
-                                        <li class="uk-nav-divider"></li>
-                                        <li>
-                                            <a onclick="logout()">
-                                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/logout.svg');"></span>
-                                                Deconnecter</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                            </div>
-                            {{ end }}
+                            {{ if .user}} {{ render "components/side-profile.html"}} {{ end }}
                         </div>
                     </div>
                 </section>
-                {{ if .newMessage}}
-                <script>
-                    UIkit.notification({
-                        message: 'Vous avez de nouveaux messages',
-                        pos: 'bottom-center',
-                        status: 'success'
-                    })
-                </script>
-                {{ end }}
             </main>
-            <footer class="uk-padding-small">
-                <hr>
-                <div class="uk-grid uk-grid-default uk-grid-small" uk-grid style="font-size: 13px;">
-                    <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
-                        <p>
-                            © 2018 OKAZION version beta 0.01
-                        </p>
-                    </div>
-                    <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
-                        <a href="/conditions">
-                            Regles et les conditions d'utilisations
-                        </a>
-                    </div>
-                    <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
-                        <a href="/about-us">
-                            Contactez - nous
-                        </a>
-                    </div>
-                </div>
-            </footer>
             <div id="sticky" style="text-align: center; display: none;">
+                {{ if .user}}
                 <a onclick="goCreateAdPage()" class="uk-button uk-button-primary sticky-btn">AJOUTER UNE ANNONCE</a>
+                {{ else }}
+                <a onclick="loginBeforeCreate()" class="uk-button uk-button-primary sticky-btn">AJOUTER UNE ANNONCE</a>
+                {{ end }}
             </div>
         </div>
     </div>
+    {{ render "components/footer.html"}}
     <script src="/js/index.js"></script>
-    <!-- <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script> -->
 </body>
 <script>
     // Check that service workers are registered

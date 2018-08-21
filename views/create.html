@@ -3,21 +3,13 @@
 
 <head>
     <title>Okazion</title>
-    <meta charset="utf-8">
-    <link rel="icon" href="img/icon-72x72.png">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="google-signin-client_id" content="958526051973-n3qc7e0501vo4uvlll8gq3qcrrdq587b.apps.googleusercontent.com">
-    <link rel="stylesheet" href="/css/uikit.min.css" />
-    <link rel="stylesheet" href="/css/index.css" />
-    <script src="/js/axios.min.js"></script>
-    <script src="/js/uikit.min.js"></script>
-    <script src="/js/uikit-icons.min.js"></script>
-    <script src="/js/axios.min.js"></script>
+    {{ render "components/common-head.html"}}
+    <script src="/js/cleave.min.js"></script>
+    <script src="/js/cleave-phone.ci.js"></script>
     <script src="/js/date.js"></script>
 </head>
 <style>
     #create {
-        max-width: 1200px;
         margin-right: auto;
         margin-left: auto;
     }
@@ -29,90 +21,76 @@
 
     @media only screen and (min-width: 768px) {
         /* For desktop: */
-        #mobile-profile {
+        .mobile-profile {
             display: none;
         }
         #desktop-profile {
             display: block;
         }
+        #head-info {
+            padding-left: 20px;
+            padding-right: 20px;
+        }
+        #content {
+            margin-right: auto;
+            margin-left: auto;
+        }
+        #detail {
+            margin-right: auto;
+            margin-left: auto;
+        }
 
+    }
+
+    img {
+        object-fit: cover;
     }
 
     @media only screen and (max-width: 768px) {
         /* For mobile: */
-        #mobile-profile {
+        .mobile-profile {
             display: block;
         }
         #desktop-profile {
             display: none;
         }
+        #content {
+            padding: 10px;
+        }
+    }
+
+    #create-spinner {
+        position: fixed !important;
+        width: 100%;
+        height: 100%;
+        z-index: 5;
+        background-color: rgba(119, 117, 117, 0.4);
+        display: none;
+    }
+
+    #create-spinner img {
+        display: block;
+        margin: auto;
+        margin-top: 200px;
+    }
+
+    #create-spinner p {
+        color: #fff;
+    }
+
+
+    .uk-modal-full .uk-modal-dialog {
+        height: 100%;
     }
 </style>
 
 <body>
-    <div class="uk-position-center" id="create-spinner" style="display: none;">
-        <img src="/img/logo.gif" />
+    <div class="uk-position-center" id="create-spinner">
+        <img src="img/spinner.gif" />
+        <p class="uk-text-center">Creation de l'annonce en cours...</p>
     </div>
-    <div id="create" class="uk-box-shadow-small">
-        <header style="margin-bottom: 10px">
-            <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;" class="uk-box-shadow-medium">
-                <nav class="uk-navbar uk-navbar-container" uk-navbar uk-navbar="mode: click">
-                    <div class="uk-navbar-left">
-                        <a class="uk-navbar-toggle" onclick="backTo()">
-                            <span uk-icon="icon: arrow-left; ratio: 1.5"></span>
-                        </a>
-                    </div>
-                    <div class="uk-navbar-center">
-                        <a class="uk-logo" href="/">
-                            <img src="/img/logo-okz.png" width="100" height="30" alt="OKZ">
-                        </a>
-                    </div>
-                    {{ if .user }}
-                    <div class="uk-navbar-right" style="height: 65px;" id="mobile-profile">
-                        <a uk-toggle="target: #side-profile" class="uk-navbar-toggle">
-                            <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 30px; height: 30px;background-size: cover;"></span>
-                        </a>
-                    </div>
-                    {{ else }}
-                    <div class="uk-navbar-right" style="height: 65px;">
-                        <a href="/login" class="uk-navbar-toggle">
-                            <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url(https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png); width: 30px; height: 30px;"></span>
-                        </a>
-                    </div>
-                    {{ end }}
-                    <!-- Desktop nav -->
-                    <div class="uk-navbar-right" id="desktop-profile">
-                        <ul class="uk-navbar-nav">
-                            <li>
-                                {{ if .user }}
-                                <a href="#">
-                                    <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}); width: 40px; height: 40px; background-size: cover;"></span>
-                                </a>
-                                <div class="uk-navbar-dropdown">
-                                    <ul class="uk-nav uk-navbar-dropdown-nav">
-                                        <li>
-                                            <a href="/me">Profile</a>
-                                        </li>
-                                        <li>
-                                            <a href="/settings">Reglages</a>
-                                        </li>
-                                        <li>
-                                            <a href="/logout">Deconnexion</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                {{ else }}
-                                <a href="/login" class="uk-navbar-toggle">
-                                    <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url(https://cdn2.iconfinder.com/data/icons/ios-7-icons/50/user_male2-512.png); width: 40px; height: 40px;"></span>
-                                </a>
-                                {{ end }}
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
-                </nav>
-            </div>
-        </header>
+    <div id="create">
+        {{ render "components/common-navbar1.html" }}
         <div style="margin: 30px 10px;">
             <div id="select-category" class="uk-width-1-2@m uk-margin-auto uk-padding-small">
                 <div>
@@ -120,118 +98,23 @@
                 </div>
                 <hr>
                 <ul class="uk-nav-primary uk-nav-parent-icon" uk-nav>
+                    {{ range .categories }}
                     <li class="uk-parent">
                         <a href="#">
-                            <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/car.svg');"></span>
-                            VEHICULES</a>
+                            <span class="uk-icon uk-icon-image uk-margin-small-right uk-text-truncate" style="background-image: url({{.Icon}});"></span>
+                            {{.Name}}</a>
                         <ul class="uk-nav-sub">
-                            {{ range .categories.Vehicules}}
+                            {{ range .SubCategories}}
                             <li>
-                                <a onclick="setCategory({{.Name}})">{{.Name}}</a>
+                                <a onclick="setCategory({{.}})">{{.}}</a>
                             </li>
                             {{ end }}
                         </ul>
                     </li>
-                    <li class="uk-parent">
-                        <a href="#">
-                            <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/electronic.svg');"></span>
-                            ELECTRONIQUES</a>
-                        <ul class="uk-nav-sub">
-                            {{ range .categories.Electroniques}}
-                            <li>
-                                <a onclick="setCategory({{.Name}})">{{.Name}}</a>
-                            </li>
-                            {{ end }}
-                        </ul>
-                    </li>
-                    <li class="uk-parent">
-                        <a href="#">
-                            <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/house.svg');"></span>
-                            IMMOBILIER</a>
-                        <ul class="uk-nav-sub">
-                            {{ range .categories.Immobilier}}
-                            <li>
-                                <a onclick="setCategory({{.Name}})">{{.Name}}</a>
-                            </li>
-                            {{ end }}
-                        </ul>
-                    </li>
-                    <li class="uk-parent">
-                        <a href="#">
-                            <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/employee.svg');"></span>
-                            SERVICES
-                        </a>
-                        <ul class="uk-nav-sub">
-                            {{ range .categories.Services}}
-                            <li>
-                                <a onclick="setCategory({{.Name}})">{{.Name}}</a>
-                            </li>
-                            {{ end }}
-                        </ul>
-                    </li>
-                    <li class="uk-parent">
-                        <a href="#">
-                            <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/job.svg');"></span>
-                            EMPLOIS
-                        </a>
-                        <ul class="uk-nav-sub">
-                            {{ range .categories.Emplois}}
-                            <li>
-                                <a onclick="setCategory({{.Name}})">{{.Name}}</a>
-                            </li>
-                            {{ end }}
-                        </ul>
-                    </li>
-                    <li class="uk-parent">
-                        <a href="#">
-                            <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/armchair.svg');"></span>
-                            INTERIEUR
-                        </a>
-                        <ul class="uk-nav-sub">
-                            {{ range .categories.Maison}}
-                            <li>
-                                <a onclick="setCategory({{.Name}})">{{.Name}}</a>
-                            </li>
-                            {{ end }}
-                        </ul>
-                    </li>
-                    <li class="uk-parent">
-                        <a href="#">
-                            <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/fashion.svg');"></span>
-                            MODE
-                        </a>
-                        <ul class="uk-nav-sub">
-                            {{ range .categories.Mode}}
-                            <li>
-                                <a onclick="setCategory({{.Name}})">{{.Name}}</a>
-                            </li>
-                            {{ end }}
-                        </ul>
-                    </li>
-                    <li class="uk-parent">
-                        <a href="#">
-                            <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/guitar.svg');"></span>
-                            LOISIR ET HOBBIES
-                        </a>
-                        <ul class="uk-nav-sub">
-                            {{ range .categories.Hobby}}
-                            <li>
-                                <a onclick="setCategory({{.Name}})">{{.Name}}</a>
-                            </li>
-                            {{ end }}
-                        </ul>
-                    </li>
-                    <!-- <li class="uk-parent">
-                        <a href="#">Dons gratuit d'objets</a>
-                        <ul class="uk-nav-sub">
-                            <li>
-                                <a onclick="setCategory('dons')">Donner gratuitement des objets qui ne vous servent plus</a>
-                            </li>
-                        </ul>
-                    </li> -->
+                    {{ end }}
                 </ul>
             </div>
-            <div id="ad-form" class="uk-width-1-2@m uk-margin-auto" style="display:none">
+            <div id="ad-form" class="uk-width-1-2@m uk-margin-auto" style="display: none">
                 <h2 class="uk-text-center uk-text-bold" id="form-title">Annonce</h2>
                 <form id="ad-form-field" class="uk-form-stacked">
                     <div id="type" class="uk-margin">
@@ -250,9 +133,10 @@
                     <div class="uk-margin">
                         <label class="uk-form-label" for="city">Choisir une ville</label>
                         <select class="uk-select" id="city" name="city">
-                            {{ range .cities}}
+                            <option value="{{.user.Location}}">{{.user.Location}}</option>
+                            {{ $city := .user.Location}} {{ range .cities}} {{ if ne . $city }}
                             <option value="{{.}}">{{.}}</option>
-                            {{ end }}
+                            {{end }} {{ end }}
                         </select>
                     </div>
                     <div class="uk-margin">
@@ -263,14 +147,14 @@
                         <div class="uk-margin">
                             <label class="uk-form-label" id="price" for="prix">Prix</label>
                             <div class="uk-form-controls">
-                                <input class="uk-input" id="price-value" type="number" name="price" pattern="[0-9]+" placeholder="En Fcfa">
+                                <input class="uk-input price-input" id="price-value" type="text" min="0" name="price" placeholder="En Fcfa">
                             </div>
                         </div>
                     </div>
                     <div class="uk-margin">
                         <label class="uk-form-label" for="contact">Contact tel</label>
                         <div class="uk-form-controls">
-                            <input class="uk-input" id="contact" name="contact" type="tel" pattern="[0-9]{8}" required placeholder="Votre contact tel">
+                            <input class="uk-input contact-input" id="contact" name="contact" type="text" value="{{ .user.PhoneNumber}}" required placeholder="Votre contact tel">
                         </div>
                     </div>
                     <div class="uk-margin">
@@ -299,63 +183,36 @@
                     </div>
                 </form>
             </div>
+            <!-- succes modal -->
+            <div id="success-modal" class="uk-modal-full" uk-modal>
+                <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
+                    <!-- <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button> -->
+                    <div class="uk-modal-body uk-grid uk-child-width-1-1" uk-grid>
+                        <div class=" uk-text-center uk-margin-large-top">
+                            <img src="icons/checked.svg" style="height: 150px; width: 150px" alt="">
+                        </div>
+                        <div class="uk-text-center">
+                            <h2>Votre annonce viens d'etre publié !</h2>
+                        </div>
+                        <div class="uk-text-center">
+                            <small class="uk-text-muted">l'annonce sera accessible a cette addresse:
+                                <a id="new-ad-url" href=""></a>
+                            </small>
+                        </div>
+                        <div class="uk-text-center">
+                            <button onclick="goToHomePage()" class="uk-button uk-button-default uk-button-small uk-margin-small-bottom">Aller à la page d'acceuil</button>
+                            <button onclick="createAgain()" class="uk-button uk-button-primary uk-button-small uk-margin-small-bottom">Créer un autre annonce</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <!-- canvas content -->
         <div class="uk-offcanvas-content">
             <!-- right side -->
-            {{ if .user}}
-            <div id="side-profile" uk-offcanvas="flip: true; overlay: true">
-                <div class="uk-offcanvas-bar">
-                    <ul class="uk-nav uk-nav-default uk-text-bold uk-margin-top">
-                        <li class="uk-nav-header uk-text-center">
-                            <div class="dashboard-profil">
-                                <img data-src="{{ .user.Picture }}" alt="" uk-img style="min-height: 100%">
-                            </div>
-                        </li>
-                        <li class="uk-nav-header uk-text-center uk-margin">{{ .user.UserName }}</li>
-                        <li class="uk-nav-divider"></li>
-                        <li>
-                            <a href="/me">
-                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/avatar.svg');"></span>
-                                Profil</a>
-                        </li>
-                        <li class="uk-nav-divider"></li>
-                        <li>
-                            <a href="/settings">
-                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/controls.svg');"></span>
-                                Reglages</a>
-                        </li>
-                        <li class="uk-nav-divider"></li>
-                        <li>
-                            <a onclick="logout()">
-                                <span class="uk-icon uk-icon-image uk-margin-small-right" style="background-image: url('icons/logout.svg');"></span>
-                                Deconnecter</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-            {{ end }}
+            {{ if .user}} {{ render "components/side-profile.html"}} {{ end }}
         </div>
-        <footer class="uk-padding-small">
-            <hr>
-            <div class="uk-grid uk-grid-default uk-grid-small" uk-grid style="font-size: 13px;">
-                <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
-                    <p>
-                        © 2018 OKAZION version beta 0.01
-                    </p>
-                </div>
-                <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
-                    <a href="/conditions">
-                        Regles et les conditions d'utilisations
-                    </a>
-                </div>
-                <div class="uk-width-1-1 uk-width-1-5@m uk-align-left">
-                    <a href="/about-us">
-                        Contactez - nous
-                    </a>
-                </div>
-            </div>
-        </footer>
+        {{ render "components/footer.html"}}
     </div>
 </body>
 <script src="/js/create.js"></script>

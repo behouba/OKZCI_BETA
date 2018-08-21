@@ -33,11 +33,13 @@ func (u *User) StoreUserData() (err error) {
 	return nil
 }
 
+// AddFavorite add favorite ad to user favList array
 func (u *User) AddFavorite(shortID string) (err error) {
 	err = mgoSession.DB("okzdb").C("users").Update(bson.M{"email": u.Email}, bson.M{"$addToSet": bson.M{"favList": shortID}})
 	if err != nil {
 		return
 	}
+	mgoSession.DB("okzdb").C("users").Find(bson.M{"email": u.Email}).One(&u)
 	return
 }
 
@@ -46,6 +48,7 @@ func (u *User) RemoveFavorite(shortID string) (err error) {
 	if err != nil {
 		return
 	}
+	mgoSession.DB("okzdb").C("users").Find(bson.M{"email": u.Email}).One(&u)
 	return
 }
 
@@ -99,6 +102,10 @@ func (u *User) Authenticate() (err error) {
 	if err != nil {
 		return
 	}
+	err = mgoSession.DB("okzdb").C("users").Find(bson.M{"email": u.Email}).One(&u)
+	if err != nil {
+		return
+	}
 	return
 }
 
@@ -117,11 +124,20 @@ func GetUserToRecover(email string) (user User, err error) {
 // UpdateUserData Update user data
 func (u *User) UpdateUserData() (err error) {
 	u.ID = bson.NewObjectId()
-	err = mgoSession.DB("okzdb").C("users").
-		Update(bson.M{"email": u.Email}, bson.M{"$set": bson.M{"username": u.UserName, "phonenumber": u.PhoneNumber, "picture": u.Picture, "location": u.Location, "pin": u.Pin}})
+	err = mgoSession.DB("okzdb").C("users").Update(bson.M{"email": u.Email}, bson.M{"$set": bson.M{"username": u.UserName, "phonenumber": u.PhoneNumber, "picture": u.Picture, "location": u.Location, "pin": u.Pin}})
 	if err != nil {
 		return
 	}
+	return nil
+}
+
+// UpdateUserData Update user profile image in database
+func (u *User) UpdateUserProfileImage() (err error) {
+	err = mgoSession.DB("okzdb").C("users").Update(bson.M{"email": u.Email}, bson.M{"$set": bson.M{"picture": u.Picture}})
+	if err != nil {
+		return
+	}
+	mgoSession.DB("okzdb").C("users").Find(bson.M{"email": u.Email}).One(&u)
 	return nil
 }
 
@@ -136,32 +152,30 @@ func (u *User) UpdatePassword() (err error) {
 
 // AuthenticateGoogleUser authenticate google users
 func (u *User) AuthenticateGoogleUser() (err error) {
-	var dbUser User
-	err = mgoSession.DB("okzdb").C("users").Find(bson.M{"email": u.Email}).One(&dbUser)
+	err = mgoSession.DB("okzdb").C("users").Find(bson.M{"email": u.Email}).One(&u)
 	if err != nil {
 		if err = u.StoreUserData(); err != nil {
 			return
 		}
 		return
 	}
-	if dbUser.Auth != "google" {
+	if u.Auth != "google" {
 		return errors.New("user already register with this email but not with google")
 	}
-	mgoSession.DB("okzdb").C("users").Update(bson.M{"email": u.Email}, bson.M{"$set": bson.M{"picture": u.Picture}})
+	// mgoSession.DB("okzdb").C("users").Update(bson.M{"email": u.Email}, bson.M{"$set": bson.M{"picture": u.Picture}})
 	return
 }
 
 // AuthenticateFbUser authenticate facebook users
 func (u *User) AuthenticateFbUser() (err error) {
-	var dbUser User
-	err = mgoSession.DB("okzdb").C("users").Find(bson.M{"email": u.Email}).One(&dbUser)
+	err = mgoSession.DB("okzdb").C("users").Find(bson.M{"email": u.Email}).One(&u)
 	if err != nil {
 		if err = u.StoreUserData(); err != nil {
 			return
 		}
 		return
 	}
-	if dbUser.Auth != "facebook" {
+	if u.Auth != "facebook" {
 		return errors.New("user already registered with this email but not with facebook")
 	}
 	mgoSession.DB("okzdb").C("users").Update(bson.M{"email": u.Email}, bson.M{"$set": bson.M{"picture": u.Picture}})
@@ -177,26 +191,32 @@ func GetUserByEmail(email string) (user User, err error) {
 	return
 }
 
+// UpdateUserName update user name in database
 func (u *User) UpdateUserName() (err error) {
 	err = mgoSession.DB("okzdb").C("users").Update(bson.M{"email": u.Email}, bson.M{"$set": bson.M{"username": u.UserName}})
 	if err != nil {
 		return
 	}
+	mgoSession.DB("okzdb").C("users").Find(bson.M{"email": u.Email}).One(&u)
 	return
 }
 
+// UpdateContact update user contact in database
 func (u *User) UpdateContact() (err error) {
 	err = mgoSession.DB("okzdb").C("users").Update(bson.M{"email": u.Email}, bson.M{"$set": bson.M{"phonenumber": u.PhoneNumber}})
 	if err != nil {
 		return
 	}
+	mgoSession.DB("okzdb").C("users").Find(bson.M{"email": u.Email}).One(&u)
 	return
 }
 
+// UpdateUserLocation update user location in database
 func (u *User) UpdateUserLocation() (err error) {
 	err = mgoSession.DB("okzdb").C("users").Update(bson.M{"email": u.Email}, bson.M{"$set": bson.M{"location": u.Location}})
 	if err != nil {
 		return
 	}
+	mgoSession.DB("okzdb").C("users").Find(bson.M{"email": u.Email}).One(&u)
 	return
 }

@@ -1,11 +1,16 @@
 let userName = document.getElementById('userName')
 let userContact = document.getElementById('contact')
 let userLocation = document.getElementById('location')
+let userNameModal = document.getElementById('user-name-modal')
+let userContactModal = document.getElementById('contact-modal')
+let userLocationModal = document.getElementById('location-modal')
 
 
 
 function updateUserName() {
     console.log(userName.value)
+    UIkit.modal(userNameModal).hide();
+    UIkit.notification("Mise a jour en cours...", "success")
     var data = {
         "userName": userName.value
     }
@@ -14,11 +19,18 @@ function updateUserName() {
             window.location.reload(true)
         })
         .catch(err => {
+            UIkit.notification("Echec de mise a jour: " + err, warning)
             console.log(err)
         })
 }
 
 function updateUserContact() {
+    if (userContact.value.replace(/ /g, '').length !== 8) {
+        UIkit.notification("Numero invalid !", "warning")
+        return
+    }
+    UIkit.modal(userContactModal).hide();
+    UIkit.notification("Mise a jour en cours...", "success")
     var data = {
         "phoneNumber": userContact.value
     }
@@ -28,6 +40,7 @@ function updateUserContact() {
             window.location.reload(true)
         })
         .catch(err => {
+            UIkit.notification("Echec de mise a jour: " + err, warning)
             console.log(err)
         })
 }
@@ -37,6 +50,8 @@ function backTo() {
 }
 
 function updateUserLocation() {
+    UIkit.modal(userLocationModal).hide();
+    UIkit.notification("Mise a jour en cours...", "success")
     var data = {
         "location": userLocation.value
     }
@@ -46,22 +61,11 @@ function updateUserLocation() {
             window.location.reload(true)
         })
         .catch(err => {
+            UIkit.notification("Echec de mise a jour: " + err, warning)
             console.log(err)
         })
 }
 
-function logout() {
-
-    axios
-        .get("/logout")
-        .then(res => {
-            console.log("disconnected");
-            window.location.href = "/";
-        })
-        .catch(err => {
-            UIkit.notification("Erreur de reseau...", "warning");
-        });
-}
 
 function readURL(input) {
     let imageUpload = document.getElementById("imageUpload");
@@ -95,3 +99,8 @@ function updateProfileImage(file) {
             console.log(err)
         })
 }
+
+var contactCleave = new Cleave('.contact-input', {
+    phone: true,
+    phoneRegionCode: 'CI'
+});

@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+        "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <meta http-equiv="Content-Type" content="text/html" ; charset="UTF-8" />
+</head>
+<style>
+    body {
+        padding: 20px 10px;
+        text-align: center;
+    }
+
+    p {
+        font-size: 25px;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+    }
+</style>
+
+<body>
+    <div>
+        <img src="https://s3.eu-west-3.amazonaws.com/okazion/assets/okazion.png" alt="OKAZION">
+    </div>
+    <h2 style="color: #00aaff">{{ .Title }}</h2>
+    <!-- 
+    <p>Nom de l'expediteur: </p>
+    <p>Email de l'expediteur: </p>
+     -->
+    <p>Message : {{ .Body }}</p>
+
+    {{ if .ShortID }}
+    <p>Le lien vers l'annonce en cause: https://www.okazion.ci/watch?a={{.ShortID}}</p>
+    {{ end }}
+
+    <small>votre site de petites annonces en ligne www.okazion.ci ©</small>
+</body>
+
+</html>

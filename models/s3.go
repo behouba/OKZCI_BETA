@@ -6,17 +6,11 @@ import (
 	"strings"
 
 	"github.com/aws/aws-sdk-go/aws"
-	"github.com/aws/aws-sdk-go/aws/credentials"
 	"github.com/aws/aws-sdk-go/aws/session"
 	"github.com/aws/aws-sdk-go/service/s3"
 	"github.com/aws/aws-sdk-go/service/s3/s3manager"
 	"github.com/kataras/iris"
 )
-
-var myAwsSess = session.Must(session.NewSession(&aws.Config{
-	Region:      aws.String("eu-west-3"),
-	Credentials: credentials.NewStaticCredentials("", "", ""),
-}))
 
 // UploadFormFilesToAwsS3 used to upload form files to aws S3 bucket
 func UploadFormFilesToAwsS3(ctx iris.Context, folder string) (urls []string, err error) {

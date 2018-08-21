@@ -1,0 +1,54 @@
+<footer class="uk-padding-small  uk-margin-large-top">
+    <hr>
+    <div class="uk-grid uk-grid-default uk-grid-small" uk-grid style="font-size: 12px;">
+        <div class="uk-width-1-1 uk-width-1-6@m uk-align-left">
+            <p>
+                © 2018 OKAZION version beta
+            </p>
+        </div>
+        <div class="uk-width-1-1 uk-width-1-6@m uk-align-left">
+            <a href="/conditions">
+                Regles et les conditions d'utilisations
+            </a>
+        </div>
+        <div class="uk-width-1-1 uk-width-1-6@m uk-align-left">
+            <a href="/about-us">
+                Contactez-nous
+            </a>
+        </div>
+    </div>
+</footer>
+<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+<script>
+    function onLoad() {
+        gapi.load("auth2", function () {
+            gapi.auth2.init();
+        });
+    }
+
+    function logout() {
+        UIkit.notification("Deconnexion en cours...", "success")
+        // server logout
+        UIkit.offcanvas("#side-profile").hide();
+        axios
+            .get("/logout")
+            .then(res => {
+                console.log("disconnected");
+                // google logout
+                gapi.auth2.init();
+                let auth2 = gapi.auth2.getAuthInstance();
+                auth2.signOut().then(function () {
+                    console.log("User signed out.");
+                });
+                setTimeout(() => {
+                    window.location.reload(true);
+                }, 500);
+            })
+            .catch(err => {
+                setTimeout(() => {
+                    UIkit.notification("Erreur de reseau...", "warning");
+                }, 2000);
+            });
+
+    }
+</script>
