@@ -4,7 +4,7 @@ let register = document.getElementById("register")
 let verification = document.getElementById("verification")
 let recoveryVerification = document.getElementById("recovery-verification")
 let updataPassword = document.getElementById("update-password")
-
+let countGoogle = 0;
 
 let loginForm = document.getElementById("login-form")
 let registerForm = document.getElementById("register-form")
@@ -91,11 +91,11 @@ loginForm.addEventListener('submit', (e) => {
                 let code = err.response.status
                 console.log(code)
                 if (code === 403) {
-                    UIkit.notification("Email ou mot de passe incorrect ", "warning");
+                    UIkit.notification("Votre identifiant ou mot de passe est incorrect.", "warning");
                 } else if (code === 409) {
-                    UIkit.notification("Cette addresse email correspond a un compte enregistré avec Google ou Facebook essayez de vous connecter avec Facebook ou Google", "warning")
+                    UIkit.notification("Cette addresse email correspond à un compte enregistré avec Google ou Facebook, essayez de vous connecter avec Facebook ou Google!", "warning")
                 } else if (code === 500) {
-                    UIkit.notification("Une erreur est survenue coté serveur ! \nVeillez reesayer svp", "warning");
+                    UIkit.notification("Une erreur est survenue côté serveur ! \n Veuillez réessayer svp", "warning");
                 }
             } else if (err.request) {
                 UIkit.notification(err.message)
@@ -135,9 +135,9 @@ verifForm.addEventListener('submit', (e) => {
                 let code = err.response.status
                 console.log(code)
                 if (code === 403) {
-                    UIkit.notification("Code de verification incorrect !\nVerifiez votre boite email et reessayez svp !", "warning");
+                    UIkit.notification("Code de vérification incorrect !\n Vérifiez votre boite email et réessayez svp !", "warning");
                 } else if (code === 500) {
-                    UIkit.notification("Une erreur est survenue coté serveur ! \nVeillez reesayer svp", "warning");
+                    UIkit.notification("Une erreur est survenue côté serveur ! \Veuillez réessayer svp", "warning");
                 }
             }
         })
@@ -182,7 +182,7 @@ updataPasswordForm.addEventListener('submit', e => {
         .catch(err => {
             spinner.style.display = 'none'
             updataPassword.style.display = 'block'
-            UIkit.notification("Erreur ! Veillez reessayer")
+            UIkit.notification("Erreur ! Veuillez réessayer")
         })
 })
 
@@ -211,7 +211,7 @@ recoveryVerificationForm.addEventListener('submit', e => {
                 if (code === 403) {
                     UIkit.notification("code fourni est incorrect", "warning");
                 } else if (code === 500) {
-                    UIkit.notification("Une erreur est survenue coté serveur ! \nVeillez reesayer svp", "warning");
+                    UIkit.notification("Une erreur est survenue côté serveur ! \n Veuillez réessayer svp", "warning");
                 } else if (code === 409) {
                     UIkit.notification("code fourni est incorrect", "warning");
                 }
@@ -249,11 +249,11 @@ recoveryForm.addEventListener('submit', e => {
                 let code = err.response.status
                 console.log(code)
                 if (code === 403) {
-                    UIkit.notification("Cette addresse email n'est pas enregistrée veillez creer un nouveau compte", "warning");
+                    UIkit.notification("Cette adresse email n'est pas enregistrée, veuillez créer un nouveau compte!", "warning");
                 } else if (code === 500) {
-                    UIkit.notification("Une erreur est survenue coté serveur ! \nVeillez reesayer svp", "warning");
+                    UIkit.notification("Une erreur est survenue côté serveur ! \n Veuillez réessayer svp", "warning");
                 } else if (code === 409) {
-                    UIkit.notification("Cette addresse email est enregistré avec google ou facebook", "warning");
+                    UIkit.notification("Cette adresse email est déjà enregistrée avec google ou facebook", "warning");
                 }
             } else if (err.request) {
                 alert()
@@ -302,9 +302,9 @@ registerForm.addEventListener('submit', (e) => {
                 let code = err.response.status
                 console.log(code)
                 if (code === 403) {
-                    UIkit.notification("Cette addresse email est deja liée a compte. essayez de vous connectez ou recuperer votre mot de passe si vous l'avez perdu", "warning");
+                    UIkit.notification("Cette adresse email est déjà liée à compte. Essayez de vous connectez ou récupérer votre mot de passe si vous l'avez perdu!", "warning");
                 } else if (code === 500) {
-                    UIkit.notification("Une erreur est survenue coté serveur ! \nVeillez reesayer svp", "warning");
+                    UIkit.notification("Une erreur est survenue côté serveur ! \n Veuillez réessayer svp", "warning");
                 }
             } else if (err.request) {
                 alert()
@@ -326,6 +326,10 @@ function onGoogleSignIn(googleUser) {
         "email": profile.getEmail(),
         "picture": profile.getImageUrl()
     }
+    console.log(user)
+    if (user.email === "") {
+        return
+    }
     axios.post("/google-auth", user)
         .then(res => {
             console.log(res)
@@ -344,9 +348,13 @@ function onGoogleSignIn(googleUser) {
                 let code = err.response.status
                 console.log(code)
                 if (code === 403) {
-                    UIkit.notification("Cette addresse gmail est deja enregistré sur le site\nVeillez vous connectez", "warning");
+                    if (countGoogle === 0) {
+                        countGoogle++;
+                        return
+                    }
+                    UIkit.notification("Cette adresse gmail est déjà enregistrée sur le site,\n Veuillez vous connecter!", "warning");
                 } else if (code === 500) {
-                    UIkit.notification("Une erreur est survenue coté serveur ! \nVeillez reesayer svp", "warning");
+                    UIkit.notification("Une erreur est survenue côté serveur ! \n Veuillez réessayer svp", "warning");
                 }
             } else if (err.request) {
                 UIkit.notification(err.message)
@@ -391,9 +399,9 @@ function onFacebookLogin() {
                             let code = err.response.status
                             console.log(code)
                             if (code === 403) {
-                                UIkit.notification("Cette addresse email est deja enregistré sur le site\nVeillez vous connecter", "warning");
+                                UIkit.notification("Cette adresse email est déjà enregistrée sur le site,\n Veuillez vous connecter!", "warning");
                             } else if (code === 500) {
-                                UIkit.notification("Une erreur est survenue coté serveur ! \nVeillez reesayer svp", "warning");
+                                UIkit.notification("Une erreur est survenue côté serveur ! \n Veuillez réessayer svp", "warning");
                             }
                         } else if (err.request) {
                             UIkit.notification(err.message)
@@ -406,7 +414,7 @@ function onFacebookLogin() {
             });
         } else {
             console.log('User cancelled login or did not fully authorize.');
-            UIkit.notification("Echec de connexion verifiez que votre navigateur ne bloque pas l'ouverture de nouveau onglets", "warning")
+            UIkit.notification("Échec de connexion !! Vérifier que votre navigateur ne bloque pas l'ouverture de nouveaux onglets.", "warning")
         }
     }, {
         scope: 'email'

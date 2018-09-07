@@ -1,8 +1,8 @@
 <header class="uk-text-bold">
-    <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;" class="uk-box-shadow-medium">
+    <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;" class="card">
         <nav class="uk-navbar uk-navbar-container" uk-navbar uk-navbar="mode: click">
             <div class="uk-navbar-left">
-                <a class="uk-navbar-toggle" onclick="window.history.back()">
+                <a class="uk-navbar-toggle arrow-left" onclick="window.history.back()">
                     <span uk-icon="icon: arrow-left; ratio: 1.5"></span>
                 </a>
             </div>
@@ -12,13 +12,13 @@
                 </a>
             </div>
             {{ if .user }}
-            <div class="uk-navbar-right mobile-profile" style="height: 65px;">
+            <div class="uk-navbar-right mobile-profile">
                 <a uk-toggle="target: #side-profile" class="uk-navbar-toggle">
                     <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}), url('img/user.svg'); width: 30px; height: 30px;background-size: cover;"></span>
                 </a>
             </div>
             {{ else }}
-            <div class="uk-navbar-right mobile-profile" style="height: 65px;">
+            <div class="uk-navbar-right mobile-profile">
                 <a href="/login" class="uk-navbar-toggle">
                     <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url('img/no_user.svg'); width: 30px; height: 30px;"></span>
                 </a>

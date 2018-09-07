@@ -25,15 +25,10 @@
         margin: 40% auto 10% auto;
     }
 
-    h1,
-    .uk-legend {
-        color: #00aaff;
-    }
-
     @media only screen and (max-width: 1192px) {
         /* For mobile: */
         .uk-padding {
-            padding: 10px;
+            padding: 10px 20px;
         }
     }
 </style>
@@ -44,56 +39,18 @@
         <p class="uk-margin">Envoi du message en cours...</p>
     </div>
     <div id="contact">
-        <header id="desktop-header">
-            <div class="uk-box-shadow-small">
-                <nav class="uk-navbar-container uk-margin" uk-navbar uk-navbar="mode: click">
-                    <div class="uk-navbar-left">
-                        <a class="uk-navbar-item uk-logo" href="/">
-                            <img src="img/okazion.png" width="100" alt="OKZ">
-                        </a>
-                    </div>
-                </nav>
-            </div>
-        </header>
-        <header id="mobile-header">
-            <div class="uk-box-shadow-small">
-                <nav class="uk-navbar-container uk-margin" uk-navbar uk-navbar="mode: click">
-                    <div class="uk-navbar-center">
-                        <a class="uk-navbar-item uk-logo" href="/">
-                            <img src="img/okazion.png" width="100" alt="OKZ">
-                        </a>
-                    </div>
-                </nav>
-            </div>
-        </header>
+        {{ render "components/secondary-header.html"}}
         <main>
             <div class="uk-padding">
-                <h1 class="uk-text-center">A PROPOS DU SITE OKAZION</h1>
-                <P>Nous sommes une equipe de jeunes développeurs ivoiriens. A travers certains constats de l'environnement du
-                    pays, étant soucieux d'apporter des idées nouvelles et innovantes dans le domaine des services en ligne,
-                    nous avons décidé de mettre notre savoir-faire au service de nos populations. De fait, le nombre croissant
-                    d'objets ou produits qui affluent considérablement chez soi ou ailleurs sans qu'on ne puisse en retirer
-                    un avantage pécunier sont un manque à gagner pour la population. En outre, l'achat immédiat d'un article
-                    ou objet désiré peut s'avérer une erreur dans les minutes ou les jours qui suivront ou encore peut nous
-                    déplaire de bien des façons. De plus, il n'est pas aisé de trouver des occasions inédites d'obtenir certains
-                    articles et services que l'on désire. Toutes ces raisons et bien d'autres ont suscité un engouement et
-                    constitué un challenge important à relever. Mais rien n'est plus beau et digne, à notre avis, que de
-                    contribuer à épauler ou à aider son semblable afin de lui rendre la vie moins pénible. Fort de ce constat,
-                    nous avons pris à bras-le-corps la ferme résolution de créer une plateforme web facile d'utilisation
-                    et accessible à tous. Okazion apportera une nouvelle manière de percevoir et d'utiliser un site de petites
-                    d'annonces; tout en offrant aux utilisateurs une plateforme dynamique sur laquelle les utilisateurs pourront
-                    interagir favorablement. Afin de réaliser toutes les missions que nous nous sommes assignées, nous serons
-                    toujours à l'écoute de vos besoins et procéderons au fur et à mesure à des améliorations en parallèle
-                    au fil du temps.
-                </P>
-            </div>
-            <div class="uk-padding">
-                <h1 class="uk-text-center">SOUHAITEZ-VOUS NOUS CONTACTER ?</h1>
+                <h3 class="uk-text-center">SOUHAITEZ-VOUS NOUS CONTACTER ?</h3>
                 <p>
-                    Nous sommes ouvert à tous nos utilisateurs. Il est expédient que nous soyons à votre écoute et répondrons à vos attentes
-                    avec célérité. Nous sommes disponibles pour vous. Vous pouvez nous contacter grâce au formulaire ci-dessous.
+                    Nous sommes ouvert à tous nos utilisateurs. Il est expédient que nous soyons à votre écoute et
+                    répondrons à vos attentes
+                    avec célérité. Nous sommes disponibles pour vous. Vous pouvez nous contacter grâce au formulaire
+                    ci-dessous.
                 </p>
-                <p>En outre, pour une meilleure interaction avec vous, toutes suggestions tendant à améliorer le site seront
+                <p>En outre, pour une meilleure interaction avec vous, toutes suggestions tendant à améliorer le site
+                    seront
                     la bienvenue.
                 </p>
             </div>
@@ -124,7 +81,8 @@
                         </div>
                         <div class="uk-text-center">
                             <h2>Votre message a été envoyé !</h2>
-                            <small class="uk-text-muted">Merci de nous avoir contacté, nous vous répondrons dans les plus brefs délais s'il y a lieu</small>
+                            <small class="uk-text-muted">Merci de nous avoir contacté, nous vous répondrons dans les
+                                plus brefs délais s'il y a lieu</small>
                         </div>
                     </div>
                 </div>

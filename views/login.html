@@ -32,16 +32,44 @@
             display: none;
         }
     }
+
+    .fbk-btn:hover{
+        -webkit-box-shadow:0 0 3px 3px rgba(66,133,244,.3);
+        box-shadow:0 0 3px 3px rgba(66,133,244,.3)
+    }
+    .fbk-btn{
+        height: 36px;
+        font-size: 12px;
+        border-radius: 5px;
+        box-shadow: 0 2px 4px 0 rgba(0,0,0,.25);
+        box-sizing: border-box;
+    }
 </style>
+<script>
+    gapi.auth2.init();
+    let auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+        console.log("User signed out.");
+    });
+</script>
 
 <body onload="authLoading()">
+    <style>
+        .abcRioButtonLightBlue {
+        border-radius: 5px;
+    }
+    </style>
     <div class="uk-position-center" id="auth-spinner">
-        <img src="/img/spinner.gif">
+        <!-- <img src="/img/spinner.gif"> -->
+        <svg class="spinner" width="80px" height="80px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+            <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+        </svg>
     </div>
     <div id="auth" style="display: none">
         <div id="login" class="uk-animation-slide-bottom-small">
             <div class="uk-text-right">
-                <a class="uk-close-large uk-margin-small-top uk-margin-small-right" onclick="window.history.back()" uk-close></a>
+                <a class="uk-close-large uk-padding-small uk-margin-small-top uk-margin-small-right" onclick="window.history.back()"
+                    uk-close></a>
             </div>
             <div class="uk-margin-large-top">
                 <div class="uk-child-width-auto" uk-grid>
@@ -49,12 +77,12 @@
                         <div class="uk-form-stacked uk-margin uk-margin-left uk-margin-right">
                             <div>
                                 <div class="uk-margin uk-text-center">
-                                    <h3>CONNEXION AVEC VOS RESEAUX SOCIAUX</h3>
+                                    <h3>CONNEXION AVEC: </h3>
                                 </div>
                                 <div class="uk-margin uk-grid-expand" uk-grid>
                                     <div class="uk-width-1-2">
-                                        <button style="height: 36px;font-size: 12px;border-radius: 2px;box-shadow: 0 2px 4px 0 rgba(0,0,0,.25);box-sizing: border-box;"
-                                            class="uk-button uk-button-primary uk-width-1-1 uk-box-shadow-hover-small" onclick="onFacebookLogin()">
+                                        <button class="fbk-btn uk-button uk-button-primary uk-width-1-1 uk-box-shadow-hover-small"
+                                            onclick="onFacebookLogin()">
                                             <span uk-icon="icon: facebook"></span>
                                             Facebook
                                         </button>
@@ -111,7 +139,7 @@
                     <div class="uk-width-1-1 uk-width-1-2@s uk-width-2-5@s uk-margin-auto">
                         <div class="uk-form-stacked uk-margin uk-margin-left uk-margin-right">
                             <form id="recovery-form" class="uk-form-stacked uk-margin-large-top">
-                                <legend class="uk-legend uk-text-center">RECUPERATION DU MOT DE PASSE</legend>
+                                <legend class="uk-legend uk-text-center">RÉCUPÉRATION DU MOT DE PASSE</legend>
                                 <div class="uk-margin">
                                     <label class="uk-form-label" for="recovery-email">Adresse email</label>
                                     <div class="uk-form-controls">
@@ -120,7 +148,7 @@
                                 </div>
                                 <div>
                                     <button class="uk-button uk-button-primary uk-width-1-1">
-                                        <small>Recuperer le mot de passe</small>
+                                        <small>Récupérer le mot de passe</small>
                                     </button>
                                 </div>
                             </form>
@@ -138,27 +166,30 @@
                     <div class="uk-width-1-1 uk-width-1-2@s uk-width-2-5@s uk-margin-auto">
                         <div class="uk-form-stacked uk-margin uk-margin-left uk-margin-right">
                             <form id="register-form" action="/register" method="POST" class="uk-form-stacked">
-                                <legend class="uk-legend uk-text-center">CREER UN COMPTE</legend>
+                                <legend class="uk-legend uk-text-center">CRÉER UN COMPTE</legend>
                                 <div class="uk-margin">
                                     <label class="uk-form-label" for="register-user_name">Nom d'utilisateur</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="register-user_name" name="userName" type="text" placeholder="Entrez votre Nom d'utilisateur ici">
+                                        <input class="uk-input" id="register-user_name" name="userName" type="text"
+                                            placeholder="Entrez votre Nom d'utilisateur ici">
                                     </div>
                                 </div>
                                 <div class="uk-margin">
                                     <label class="uk-form-label" for="register-email">Email</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="register-email" name="email" type="email" placeholder="Entrez votre email ici">
+                                        <input class="uk-input" id="register-email" name="email" type="email"
+                                            placeholder="Entrez votre email ici">
                                     </div>
                                 </div>
                                 <div class="uk-margin">
                                     <label class="uk-form-label" for="register-password">Mot de passe</label>
                                     <div class="uk-form-controls">
-                                        <input class="uk-input" id="register-password" name="password" type="password" placeholder="Entrez votre mot de passe ici">
+                                        <input class="uk-input" id="register-password" name="password" type="password"
+                                            placeholder="Entrez votre mot de passe ici">
                                     </div>
                                 </div>
                                 <div class="uk-margin">
-                                    <label class="uk-form-label" for="register-password2">Repetez le mot de passe</label>
+                                    <label class="uk-form-label" for="register-password2">Confirmer le mot de passe</label>
                                     <div class="uk-form-controls">
                                         <input class="uk-input" id="register-password2" type="password" placeholder="Repetez le mot de passe ici">
                                     </div>
@@ -166,11 +197,12 @@
                                 <div class="uk-margin uk-grid-small uk-child-width-expand uk-grid uk-text-center">
                                     <label>
                                         <input class="uk-checkbox" type="checkbox" required>
-                                        <small>J'accepte les regles et les conditions d'utilisations du site</small>
+                                        <small>J'accepte les règles et les conditions d'utilisation du site</small>
                                     </label>
                                 </div>
                                 <div class="uk-margin">
-                                    <button type="submit" class="uk-button uk-button-primary uk-width-1-1">CREER UN COMPTE</button>
+                                    <button type="submit" class="uk-button uk-button-primary uk-width-1-1">CRÉER UN
+                                        COMPTE</button>
                                 </div>
                             </form>
                         </div>
@@ -183,9 +215,10 @@
                 <div class="uk-width-1-1 uk-width-1-2@s uk-width-2-5@s uk-margin-auto">
                     <div class="uk-form-stacked uk-margin uk-margin-left uk-margin-right">
                         <form id="verification-form" method="POST" class="uk-form-stacked">
-                            <P class="uk-legend uk-text-center">Entrez le code que vous venez de recevoir par email pour verification</P>
+                            <P class="uk-legend uk-text-center">Veuillez entrez le code reçu par email pour
+                                vérification</P>
                             <div class="uk-margin">
-                                <label class="uk-form-label" for="pin-code">ENTREZ LE CODE RECU PAR EMAIL</label>
+                                <label class="uk-form-label" for="pin-code">ENTREZ LE CODE REÇU PAR EMAIL</label>
                                 <div class="uk-form-controls">
                                     <input class="uk-input" id="pin-code" name="pin" type="text" placeholder="Entrez code pin" />
                                 </div>
@@ -203,9 +236,10 @@
                 <div class="uk-width-1-1 uk-width-1-2@s uk-width-2-5@s uk-margin-auto">
                     <div class="uk-form-stacked uk-margin uk-margin-left uk-margin-right">
                         <form id="recovery-verification-form" method="POST" class="uk-form-stacked uk-margin-xlarge-top">
-                            <P class="uk-legend uk-text-center">Nous vous avons envoyé un code par email pour verification</P>
+                            <P class="uk-legend uk-text-center">Veuillez entrez le code reçu par email pour
+                                vérification</P>
                             <div class="uk-margin">
-                                <label class="uk-form-label" for="pin-code">ENTREZ LE CODE RECU PAR EMAIL</label>
+                                <label class="uk-form-label" for="pin-code">ENTREZ LE CODE REÇU PAR EMAIL</label>
                                 <div class="uk-form-controls">
                                     <input class="uk-input" id="recovery-pin-code" name="pin" type="text" placeholder="Entrez code pin">
                                 </div>
@@ -247,7 +281,7 @@
     <script>
         window.fbAsyncInit = function () {
             FB.init({
-                appId: '157821501758780',
+                appId: '549196102200266',
                 autoLogAppEvents: true,
                 xfbml: true,
                 version: 'v3.0'

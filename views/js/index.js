@@ -18,9 +18,11 @@ let desktopCategoryPicker = document.getElementById("desktop-category-picker");
 let currentDesktopLocation = document.getElementById(
   "desktop-current-location"
 );
+let main = document.getElementById("main");
+let mainSpinner = document.getElementById("main-spinner");
 let desktopSearch = document.getElementById("desk-search");
 let desktopSearchBar = document.getElementById("desk-search-bar");
-let listingTitle = document.getElementById("listing-title");
+// let listingTitle = document.getElementById("listing-title");
 let categoryTitle = document.getElementById("category-title");
 let mobileSearchKeyword = document.getElementById("mobile-search-keyword");
 let adsTop = document.getElementById("ads-top");
@@ -34,20 +36,26 @@ let createDate = document.getElementsByClassName("create-date");
 
 function homePageLoaded() {
   if (sessionStorage.getItem("data") !== null && step === 1) {
+    displayCurrentSearch(search.value)
     adsField.innerHTML = sessionStorage.getItem("data");
+    let position = Number(localStorage.getItem("scrollPosition"));
+    localStorage.removeItem("scrollPosition");
     sessionStorage.removeItem("step");
     sessionStorage.removeItem("data");
     loadButton.style.display = "block";
     getSearchParams();
+    setTimeout(() => {
+      window.scrollTo(0, position);
+    }, 1000);
   } else {
     searchRequest();
   }
-  displayListing();
 }
+
 
 function displayListing() {
   homeSpinner.style.display = "none";
-  listingTitle.style.display = "flex";
+  // listingTitle.style.display = "flex";
   adsField.style.display = "flex";
   sticky.style.display = "block";
 }
@@ -62,6 +70,7 @@ function getSearchParams() {
   desktopCurrentCategory.innerText =
     category.toUpperCase() || "TOUTES LES CATEGORIES";
   categoryTitle.innerText = category.toUpperCase() || "TOUTES LES ANNONCES";
+  displayListing()
 }
 
 function incrementOffset() {
@@ -92,6 +101,12 @@ function saveData() {
   sessionStorage.setItem("sort", sort);
   sessionStorage.setItem("search", search.value);
 }
+
+window.addEventListener("beforeunload", e => {
+  localStorage.setItem("scrollPosition", window.pageYOffset)
+  main.style.display = 'none';
+  mainSpinner.style.display = 'block';
+})
 
 function setCategory(cat) {
   if (cat === "all") {
@@ -146,6 +161,7 @@ function validateFilter() {
 }
 
 function searchRequest() {
+  search.blur()
   offset = 0;
   // console.log(
   //   "category =",
@@ -160,7 +176,7 @@ function searchRequest() {
   adsField.style.display = "none";
   homeSpinner.style.display = "block";
   loadButton.style.display = "none";
-  listingTitle.style.display = "flex";
+  // listingTitle.style.display = "flex";
   noMoreAds.style.display = "none";
   let url =
     "/search?query=" +
@@ -183,6 +199,7 @@ function searchRequest() {
         res.data.forEach(ad => {
           ads += createAdCard(ad);
         });
+        displayListing();
         adsField.innerHTML = ads;
         incrementOffset();
         checkResult(res.data);
@@ -215,16 +232,22 @@ function searchRequest() {
 searchBar.addEventListener("submit", e => {
   e.preventDefault();
   // console.log(search.value);
-  if (search.value !== "") {
-    mobileSearchKeyword.innerHTML = `<h3 class="uk-align-left" id="keyword-title">Mot clé recherché: <strong style="color: #00aaff; font-weight: bold">« ${
-      search.value
-    } »</strong></h3>`;
+  displayCurrentSearch(search.value)
+  searchRequest();
+});
+
+function displayCurrentSearch(searchValue) {
+  if (searchValue !== "") {
+    searchSetting.style.display = "none";
+    searchCloseIcon.style.display = "inline-flex";
+    mobileSearchKeyword.innerHTML = `<p class="uk-align-left" id="keyword-title">Mot clé recherché: <strong style="color: #00aaff; font-weight: bold">« ${
+      searchValue
+    } »</strong></p>`;
     mobileSearchKeyword.style.display = "block";
   } else {
     mobileSearchKeyword.style.display = "none";
   }
-  searchRequest();
-});
+}
 
 desktopSearchBar.addEventListener("submit", e => {
   e.preventDefault();
@@ -290,9 +313,9 @@ function checkResult(data) {
 }
 
 function createAdCard(ad) {
-  let html = `<div class="ad-card uk-width-1-2 uk-width-1-3@s uk-width-1-4@m">
+  let html = `<div class="highlight-disabled uk-width-1-2 uk-width-1-3@s uk-width-1-4@m">
       <a href="/watch/?a=${ad.short_id}" onclick="saveData()">
-      <div class="uk-card uk-card-default uk-card-hover uk-card-small uk-margin-auto">
+      <div class="uk-card ad-card uk-card-default uk-card-small uk-margin-auto">
           <div class="uk-card-media-top">
               <img src="${
                 ad.pictures[0] !== undefined ? ad.pictures[0] : "img/blank.png"
@@ -304,12 +327,12 @@ function createAdCard(ad) {
               </div></div>`;
   html +=
     `<div class="uk-card-body">
-            <p class="uk-text-truncate"> ` +
+            <p class="uk-text-truncate title"> ` +
     ad.title +
     `</p>`;
   if (ad.price > 0) {
     html +=
-      `<p class="uk-text-bold">` + numberWithCommas(ad.price) + ` FCFA</p>`;
+      `<p class="uk-text-bold uk-text-truncate">` + numberWithCommas(ad.price) + ` FCFA</p>`;
   } else {
     html += `<br>`;
   }

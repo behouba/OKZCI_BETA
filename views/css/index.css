@@ -1,12 +1,55 @@
 body {
-    font-family: 'Open Sans', -apple-system, 'Roboto', 'Helvetica Neue', sans-serif;
-    -webkit-font-smoothing: antialiased;
+    font-family: 'Montserrat', sans-serif;
+    font-style: normal;
     color: #333333;
     line-height: 1.33;
+    font-size: 16px;
+    font-weight: 400;
 }
 
-.uk-button {
+.uk-h1,
+.uk-h2,
+.uk-h3,
+.uk-h4,
+.uk-h5,
+.uk-h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    margin: 0 0 20px 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.uk-link:hover {
+    cursor: pointer;
+}
+
+.highlight-disabled {
+    -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+}
+
+h1,
+h3 {
+    color: #222;
+}
+
+.uk-button,
+.uk-button-default {
     border-radius: 7px;
+    box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+}
+
+.load-more-btn {
+    border: 1px solid rgba(255, 255, 255, .5);
+}
+
+.load-more-btn:hover {
+    box-shadow: 0 0px 0px rgba(255, 255, 255, .5);
+    color: #00aaff;
+    border: 1px solid #fff;
 }
 
 .rounded-border {
@@ -64,6 +107,11 @@ a:hover {
     object-fit: cover;
 }
 
+.arrow-left svg {
+    height: 40px;
+    width: 40px;
+}
+
 .dashboard-profil img {
     width: 150px;
     height: 150px;
@@ -106,6 +154,10 @@ main {
     border-radius: 4px 4px 0px 0px;
 }
 
+.uk-navbar-toggle {
+    height: 60px;
+}
+
 .ad-card .uk-overlay {
     color: #fff;
     padding: 5px;
@@ -120,8 +172,13 @@ main {
     z-index: 1;
 }
 
-.ad-card small {
+/* .ad-card small {
     font-size: 11px;
+} */
+.card {
+    border-bottom: 1px solid #d2d2d2;
+    -webkit-box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
+    box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
 }
 
 .ad-card .uk-label {
@@ -138,17 +195,18 @@ main {
     color: #393939;
 }
 
-.ad-card .uk-text-truncate {
+.ad-card .title {
     color: #00aaff;
     font-weight: bold;
 }
 
 .ad-card .uk-text-small {
-    font-size: 13px;
+    font-size: 11px;
 }
 
 .uk-card {
     border-radius: 4px;
+    box-shadow: 0 1px 6px rgba(32, 33, 36, 0.28);
 }
 
 .message-item {
@@ -181,6 +239,8 @@ main {
 
 #search-bar .uk-form-width-medium {
     width: 310px;
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, .05), 0 1px 3px 1px rgba(0, 0, 0, .16);
+    border: 1px solid #e5e5e5;
 }
 
 .ad-card .uk-countdown-number,
@@ -215,70 +275,101 @@ nav ul {
 /* .uk-card-default {
     box-shadow: 0 5px 15px rgba(0,0,0,.5);
 } */
-
 @media only screen and (min-width: 1192px) {
+
     /* For desktop: */
     #mobile-header {
         display: none;
     }
+
+    .uk-card:hover {
+        box-shadow: 1px 4px 4px 1px rgba(32, 33, 36, 0.28);
+    }
+
     #desktop-header {
         display: block;
     }
+
     .uk-navbar-container:not(.uk-navbar-transparent) {
         background: #fff;
     }
+
     .ad-card .uk-text-small {
         font-size: 15px;
     }
+
     a {
         color: #00aaff;
         text-decoration: none;
     }
+
     a:hover {
         text-decoration: none;
     }
+
     #sticky a {
         font-weight: bold;
     }
+
     #desktop-header img {
         height: 40px;
         width: auto;
     }
+
     #desktop-sorter {
         display: flex;
     }
+
     #desk-sort-by {
         display: block;
     }
+
     #mobile-search-keyword {
         display: none;
+    }
+
+    #ads-top {
+        height: 50px;
     }
 }
 
 @media only screen and (max-width: 1192px) {
+
     /* For mobile: */
     #mobile-header {
         display: block;
     }
+
     #desktop-header {
         display: none;
     }
+
     footer [class*=uk-align] {
         display: block;
         margin-bottom: 5px;
     }
+
     #desktop-sorter {
         display: none;
     }
+
     #desk-sort-by {
         display: none;
     }
+
+    a,
+    button {
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    }
+
     #mobile-search-keyword {
         display: block;
     }
+
     .uk-navbar-container:not(.uk-navbar-transparent) {
-        background: rgba(255, 255, 255, .9);
+        background: rgba(255, 255, 255);
     }
+
     .ad-card img {
         width: 100%;
         height: 145px;
@@ -286,10 +377,23 @@ nav ul {
         object-fit: cover;
         border-radius: 4px 4px 0px 0px;
     }
+
+    .ad-card {
+        -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
+    }
+
+    uk-h2,
+    h2 {
+        font-size: 1.3rem;
+        line-height: 1.3;
+    }
+
+    #ads-top {
+        height: 10px;
+    }
 }
 
 /* for more small device like 4 inch phone */
-
 @media only screen and (max-width: 340px) {
     .ad-card img {
         width: 100%;
@@ -298,14 +402,65 @@ nav ul {
         object-fit: cover;
         border-radius: 4px 4px 0px 0px;
     }
+
     .uk-h3,
     h3 {
         font-size: 1.3rem;
     }
+
     .uk-nav-primary>li>a {
         font-size: 1.2rem;
     }
+
     #search-bar .uk-form-width-medium {
         width: 270px;
+    }
+}
+
+/* svg spinner loader */
+.spinner {
+    animation: rotator 1.4s linear infinite;
+}
+
+@keyframes rotator {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(270deg);
+    }
+}
+
+.path {
+    stroke-dasharray: 187;
+    stroke-dashoffset: 0;
+    transform-origin: center;
+    animation: dash 1.5s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+}
+
+@keyframes colors {
+    0% {
+        stroke: #4285f4;
+    }
+
+    100% {
+        stroke: #4285f4;
+    }
+}
+
+@keyframes dash {
+    0% {
+        stroke-dashoffset: 187;
+    }
+
+    50% {
+        stroke-dashoffset: 46.75;
+        transform: rotate(135deg);
+    }
+
+    100% {
+        stroke-dashoffset: 187;
+        transform: rotate(450deg);
     }
 }

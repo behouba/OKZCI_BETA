@@ -20,12 +20,13 @@ workbox.routing.registerRoute(
     workbox.strategies.networkFirst({
         plugins: [
             new workbox.expiration.Plugin({
-                maxEntries: 60,
-                maxAgeSeconds: 48 * 60 * 60,
+                maxEntries: 20,
+                maxAgeSeconds: 24 * 60 * 60,
             }),
         ],
     })
 );
+
 
 workbox.routing.registerRoute(
     new RegExp('/login/'),
@@ -38,7 +39,7 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-    new RegExp('/contact-us/'),
+    new RegExp('/politique-de-confidentialité/'),
     workbox.strategies.cacheFirst()
 );
 
@@ -52,9 +53,17 @@ workbox.routing.registerRoute(
     workbox.strategies.staleWhileRevalidate()
 );
 
+
 workbox.routing.registerRoute(
-    new RegExp('/watch/'),
-    workbox.strategies.staleWhileRevalidate()
+    new RegExp('/pictures/ad/'),
+    workbox.strategies.networkFirst({
+        plugins: [
+            new workbox.expiration.Plugin({
+                maxEntries: 20,
+                maxAgeSeconds: 24 * 60 * 60,
+            }),
+        ],
+    })
 );
 
 workbox.routing.registerRoute(
@@ -63,7 +72,7 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-    'https://fonts.googleapis.com/css?family=Open+Sans',
+    'https://fonts.googleapis.com/css?family=Montserrat',
     workbox.strategies.cacheFirst(),
 );
 
@@ -82,7 +91,7 @@ workbox.routing.registerRoute(
 workbox.precaching.precacheAndRoute([
   {
     "url": "css/index.css",
-    "revision": "48515f888df8d104baa40cce9a77fb6c"
+    "revision": "68277349fd3252ffb8824e46db32e97b"
   },
   {
     "url": "css/profile-setting.css",
@@ -114,7 +123,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "icons/checked.svg",
-    "revision": "4d1f4254941e8857d82ee18d75c0f7aa"
+    "revision": "f4213f5fee22f4ba43de1772d4b97e7d"
   },
   {
     "url": "icons/controls.svg",
@@ -153,10 +162,6 @@ workbox.precaching.precacheAndRoute([
     "revision": "9293a11f18e5b7eb0a1305943894fb15"
   },
   {
-    "url": "icons/logo.png",
-    "revision": "a076f275d0fdb3f35ef65ca55fe19aae"
-  },
-  {
     "url": "icons/logout.svg",
     "revision": "c18075137beee9ecdbe12f51b6baf36e"
   },
@@ -166,51 +171,51 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "icons/spinner-1s.svg",
-    "revision": "5b68709dbded2f454772421e1917388e"
+    "revision": "6b7bf2beb55ec4f021877df378794299"
   },
   {
     "url": "icons/washer.svg",
-    "revision": "69b98e36094a974f6deb1d6d02315b8b"
+    "revision": "40baa42fad2035e9e43df4bbf28a5c13"
   },
   {
     "url": "images/icons/icon-128x128.png",
-    "revision": "b2e9f2723d0163d53a74980e1b44a1e7"
+    "revision": "744c76318ff9b6c40e00eb8376764d0d"
   },
   {
     "url": "images/icons/icon-144x144.png",
-    "revision": "f077e208211df51016ffc8895d89c9f4"
+    "revision": "46f4eab47398d1400bcc2dd7692ffa95"
   },
   {
     "url": "images/icons/icon-152x152.png",
-    "revision": "c9b3d49dfba6c1d015588e95e1d887ca"
+    "revision": "c43d4eb0a56310032ef905de0e8e3c19"
   },
   {
     "url": "images/icons/icon-192x192.png",
-    "revision": "82d5ec6e979966148d2af130b6ef3e36"
+    "revision": "568d182ef88044aeb433dfdbf740d90e"
   },
   {
     "url": "images/icons/icon-384x384.png",
-    "revision": "6d85ccbfd1d1c73f8f0b958cef1988fb"
+    "revision": "112fdbb7072ff859347f709b82f3603c"
   },
   {
     "url": "images/icons/icon-512x512.png",
-    "revision": "eb4baafcd6635938f4af37b61089b183"
+    "revision": "112fdbb7072ff859347f709b82f3603c"
   },
   {
     "url": "images/icons/icon-72x72.png",
-    "revision": "cb6bc4c9de11d9d11246cac55f3dcfd6"
+    "revision": "5bc5d6a87309255b71e97ab47c3b0df4"
   },
   {
     "url": "images/icons/icon-96x96.png",
-    "revision": "d32485ec40bb84aa0662b139ff5b0683"
+    "revision": "45317060ca13424d89842f968336a610"
   },
   {
     "url": "img/blank.png",
     "revision": "05a3f5c800a6e949a98ae91aea395cba"
   },
   {
-    "url": "img/icon-72x72.png",
-    "revision": "cd69a7776ba4cbc973ecb6301450631c"
+    "url": "img/no_user.svg",
+    "revision": "9bf531f6c7c8c48da55d3bd2a0ada48e"
   },
   {
     "url": "img/nothing_found.png",
@@ -234,7 +239,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "js/auth.js",
-    "revision": "08841b4a0b6c52444c7232ff0e83913e"
+    "revision": "d03e6da2c4422beb5d7f14cba32c67ab"
   },
   {
     "url": "js/axios.min.js",
@@ -242,15 +247,15 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "js/cleave-phone.ci.js",
-    "revision": "2f393827d5bc37912f60909518c27c30"
+    "revision": "f4970bf9a35577b57f20cdb52b50e7fe"
   },
   {
     "url": "js/cleave.min.js",
-    "revision": "92d76a2e9dcf0dba68a87704c4146537"
+    "revision": "e12f6011309adf625a6ca68e1f3fcbb8"
   },
   {
     "url": "js/create.js",
-    "revision": "6623fa8ab4f902e6cf60b0d58d004a80"
+    "revision": "d1294499423cc70d836cc02a5fe18435"
   },
   {
     "url": "js/date.js",
@@ -258,11 +263,11 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "js/details.js",
-    "revision": "2796454fc41086ed11575af0f6027486"
+    "revision": "25180a7a5a92097f26d8c61b9bd06ab2"
   },
   {
     "url": "js/index.js",
-    "revision": "636f73c92a51a481d9c4a57e43cd5a90"
+    "revision": "df2ab636d31c684375e2a39393693df8"
   },
   {
     "url": "js/moment-with-locales.js",
@@ -270,11 +275,11 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "js/profile-setting.js",
-    "revision": "d4d204693852bb9de04030a5a8df3bef"
+    "revision": "7e2373c02dffc551283d6c24320506d3"
   },
   {
     "url": "js/profile.js",
-    "revision": "43498554227088c08a11a003222c06d4"
+    "revision": "0ed139f8a86c334cf00ffa10475d92db"
   },
   {
     "url": "js/uikit-icons.min.js",

@@ -20,10 +20,12 @@
     }
 
     @media only screen and (min-width: 768px) {
+
         /* For desktop: */
         .mobile-profile {
             display: none;
         }
+
         #desktop-profile {
             display: block;
         }
@@ -31,10 +33,12 @@
     }
 
     @media only screen and (max-width: 768px) {
+
         /* For mobile: */
         .mobile-profile {
             display: block;
         }
+
         #desktop-profile {
             display: none;
         }
@@ -51,7 +55,8 @@
                         <img data-src="{{ .user.Picture }}" onerror="this.src='img/user.svg'" alt="" uk-img style="min-height: 100%">
                         <p class="uk-text-bold" style="text-transform: uppercase;">{{ .user.UserName }}</p>
                         <p class="uk-text-small" id="count-indicator">Chargement des vos annonces en cours...</p>
-                        <small class="uk-text-warning uk-text-small" id="update-tip" style="display: none">Clickez sur une annonce pour la modifier ou la supprimer</small>
+                        <small class="uk-text-warning uk-text-small" id="update-tip" style="display: none">Clickez sur
+                            une annonce pour la modifier ou la supprimer</small>
                     </div>
                 </div>
                 <div class="uk-width-1-1 uk-margin-auto">
@@ -68,7 +73,8 @@
                         <ul class="uk-switcher uk-margin">
                             <li>
                                 <div class="uk-grid-small uk-child-width-expand@" uk-grid id="ads-field">
-                                    <div class="uk-margin uk-text-center" style="margin-top: 50px; margin-bottom: 50px;" id="userAdsSpinner">
+                                    <div class="uk-margin uk-text-center" style="margin-top: 50px; margin-bottom: 50px;"
+                                        id="userAdsSpinner">
                                         <img src="img/spinner.gif">
                                     </div>
                                 </div>

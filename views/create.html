@@ -9,80 +9,87 @@
     <script src="/js/date.js"></script>
 </head>
 <style>
+    .uk-link:hover{
+        cursor: pointer;
+    }
     #create {
-        margin-right: auto;
-        margin-left: auto;
-    }
-
-    #select-category a,
-    h2 {
-        color: #393939;
-    }
-
-    @media only screen and (min-width: 768px) {
-        /* For desktop: */
-        .mobile-profile {
-            display: none;
+      margin-right: auto;
+      margin-left: auto;
+      }
+      #select-category a,
+      h2 {
+      color: #393939;
+      }
+      @media only screen and (min-width: 768px) {
+      /* For desktop: */
+      .mobile-profile {
+      display: none;
+      }
+      #desktop-profile {
+      display: block;
+      }
+      #head-info {
+      padding-left: 20px;
+      padding-right: 20px;
+      }
+      #content {
+      margin-right: auto;
+      margin-left: auto;
+      }
+      #detail {
+      margin-right: auto;
+      margin-left: auto;
+      }
+      }
+      img {
+      object-fit: cover;
+      }
+     
+      @media only screen and (max-width: 768px) {
+      /* For mobile: */
+      .mobile-profile {
+      display: block;
+      }
+      .uk-nav-primary>li>a {
+            font-size: 20px;
+            line-height: 1.5;
+            color: #999;
         }
-        #desktop-profile {
-            display: block;
-        }
-        #head-info {
-            padding-left: 20px;
-            padding-right: 20px;
-        }
-        #content {
-            margin-right: auto;
-            margin-left: auto;
-        }
-        #detail {
-            margin-right: auto;
-            margin-left: auto;
-        }
-
-    }
-
-    img {
-        object-fit: cover;
-    }
-
-    @media only screen and (max-width: 768px) {
-        /* For mobile: */
-        .mobile-profile {
-            display: block;
-        }
-        #desktop-profile {
-            display: none;
-        }
-        #content {
-            padding: 10px;
-        }
-    }
-
-    #create-spinner {
-        position: fixed !important;
-        width: 100%;
-        height: 100%;
-        z-index: 5;
-        background-color: rgba(119, 117, 117, 0.4);
-        display: none;
-    }
-
-    #create-spinner img {
-        display: block;
-        margin: auto;
-        margin-top: 200px;
-    }
-
-    #create-spinner p {
-        color: #fff;
-    }
-
-
-    .uk-modal-full .uk-modal-dialog {
-        height: 100%;
-    }
-</style>
+      #desktop-profile {
+      display: none;
+      }
+      #content {
+      padding: 10px;
+      }
+      }
+      #create-spinner {
+      position: fixed !important;
+      width: 100%;
+      height: 100%;
+      z-index: 5;
+      background-color: rgba(119, 117, 117, 0.4);
+      display: none;
+      }
+      #create-spinner img {
+      display: block;
+      margin: auto;
+      margin-top: 200px;
+      }
+      #create-spinner p {
+      color: #fff;
+      }
+      .uk-modal-full .uk-modal-dialog {
+      height: 100%;
+      }
+      @media only screen and (max-width: 320px) {
+        .uk-nav-primary>li>a {
+            font-size: 17px;
+        }  
+      }
+      .uk-form-custom:hover{
+          cursor: pointer;
+      }
+   </style>
 
 <body>
     <div class="uk-position-center" id="create-spinner">
@@ -90,7 +97,65 @@
         <p class="uk-text-center">Creation de l'annonce en cours...</p>
     </div>
     <div id="create">
-        {{ render "components/common-navbar1.html" }}
+        <header style="margin-bottom: 10px" class="uk-text-bold">
+            <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;" class="uk-box-shadow-medium">
+                <nav class="uk-navbar uk-navbar-container" uk-navbar uk-navbar="mode: click">
+                    <div class="uk-navbar-left">
+                        <a class="uk-navbar-toggle" onclick="backTo()">
+                            <span uk-icon="icon: arrow-left; ratio: 1.5"></span>
+                        </a>
+                    </div>
+                    <div class="uk-navbar-center">
+                        <a class="uk-logo" href="/">
+                            <img src="img/okazion.png" width="100" height="30" alt="OKZ">
+                        </a>
+                    </div>
+                    {{ if .user }}
+                    <div class="uk-navbar-right mobile-profile" style="height: 65px;">
+                        <a uk-toggle="target: #side-profile" class="uk-navbar-toggle">
+                            <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}), url('img/user.svg'); width: 30px; height: 30px;background-size: cover;"></span>
+                        </a>
+                    </div>
+                    {{ else }}
+                    <div class="uk-navbar-right mobile-profile" style="height: 65px;">
+                        <a href="/login" class="uk-navbar-toggle">
+                            <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url('img/no_user.svg'); width: 30px; height: 30px;"></span>
+                        </a>
+                    </div>
+                    {{ end }}
+                    <!-- Desktop nav -->
+                    <div class="uk-navbar-right" id="desktop-profile">
+                        <ul class="uk-navbar-nav">
+                            <li>
+                                {{ if .user }}
+                                <a href="#">
+                                    <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}), url('img/user.svg'); width: 40px; height: 40px; background-size: cover;"></span>
+                                </a>
+                                <div class="uk-navbar-dropdown">
+                                    <ul class="uk-nav uk-navbar-dropdown-nav">
+                                        <li>
+                                            <a href="/me">Profile</a>
+                                        </li>
+                                        <li>
+                                            <a href="/settings">Reglages</a>
+                                        </li>
+                                        <li>
+                                            <a href="/logout">Deconnexion</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                {{ else }}
+                                <a href="/login" class="uk-navbar-toggle">
+                                    <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url('img/no_user.svg'); width: 40px; height: 40px;"></span>
+                                </a>
+                                {{ end }}
+                            </li>
+                        </ul>
+                    </div>
+                </nav>
+                </nav>
+            </div>
+        </header>
         <div style="margin: 30px 10px;">
             <div id="select-category" class="uk-width-1-2@m uk-margin-auto uk-padding-small">
                 <div>
@@ -127,7 +192,8 @@
                     <div class="uk-margin">
                         <label class="uk-form-label" for="title" id="title-label">Titre de l'annonce</label>
                         <div class="uk-form-controls">
-                            <input class="uk-input" id="title" required minlength="3" type="text" name="title" placeholder="Titre de l'annonce" maxlength="45">
+                            <input class="uk-input" id="title" required minlength="3" type="text" name="title"
+                                placeholder="Titre de l'annonce" maxlength="45">
                         </div>
                     </div>
                     <div class="uk-margin">
@@ -141,20 +207,23 @@
                     </div>
                     <div class="uk-margin">
                         <label class="uk-form-label" for="details">Details de l'annonce</label>
-                        <textarea class="uk-textarea" rows="5" id="details" name="description" required minlength="10" placeholder="Details..."></textarea>
+                        <textarea class="uk-textarea" rows="5" id="details" name="description" required minlength="10"
+                            placeholder="Details..."></textarea>
                     </div>
                     <div id="price-simple">
                         <div class="uk-margin">
                             <label class="uk-form-label" id="price" for="prix">Prix</label>
                             <div class="uk-form-controls">
-                                <input class="uk-input price-input" id="price-value" type="text" min="0" name="price" placeholder="En Fcfa">
+                                <input class="uk-input price-input" id="price-value" type="text" min="0" name="price"
+                                    placeholder="En Fcfa">
                             </div>
                         </div>
                     </div>
                     <div class="uk-margin">
                         <label class="uk-form-label" for="contact">Contact tel</label>
                         <div class="uk-form-controls">
-                            <input class="uk-input contact-input" id="contact" name="contact" type="text" value="{{ .user.PhoneNumber}}" required placeholder="Votre contact tel">
+                            <input class="uk-input contact-input" id="contact" name="contact" type="text" value="{{ .user.PhoneNumber}}"
+                                required placeholder="Votre contact tel">
                         </div>
                     </div>
                     <div class="uk-margin">
@@ -175,7 +244,8 @@
                     <div class="uk-margin uk-grid-small uk-child-width-expand uk-grid uk-text-center">
                         <label>
                             <input class="uk-checkbox" type="checkbox" required> J'accepte
-                            <a href="/conditions"> les regles et les conditions d'utilisations</a> du site
+                            <a href="/conditions" target="blank"> les règles et les conditions d'utilisation</a> du
+                            site
                         </label>
                     </div>
                     <div class="uk-margin">
@@ -184,24 +254,26 @@
                 </form>
             </div>
             <!-- succes modal -->
-            <div id="success-modal" class="uk-modal-full" uk-modal>
+            <div id="success-modal" class="uk-modal-full" uk-modal style="height: 100%">
                 <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
                     <!-- <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button> -->
                     <div class="uk-modal-body uk-grid uk-child-width-1-1" uk-grid>
                         <div class=" uk-text-center uk-margin-large-top">
-                            <img src="icons/checked.svg" style="height: 150px; width: 150px" alt="">
+                            <img src="icons/checked.svg" style="width: 150px" alt="">
                         </div>
                         <div class="uk-text-center">
-                            <h2>Votre annonce viens d'etre publié !</h2>
+                            <h2>Votre annonce vient d'être publiée !</h2>
                         </div>
                         <div class="uk-text-center">
-                            <small class="uk-text-muted">l'annonce sera accessible a cette addresse:
+                            <small class="uk-text-muted">l'annonce sera accessible à cette adresse:
                                 <a id="new-ad-url" href=""></a>
                             </small>
                         </div>
                         <div class="uk-text-center">
-                            <button onclick="goToHomePage()" class="uk-button uk-button-default uk-button-small uk-margin-small-bottom">Aller à la page d'acceuil</button>
-                            <button onclick="createAgain()" class="uk-button uk-button-primary uk-button-small uk-margin-small-bottom">Créer un autre annonce</button>
+                            <button onclick="goToHomePage()" class="uk-button uk-button-default uk-button-small uk-margin-small-bottom">Aller
+                                à la page d'acceuil</button>
+                            <button onclick="createAgain()" class="uk-button uk-button-primary uk-button-small uk-margin-small-bottom">Créer
+                                un autre annonce</button>
                         </div>
                     </div>
                 </div>

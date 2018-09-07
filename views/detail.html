@@ -86,7 +86,7 @@
         }
         #head-info,
         #desc-info {
-            margin: 10px 16px;
+            margin: 10px 10px;
         }
         header {
             margin-bottom: 1px;
@@ -96,12 +96,25 @@
     .uk-navbar-container:not(.uk-navbar-transparent) {
         background: #ffff;
     }
+
+    #desc-info {
+        overflow-wrap: break-word;
+        word-wrap: break-word;
+        hyphens: auto;
+    }
+
+    .desc-p {
+        min-width: 300px;
+    }
 </style>
 
 <body>
-    <!-- <div class="uk-position-center" id="detail-spinner">
-        <img src="/img/spinner.gif" />
-    </div> -->
+    <div class="uk-position-center" id="detail-spinner" style="display: none">
+        <!-- <img src="/img/spinner.gif"> -->
+        <svg class="spinner" width="80px" height="80px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+            <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+        </svg>
+    </div>
     <div id="detail">
         {{ render "components/common-navbar2.html"}}
         <div id="content" uk-grid>
@@ -124,8 +137,10 @@
                                 {{ end }} {{ end }}
                             </div>
                         </div>
-                        <a class="uk-position-center-left uk-position-small uk-hidden-hover picture-nav" href="#" uk-slidenav-previous uk-slideshow-item="previous"></a>
-                        <a class="uk-position-center-right uk-position-small uk-hidden-hover picture-nav" href="#" uk-slidenav-next uk-slideshow-item="next"></a>
+                        <a class="uk-position-center-left uk-position-small uk-hidden-hover picture-nav" href="#"
+                            uk-slidenav-previous uk-slideshow-item="previous"></a>
+                        <a class="uk-position-center-right uk-position-small uk-hidden-hover picture-nav" href="#"
+                            uk-slidenav-next uk-slideshow-item="next"></a>
                     </div>
                 </div>
             </div>
@@ -157,25 +172,31 @@
                         </div>
                         <div id="contact-modal" uk-modal>
                             <div class="uk-modal-dialog rounded-border" style="width: 350px">
-                                <button class="uk-modal-close-full uk-close-large rounded-border" type="button" uk-close></button>
+                                <button class="uk-modal-close-full uk-close-large rounded-border" type="button"
+                                    uk-close></button>
                                 <div class="uk-grid-collapse uk-child-width-1-1@s uk-flex-middle" uk-grid>
                                     <div class="uk-padding-small uk-text-center">
                                         <div class="uk-margin-auto">
                                             <div class="uk-margin-large-top">
-                                                <img src="{{ .owner.Picture }}" style="height: 150px;width: 150px" onerror="this.src='img/user.svg'" class="uk-border-circle"
-                                                    alt="">
+                                                <img src="{{ .owner.Picture }}" style="height: 150px;width: 150px"
+                                                    onerror="this.src='img/user.svg'" class="uk-border-circle" alt="">
                                                 <p class="uk-text-bold">{{ .owner.UserName }}</p>
                                             </div>
                                         </div>
                                         <h3>+225 {{ .ad.Contact }}</h3>
-                                        <small style="font-size: 11px" class="uk-text-muted">Attention ! Afin d'éviter tous désagréments ou arnaques privilégiez les rencontres
-                                            dans les lieux publics, evitez d'effectuer un achat sans avoir au préalable vu
-                                            le produit réellement, évitez toute transaction avec une personne d'apparence
-                                            douteuse, evitez les paiements par transfert d'argent qui vous seront proposés.
+                                        <small style="font-size: 11px" class="uk-text-muted">Attention ! Afin d'éviter
+                                            tous désagréments ou arnaques privilégiez les rencontres
+                                            dans les lieux publics, evitez d'effectuer un achat sans avoir au préalable
+                                            vu
+                                            le produit réellement, évitez toute transaction avec une personne
+                                            d'apparence
+                                            douteuse, évitez les paiements par transfert d'argent qui vous seront
+                                            proposés.
                                         </small>
                                         <div class="uk-width-1-1 uk-margin">
-                                            <button class="uk-button uk-button-default uk-modal-close uk-button-small" uk-dis>ANNULER</button>
-                                            <a href="tel:+225{{ .ad.Contact }}" class="uk-button uk-button-primary uk-button-small">APPELER</a>
+                                            <button class="uk-button uk-button-default uk-modal-close uk-button-small load-more-btn"
+                                                uk-dis>ANNULER</button>
+                                            <a href="tel:+225{{ .ad.Contact }}" target="blank" class="uk-button uk-button-primary uk-button-small">APPELER</a>
                                         </div>
                                     </div>
                                 </div>
@@ -191,7 +212,8 @@
                                 <div class="uk-grid-collapse uk-child-width-1-1@s" uk-grid>
                                     <div class="uk-text-center">
                                         <div class="uk-margin-medium-top">
-                                            <textarea class="uk-textarea" rows="6" placeholder="Votre message pour {{.owner.UserName}}" id="message-body"></textarea>
+                                            <textarea class="uk-textarea" rows="6" placeholder="Votre message pour {{.owner.UserName}}"
+                                                id="message-body"></textarea>
                                         </div>
                                         <div class="uk-width-1-1 uk-margin-medium-top">
                                             <a class="uk-button uk-button-primary uk-width-1-1" onclick="sendMessage1({{.user.UserName}}, {{.user.Email}},{{.owner.Email}}, {{ .owner.UserName }})">ENVOYER</a>
@@ -208,12 +230,15 @@
                                     <div class="uk-text-center">
                                         <div class="uk-margin-medium-top">
                                             <div class="uk-margin">
-                                                <input class="uk-input" type="text" id="user-name" placeholder="Votre nom" required>
+                                                <input class="uk-input" type="text" id="user-name" placeholder="Votre nom"
+                                                    required>
                                             </div>
                                             <div class="uk-margin">
-                                                <input class="uk-input" type="email" id="user-email" placeholder="Votre email" required>
+                                                <input class="uk-input" type="email" id="user-email" placeholder="Votre email"
+                                                    required>
                                             </div>
-                                            <textarea class="uk-textarea" rows="6" placeholder="Votre message pour {{.owner.UserName}}" id="message-body" required></textarea>
+                                            <textarea class="uk-textarea" rows="6" placeholder="Votre message pour {{.owner.UserName}}"
+                                                id="message-body" required></textarea>
                                         </div>
                                         <div class="uk-width-1-1 uk-margin-medium-top">
                                             <a class="uk-button uk-button-primary uk-width-1-1" onclick="sendMessage2({{.owner.Email}}, {{ .owner.UserName }})">ENVOYER</a>
@@ -238,7 +263,8 @@
                 <div id="advertiser" class="uk-margin" uk-grid>
                     <p class="uk-text-small">Mis en ligne par: </p>
                     <div class="uk-width-1-1  uk-inline" style="margin-top: 10px;">
-                        <img class="uk-border-circle" style="width: 40px; height: 40px; margin-right: 10px;" src="{{ .owner.Picture }}" onerror="this.src='img/user.svg'">
+                        <img class="uk-border-circle" style="width: 40px; height: 40px; margin-right: 10px;" src="{{ .owner.Picture }}"
+                            onerror="this.src='img/user.svg'">
                         <span>{{ .owner.UserName }}</span>
                     </div>
                 </div>
@@ -247,9 +273,9 @@
 
             <div id="desc-info" class="uk-width-1-1 uk-width-2-3@m">
                 <hr>
-                <div id="description" uk-grid class="uk-margin">
-                    <p class="uk-text-large uk-text-bold uk-width-1-1">Description</p>
-                    <p class="uk-width-1-1">{{ .ad.Details }}</p>
+                <div id="description" uk-grid class="uk-margin  uk-width-1-1">
+                    <p class="uk-text-large uk-text-bold desc-p uk-width-1-1">Description</p>
+                    <p class="desc-p uk-width-1-1">{{ .ad.Details }}</p>
                 </div>
                 <hr>
                 <div id="social" uk-grid class="uk-margin">
@@ -257,9 +283,11 @@
                     <div class="uk-text-center uk-width-1-1">
                         <a class="uk-icon-button uk-margin-small-right" style="color:#3B5998" href="http://www.facebook.com/sharer.php?u=https://www.okazion.ci/watch?a={{ .ad.ShortID }}&src=sp"
                             target="blank" uk-icon="facebook"></a>
-                        <a class="uk-icon-button uk-margin-small-right twitter-share-button" style="color: #1dcaff" href="https://twitter.com/intent/tweet?text=https://www.okazion.ci/watch?a={{ .ad.ShortID }}"
+                        <a class="uk-icon-button uk-margin-small-right twitter-share-button" style="color: #1dcaff"
+                            href="https://twitter.com/intent/tweet?text=https://www.okazion.ci/watch?a={{ .ad.ShortID }}"
                             uk-icon="twitter"></a>
-                        <a onclick="whatsAppShare()" class="uk-icon-button uk-margin-small-right" style="color: #25d366" uk-icon="whatsapp"></a>
+                        <a onclick="whatsAppShare()" class="uk-icon-button uk-margin-small-right" style="color: #25d366"
+                            uk-icon="whatsapp"></a>
                     </div>
                     <p class="uk-align-center uk-text-small">
                         <a class="uk-text-danger" href="#report-modal" uk-toggle>Signaler cette annonce</a>
@@ -271,7 +299,8 @@
                             <div class="uk-grid-collapse uk-child-width-1-1@s uk-flex-middle" uk-grid>
                                 <div class="uk-text-center">
                                     <div class="uk-margin-medium-top">
-                                        <textarea class="uk-textarea" rows="6" placeholder="Dites nous s'il vous plait ce qui ne vas pas avec cette annonce" id="report-body"></textarea>
+                                        <textarea class="uk-textarea" rows="6" placeholder="Dites-nous, s'il vous plaît, ce qui ne vas pas avec cette annonce!"
+                                            id="report-body"></textarea>
                                     </div>
                                     <div class="uk-width-1-1 uk-margin-medium-top">
                                         <a class="uk-button uk-button-danger uk-width-1-1" onclick="sendReportMessage({{ .ad.ShortID }})">
@@ -282,9 +311,13 @@
                             </div>
                         </div>
                     </div>
-                    <small style="font-size: 11px" class="uk-text-muted">Lorem ipsum dolor, sit amet consectetur adipisicing elit. Vero fugiat, omnis maiores ad eaque dolorem
-                        accusantium non doloribus at corporis iste officiis incidunt quo minus amet commodi natus, maxime
-                        doloremque.
+                    <small style="font-size: 11px" class="uk-text-muted">Attention ! Afin d'éviter tous désagréments ou
+                        arnaques privilégiez les rencontres dans les lieux publics,
+                        evitez d'effectuer un achat sans avoir au préalable vu le produit réellement, évitez toute
+                        transaction
+                        avec une personne d'apparence douteuse, évitez les paiements par transfert d'argent qui vous
+                        seront
+                        proposés.
                     </small>
                 </div>
             </div>

@@ -18,7 +18,8 @@ function getUserPageData(id) {
             let count = res.data.count;
             let fav = res.data.fav;
             if (count === 0) {
-                countIndicator.innerText = `Vous n'avez aucune annonce en ligne`
+                countIndicator.classList.add("uk-text-danger")
+                countIndicator.innerText = `Vous n'avez aucune annonce en ligne !`
                 adsField.innerHTML = '<p class="uk-text-center">Aucune annonce.</p>'
             } else {
                 updateTip.style.display = 'block'

@@ -1,5 +1,5 @@
 <header style="margin-bottom: 10px" id="mobile-header" style="margin: 20px 10px;">
-    <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;" class="uk-box-shadow-large">
+    <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;" class="card">
         <nav class="uk-navbar uk-navbar-container">
             <div class="uk-navbar-left" style="height: 65px;">
                 <a uk-toggle="target: #categories-menu" class="uk-navbar-toggle" href="#">
@@ -30,10 +30,12 @@
                 <form id="search-bar">
                     <div class="uk-margin uk-inline">
                         <span class="uk-form-icon" uk-icon="icon: search; ratio: 1"></span>
-                        <input class="uk-input uk-form-width-medium uk-form-medium" type="text" placeholder="Recherche..." oninput="searchBarFocus()"
-                            onsubmit="search(e)" id="search" />
-                        <a class="uk-form-icon uk-form-icon-flip" style="display:none" onclick="clearSearch()" uk-icon="icon: close; ratio: 1" id="search-close-icon"></a>
-                        <a class="uk-form-icon uk-form-icon-flip" uk-toggle href="#filter-modal" uk-icon="icon: settings; ratio: 1" id="search-setting"></a>
+                        <input class="uk-input uk-form-width-medium uk-form-medium" type="text" placeholder="Recherche..."
+                            oninput="searchBarFocus()" onsubmit="search(e)" id="search" />
+                        <a class="uk-form-icon uk-form-icon-flip" style="display:none" onclick="clearSearch()" uk-icon="icon: close; ratio: 1"
+                            id="search-close-icon"></a>
+                        <a class="uk-form-icon uk-form-icon-flip" uk-toggle href="#filter-modal" uk-icon="icon: settings; ratio: 1"
+                            id="search-setting"></a>
                     </div>
                 </form>
             </div>
@@ -43,7 +45,7 @@
     <div id="filter-modal" class="uk-modal-full" uk-modal>
         <div class="uk-modal-dialog">
             <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button>
-            <div class="uk-padding uk-width-1-1 uk-text-center uk-margin-auto uk-box-shadow-large">
+            <div class="uk-padding uk-width-1-1 uk-text-center card">
                 <div class="setting-search" uk-grid>
                     <div class="uk-width-1-1">
                         <p class="uk-text-bold">Ville</p>
@@ -57,7 +59,7 @@
                     <div class="uk-width-1-1">
                         <p class="uk-text-bold">Trier par: </p>
                         <select class="uk-select uk-align-right" onchange="setSort(value)">
-                            <option>Recents</option>
+                            <option>Récents</option>
                             <option>Prix croissant</option>
                             <option>Prix decroissant</option>
                         </select>
@@ -77,8 +79,8 @@
 </header>
 <div>
     <header id="desktop-header" class="uk-text-bold">
-        <div class="uk-box-shadow-small">
-            <nav class="uk-navbar-container uk-margin" uk-navbar uk-navbar="mode: click">
+        <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;" class="card">
+            <nav class="uk-navbar-container" uk-navbar uk-navbar="mode: click">
                 <div class="uk-navbar-left">
                     <a class="uk-navbar-item uk-logo uk-text-bold" href="/">
                         <img src="img/okazion.png" width="100" height="40" alt="OKZ">
@@ -86,8 +88,10 @@
                     <div class="uk-navbar-item">
                         <form id="desk-search-bar">
                             <div class="uk-inline">
-                                <a class="uk-form-icon uk-form-icon-flip" onclick="deskSearBarBtn()" uk-icon="icon: search" style="background: #00aaff; color: #fff;border-radius: 0px 5px 5px 0px;"></a>
-                                <input class="uk-input uk-form-width-medium" type="search" placeholder="Recherche..." id="desk-search">
+                                <a class="uk-form-icon uk-form-icon-flip" onclick="deskSearBarBtn()" uk-icon="icon: search"
+                                    style="background: #00aaff; color: #fff;border-radius: 0px 5px 5px 0px;"></a>
+                                <input class="uk-input uk-form-width-medium" type="search" placeholder="Recherche..."
+                                    id="desk-search">
                             </div>
                         </form>
                     </div>
@@ -98,7 +102,8 @@
                                 <a href="#" id="desktop-current-category" class="uk-text-break">TOUTES LES CATEGORIES
                                 </a>
                             </div>
-                            <div class="uk-navbar-dropdown" uk-drop="boundary: !nav; boundary-align: true; pos: bottom-justify;" id="desktop-category-picker">
+                            <div class="uk-navbar-dropdown" uk-drop="boundary: !nav; boundary-align: true; pos: bottom-justify;"
+                                id="desktop-category-picker">
                                 <div class="uk-navbar-dropdown-grid uk-child-width-1-4" uk-grid>
                                     <div>
                                         <ul class="uk-nav uk-navbar-dropdown-nav">
@@ -174,7 +179,8 @@
                         <a href="#" id="desktop-current-location">TOUTES LES VILLES
                         </a>
                     </div>
-                    <div class="uk-navbar-dropdown" uk-drop="boundary: !nav; boundary-align: true; pos: bottom-justify;" id="desktop-category-picker">
+                    <div class="uk-navbar-dropdown" uk-drop="boundary: !nav; boundary-align: true; pos: bottom-justify;"
+                        id="desktop-category-picker">
                         <div class="uk-navbar-dropdown-grid uk-child-width-1-4" uk-grid>
                             <div>
                                 <ul class="uk-nav uk-navbar-dropdown-nav">

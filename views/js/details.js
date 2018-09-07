@@ -5,6 +5,8 @@ let report = document.getElementById("report-body")
 let adPrice = document.getElementById("ad-price")
 let userName = document.getElementById("user-name")
 let userEmail = document.getElementById("user-email")
+let detailSpinner = document.getElementById("detail-spinner");
+let detail = document.getElementById("detail");
 let emailRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
 function numberWithCommas(x) {
@@ -146,7 +148,7 @@ function addFav(ad) {
     fav.classList.add("fas")
     axios.post("/add-fav", ad)
         .then(res => {
-            UIkit.notification('<span uk-icon=\'icon: check\'></span> Ajoutée de votre liste de favoris', 'success')
+            UIkit.notification('<span uk-icon=\'icon: check\'></span> Ajoutée à votre liste de favoris', 'success')
             console.log(res)
         })
         .catch(err => {
@@ -179,6 +181,17 @@ function whatsAppShare() {
 }
 
 function detailPageLoaded() {
-    document.getElementById("detail").style.display = 'block'
-    document.getElementById("detail-spinner").style.display = 'none'
+    detail.style.display = 'block'
+    detailSpinner.style.display = 'none'
 }
+
+window.addEventListener("onunload", e => {
+    detail.style.display = 'none';
+    detailSpinner.style.display = 'block';
+})
+
+window.addEventListener("onload", e => {
+    detailSpinner.style.display = 'none';
+    detail.style.display = 'block';
+
+})

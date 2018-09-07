@@ -88,7 +88,7 @@ func messagesHandler(ctx iris.Context) {
 }
 
 func sendMailMessage(message message) error {
-	subject := "VOUS VENEZ DE RECEVOIR UNE ANNONCE CONCERNANT L'UNE DE VOS ANNONCES SUR OKAZION"
+	subject := "VOUS VENEZ DE RECEVOIR UN MESSAGE CONCERNANT L'UNE DE VOS ANNONCES SUR OKAZION"
 	r := newRequest([]string{message.OwnerEmail}, subject)
 	err := r.send("views/email/msgEmailTemplate.html", message)
 	if err != nil {
@@ -103,7 +103,7 @@ func reportAd(ctx iris.Context) {
 		ShortID string
 	}{}
 	ctx.ReadJSON(&msg)
-	if err := sendMailToAdmins("UNE ANNONCE VIENS D'ETRE SIGNALÉ", msg.Body, msg.ShortID, mailConfig.AdminsEmails); err != nil {
+	if err := sendMailToAdmins("UNE ANNONCE VIENS D'ETRE SIGNALÉE", msg.Body, msg.ShortID, mailConfig.AdminsEmails); err != nil {
 		log.Println(err)
 		ctx.StatusCode(iris.StatusInternalServerError)
 		return

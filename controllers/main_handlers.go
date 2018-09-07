@@ -32,6 +32,10 @@ func aboutUs(ctx iris.Context) {
 	ctx.View("contact.html")
 }
 
+func privacyPolicy(ctx iris.Context) {
+	ctx.View("privacy_policy.html")
+}
+
 func conditions(ctx iris.Context) {
 	ctx.View("conditions.html")
 }

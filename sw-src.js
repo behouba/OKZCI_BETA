@@ -20,8 +20,8 @@ workbox.routing.registerRoute(
     workbox.strategies.networkFirst({
         plugins: [
             new workbox.expiration.Plugin({
-                maxEntries: 60,
-                maxAgeSeconds: 48 * 60 * 60,
+                maxEntries: 20,
+                maxAgeSeconds: 24 * 60 * 60,
             }),
         ],
     })
@@ -39,7 +39,7 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-    new RegExp('/contact-us/'),
+    new RegExp('/politique-de-confidentialité/'),
     workbox.strategies.cacheFirst()
 );
 
@@ -53,9 +53,17 @@ workbox.routing.registerRoute(
     workbox.strategies.staleWhileRevalidate()
 );
 
+
 workbox.routing.registerRoute(
-    new RegExp('/watch/'),
-    workbox.strategies.staleWhileRevalidate()
+    new RegExp('/pictures/ad/'),
+    workbox.strategies.networkFirst({
+        plugins: [
+            new workbox.expiration.Plugin({
+                maxEntries: 20,
+                maxAgeSeconds: 24 * 60 * 60,
+            }),
+        ],
+    })
 );
 
 workbox.routing.registerRoute(
@@ -64,7 +72,7 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-    'https://fonts.googleapis.com/css?family=Open+Sans',
+    'https://fonts.googleapis.com/css?family=Montserrat',
     workbox.strategies.cacheFirst(),
 );
 

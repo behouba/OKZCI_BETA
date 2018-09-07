@@ -72,6 +72,7 @@ function setCategory(c) {
     console.log(c)
     category.style.display = 'none'
     adForm.style.display = 'block'
+    window.scroll(0, 0)
 }
 
 function backTo() {

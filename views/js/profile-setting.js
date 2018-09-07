@@ -10,7 +10,7 @@ let userLocationModal = document.getElementById('location-modal')
 function updateUserName() {
     console.log(userName.value)
     UIkit.modal(userNameModal).hide();
-    UIkit.notification("Mise a jour en cours...", "success")
+    UIkit.notification("Mise à jour en cours...", "success")
     var data = {
         "userName": userName.value
     }
@@ -19,7 +19,7 @@ function updateUserName() {
             window.location.reload(true)
         })
         .catch(err => {
-            UIkit.notification("Echec de mise a jour: " + err, warning)
+            UIkit.notification("Echec de mise à jour: " + err, warning)
             console.log(err)
         })
 }
@@ -30,7 +30,7 @@ function updateUserContact() {
         return
     }
     UIkit.modal(userContactModal).hide();
-    UIkit.notification("Mise a jour en cours...", "success")
+    UIkit.notification("Mise à jour en cours...", "success")
     var data = {
         "phoneNumber": userContact.value
     }
@@ -40,7 +40,7 @@ function updateUserContact() {
             window.location.reload(true)
         })
         .catch(err => {
-            UIkit.notification("Echec de mise a jour: " + err, warning)
+            UIkit.notification("Echec de mise à jour: " + err, warning)
             console.log(err)
         })
 }
@@ -51,7 +51,7 @@ function backTo() {
 
 function updateUserLocation() {
     UIkit.modal(userLocationModal).hide();
-    UIkit.notification("Mise a jour en cours...", "success")
+    UIkit.notification("Mise à jour en cours...", "success")
     var data = {
         "location": userLocation.value
     }
@@ -61,7 +61,7 @@ function updateUserLocation() {
             window.location.reload(true)
         })
         .catch(err => {
-            UIkit.notification("Echec de mise a jour: " + err, warning)
+            UIkit.notification("Echec de mise à jour: " + err, warning)
             console.log(err)
         })
 }

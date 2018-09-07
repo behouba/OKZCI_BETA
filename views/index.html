@@ -7,11 +7,17 @@
 </head>
 
 <body onload="homePageLoaded()" onoffline="offFunction()">
+    <div class="uk-position-center" id="main-spinner" style="display: none">
+        <!-- <img src="/img/spinner.gif"> -->
+        <svg class="spinner" width="80px" height="80px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+            <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+        </svg>
+    </div>
     <div id="main">
         {{ render "components/home-navbar.html"}}
         <!-- categories slider -->
         <div style="margin: 0px 10px">
-            <div id="ads-top" style="height: 50px;"></div>
+            <div id="ads-top"></div>
             <section id="auctions-slider" style="margin-bottom: 10px; display: none" class="uk-margin-medium-top uk-margin-xlarge-buttom">
                 <div class="uk-position-relative uk-visible-toggle uk-light" uk-slider="clsActivated: uk-transition-active; center: true">
                     <ul class="uk-slider-items uk-grid">
@@ -30,24 +36,27 @@
                         </li>
                         {{ end }}
                     </ul>
-                    <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous uk-slider-item="previous"></a>
-                    <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next uk-slider-item="next"></a>
+                    <a class="uk-position-center-left uk-position-small uk-hidden-hover" href="#" uk-slidenav-previous
+                        uk-slider-item="previous"></a>
+                    <a class="uk-position-center-right uk-position-small uk-hidden-hover" href="#" uk-slidenav-next
+                        uk-slider-item="next"></a>
                 </div>
             </section>
             <main>
                 <section style="margin-top: 20px">
                     <div uk-grid>
                         <div class="uk-width-1-1 uk-width-3-4@m">
-                            <div uk-grid id="listing-title" style="display: none">
+                            <div uk-grid id="listing-title">
                                 <div class="uk-width-1-1" id="mobile-search-keyword" style="display: none">
 
                                 </div>
                                 <div class="uk-width-1-1">
-                                    <h3 class="uk-align-left uk-text-bold" style="color: #00aaff;" id="category-title">TOUTES LES ANNONCES</h3>
+                                    <h2 class="uk-align-left uk-text-bold" style="color: #00aaff;" id="category-title">TOUTES
+                                        LES ANNONCES</h2>
                                     <form class="uk-align-right" id="desk-sort-by">
                                         <strong>Trier par: </strong>
                                         <select class="uk-select uk-form-width-small" style="width: 160px" onchange="setSortDesktop(value)">
-                                            <option>Recents</option>
+                                            <option>Récents</option>
                                             <option>Prix croissant</option>
                                             <option>Prix decroissant</option>
                                         </select>
@@ -56,7 +65,11 @@
                             </div>
                             <div class="uk-grid-small uk-child-width-expand@ uk-margin uk-text-center" uk-grid id="home-spinner">
                                 <div class="uk-margin" style="margin-top: 150px; margin-bottom: 150px;">
-                                    <img src="img/spinner.gif">
+                                    <!-- <img src="img/spinner.gif"> -->
+                                    <svg class="spinner" width="60px" height="60px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                                        <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33"
+                                            cy="33" r="30"></circle>
+                                    </svg>
                                 </div>
                             </div>
                             <div class="uk-grid-small uk-child-width-expand@" uk-grid id="ads-field" style="display: none">
@@ -72,11 +85,11 @@
                                                 </div>
                                             </div>
                                             <div class="uk-card-body">
-                                                <p class="uk-text-small uk-text-truncate">{{ .Title }}</p>
+                                                <p class="uk-text-small uk-text-truncate title">{{ .Title }}</p>
                                                 {{ if gt .Price 0}}
-                                                <p class="uk-text-bold">{{.Price}} FCFA</p>
+                                                <p class="uk-text-bold uk-text-truncate">{{.Price}} FCFA</p>
                                                 {{ else }}
-                                                <br/> {{ end }}
+                                                <br /> {{ end }}
                                                 <p class="uk-text-right uk-text-small create-date">{{.CreatedAt}}</p>
                                             </div>
                                         </div>
@@ -85,12 +98,18 @@
                                 {{ end }}
                             </div>
                             <div class="uk-text-center uk-margin-large-top" id="loadButton" style="display: none">
-                                <button class="uk-button uk-button-default uk-button-small" onclick="loadMore()">Voir plus</button>
+                                <button class="uk-button uk-button-default uk-button-small load-more-btn" onclick="loadMore()">Voir
+                                    plus</button>
                             </div>
                             <div class="uk-text-center uk-margin-large-top" style="display: none;" id="loadMore-spinner">
-                                <img src="img/spinner.gif" style="width: 50px; height: 50px;">
+                                <!-- <img src="img/spinner.gif" style="width: 50px; height: 50px;"> -->
+                                <svg class="spinner" width="30px" height="30px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+                                    <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33"
+                                        r="30"></circle>
+                                </svg>
                             </div>
-                            <div class="uk-text-center uk-text-muted uk-text-center uk-margin-large-top" id="noMoreAds" style="display: none;">
+                            <div class="uk-text-center uk-text-muted uk-text-center uk-margin-large-top" id="noMoreAds"
+                                style="display: none;">
                                 <small>Malheureusement, il n'y a plus d'articles...</small>
                             </div>
                         </div>
@@ -146,8 +165,8 @@
                 {{ end }}
             </div>
         </div>
+        {{ render "components/footer.html"}}
     </div>
-    {{ render "components/footer.html"}}
     <script src="/js/index.js"></script>
 </body>
 <script>

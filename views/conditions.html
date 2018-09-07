@@ -11,87 +11,77 @@
         margin-left: auto;
     }
 
-    h1,
-    h3 {
-        color: #00AAFF;
-    }
-
     @media only screen and (max-width: 1192px) {
+
         /* For mobile: */
-        .uk-padding-large {
-            padding: 10px;
+        .uk-padding {
+            padding: 10px 20px;
+        }
+
+        ol,
+        ul {
+            padding-left: 12px;
         }
     }
 </style>
 
 <body>
     <div id="contact">
-        <header id="desktop-header">
-            <div class="uk-box-shadow-small">
-                <nav class="uk-navbar-container uk-margin" uk-navbar uk-navbar="mode: click">
-                    <div class="uk-navbar-left">
-                        <a class="uk-navbar-item uk-logo" href="/">
-                            <img src="img/okazion.png" width="100" alt="OKZ">
-                        </a>
-                    </div>
-                </nav>
-            </div>
-        </header>
-        <header id="mobile-header">
-            <div class="uk-box-shadow-small">
-                <nav class="uk-navbar-container uk-margin" uk-navbar uk-navbar="mode: click">
-                    <div class="uk-navbar-center">
-                        <a class="uk-navbar-item uk-logo" href="/">
-                            <img src="img/okazion.png" width="100" alt="OKZ">
-                        </a>
-                    </div>
-                </nav>
-            </div>
-        </header>
+        {{ render "components/secondary-header.html"}}
         <main>
-            <div class="uk-padding-large">
-                <h1 class="uk-text-center uk-text-bold">REGLES ET CONDITIONS D'UTILISATIONS DU SITE</h1>
+            <div class="uk-padding">
+                <h3 class="uk-text-center">RÈGLES ET CONDITIONS D'UTILISATION DU SITE</h3>
                 <P>
-                    Afin de vous offrir un service  efficace exempt de litiges, Nous vous prions de vous conformer aux regles suivantes:
+                    Afin de vous offrir un service efficace exempt de litiges, Nous vous prions de vous conformer aux
+                    règles suivantes:
                 </P>
                 <ol>
                     <li>
-                        Il est interdits de publier sur le site des produits ou des articles volés ainsi que objets interdits par la loi.
+                        Il est interdits de publier sur le site des produits ou des articles volés ainsi que objets
+                        interdits par la loi.
                     </li>
                     <li>
-                        Les annonces qui peuvent heurter la sensibilité ou tout autre produits à caractère sexuel sont interdits de publication sur
+                        Les annonces qui peuvent heurter la sensibilité ou tout autre produits à caractère sexuel sont
+                        interdits de publication sur
                         le site
                     </li>
                     <li>
                         Veuillez vous assurer de fournir une description complète et détaillée pour chaque annonce.
                     </li>
                     <li>
-                        Veuillez vous assurer de donner les contacts et des informations exactes indispensables aux acheteurs.
+                        Veuillez vous assurer de donner les contacts et des informations exactes indispensables aux
+                        acheteurs.
                     </li>
                     <li>
-                        Veuillez vous assurer de la bonne qualité des photos afin pour toucher le maximum de personnes et faciliter l'attrait pour
+                        Veuillez vous assurer de la bonne qualité des photos afin pour toucher le maximum de personnes
+                        et faciliter l'attrait pour
                         vos annonces
                     </li>
                     <li>
-                        Veuillez vous assurer de la qualité des produits avant de les publier. Si tant est que certains produits peuvent perdre de
-                        leur superbe depuis la date de publication jusqu'a l'achat, le vendeur doit notifier aux clients
+                        Veuillez vous assurer de la qualité des produits avant de les publier. Si tant est que certains
+                        produits peuvent perdre de
+                        leur superbe depuis la date de publication jusqu'à l'achat, le vendeur doit notifier aux
+                        clients
                         le pourquoi de cette altération et user de compromis
                     </li>
                 </ol>
                 <hr>
-                <h3 class="uk-text-bold">A L'ENDROIT DES ANNONCEURS</h3>
+                <h3 class="uk-text-center">A L'ENDROIT DES ANNONCEURS</h3>
                 <p>
-                    Une photo de très bonne qualité est un atout indéniable pour attirer les visiteurs à voir vos annonces. Par contre, Les photos
-                    de qualité médiocre peuvent faire une mauvaise publicité. Par conséquent, soucieux de vous offrir une
-                    meilleure expérience d’utilisation sur le site Okazion nous vous recommandons de mettre sur le site des
+                    Une photo de très bonne qualité est un atout indéniable pour attirer les visiteurs à voir vos
+                    annonces. Par contre, Les photos
+                    de qualité médiocre peuvent faire une mauvaise publicité. Par conséquent, soucieux de vous offrir
+                    une
+                    meilleure expérience d’utilisation sur le site Okazion nous vous recommandons de mettre sur le site
+                    des
                     photos de bonne qualité et plusieurs si possible. </p>
                 <hr>
-                <h3 class="uk-text-bold">ASTUCES POUR EVITER LES ARNAQUES</h3>
-                <p>Afin d'eviter tous desagrements ou arnaques evitez : </p>
+                <h3 class="uk-text-center">ASTUCES POUR EVITER LES ARNAQUES</h3>
+                <p>Afin d'éviter tous désagréments ou arnaques evitez : </p>
                 <ul>
                     <li>D'effectuer l'achat dans une zone dangereuse et à des heures tardives.
                     </li>
-                    <li>D'effectuer l'achat en ligne  sans avoir au prealable vu le produit réelement.
+                    <li>D'effectuer l'achat en ligne sans avoir au préalable vu le produit réellement.
                     </li>
                     <li>Tout achat avec une personne d'apparence douteuse ou n'ayant pas toutes ses facultés.</li>
                     <li>
