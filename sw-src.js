@@ -72,7 +72,7 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-    'https://fonts.googleapis.com/css?family=Montserrat',
+    'https://fonts.googleapis.com/css?family=Montserrat:400,500,600',
     workbox.strategies.cacheFirst(),
 );
 

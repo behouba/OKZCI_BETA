@@ -72,7 +72,7 @@ workbox.routing.registerRoute(
 );
 
 workbox.routing.registerRoute(
-    'https://fonts.googleapis.com/css?family=Montserrat',
+    'https://fonts.googleapis.com/css?family=Montserrat:400,500,600',
     workbox.strategies.cacheFirst(),
 );
 
@@ -91,7 +91,7 @@ workbox.routing.registerRoute(
 workbox.precaching.precacheAndRoute([
   {
     "url": "css/index.css",
-    "revision": "68277349fd3252ffb8824e46db32e97b"
+    "revision": "eece247e603fdacd02f1c886e0ab5e99"
   },
   {
     "url": "css/profile-setting.css",
