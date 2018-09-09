@@ -2,7 +2,7 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.4.1/workbox
 
 
 workbox.setConfig({
-    debug: true
+    debug: false
 });
 
 // this is ok
@@ -59,7 +59,7 @@ workbox.routing.registerRoute(
     workbox.strategies.networkFirst({
         plugins: [
             new workbox.expiration.Plugin({
-                maxEntries: 20,
+                maxEntries: 30,
                 maxAgeSeconds: 24 * 60 * 60,
             }),
         ],
@@ -91,7 +91,7 @@ workbox.routing.registerRoute(
 workbox.precaching.precacheAndRoute([
   {
     "url": "css/index.css",
-    "revision": "eece247e603fdacd02f1c886e0ab5e99"
+    "revision": "bbd9661907724ded167754fa5e9e4a29"
   },
   {
     "url": "css/profile-setting.css",
@@ -211,7 +211,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "img/blank.png",
-    "revision": "05a3f5c800a6e949a98ae91aea395cba"
+    "revision": "4ed421ea03a03d7c80aa28270b75e3be"
   },
   {
     "url": "img/no_user.svg",
@@ -263,11 +263,11 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "js/details.js",
-    "revision": "25180a7a5a92097f26d8c61b9bd06ab2"
+    "revision": "03fd9861eaa48959f38f017321fc8a6c"
   },
   {
     "url": "js/index.js",
-    "revision": "df2ab636d31c684375e2a39393693df8"
+    "revision": "dc73cb0e1f8d265279ff71f8350babe4"
   },
   {
     "url": "js/moment-with-locales.js",

@@ -11,7 +11,9 @@
         text-decoration: none;
     }
 
-
+    #img-carousel img {
+        background-color: #efefef;
+    }
 
     h3,
     p {
@@ -111,9 +113,7 @@
 <body>
     <div class="uk-position-center" id="detail-spinner" style="display: none">
         <!-- <img src="/img/spinner.gif"> -->
-        <svg class="spinner" width="80px" height="80px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-            <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
-        </svg>
+        {{ render "components/spinner.html"}}
     </div>
     <div id="detail">
         {{ render "components/common-navbar2.html"}}
@@ -124,7 +124,7 @@
                         <ul class="uk-slideshow-items">
                             {{ range .ad.Pictures }}
                             <li>
-                                <img src="{{.}}" onerror="this.src='img/blank.png';" alt="Image" uk-cover>
+                                <img src="{{.}}" onerror="this.src='img/blank.png'" alt="Image" uk-cover>
                             </li>
                             {{ end }}
                         </ul>
@@ -196,7 +196,7 @@
                                         <div class="uk-width-1-1 uk-margin">
                                             <button class="uk-button uk-button-default uk-modal-close uk-button-small load-more-btn"
                                                 uk-dis>ANNULER</button>
-                                            <a href="tel:+225{{ .ad.Contact }}" target="blank" class="uk-button uk-button-primary uk-button-small">APPELER</a>
+                                            <a href="tel:+225{{ .ad.Contact }}" class="uk-button uk-button-primary uk-button-small">APPELER</a>
                                         </div>
                                     </div>
                                 </div>

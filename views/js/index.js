@@ -11,13 +11,9 @@ let homeSpinner = document.getElementById("home-spinner");
 let noMoreAds = document.getElementById("noMoreAds");
 let sticky = document.getElementById("sticky");
 let queryData = document.getElementById("query-data");
-let desktopCurrentCategory = document.getElementById(
-  "desktop-current-category"
-);
+let desktopCurrentCategory = document.getElementById("desktop-current-category");
 let desktopCategoryPicker = document.getElementById("desktop-category-picker");
-let currentDesktopLocation = document.getElementById(
-  "desktop-current-location"
-);
+let currentDesktopLocation = document.getElementById("desktop-current-location");
 let main = document.getElementById("main");
 let mainSpinner = document.getElementById("main-spinner");
 let desktopSearch = document.getElementById("desk-search");
@@ -31,7 +27,7 @@ let searchBar = document.getElementById("search-bar");
 let searchNav = document.getElementById("search-nav");
 let searchField = document.getElementById("search");
 let searchCloseIcon = document.getElementById("search-close-icon");
-let searchSetting = document.getElementById("search-setting");
+// let searchSetting = document.getElementById("search-setting");
 let createDate = document.getElementsByClassName("create-date");
 
 function homePageLoaded() {
@@ -130,7 +126,7 @@ function setCity(c) {
     city = c;
   }
   // console.log(city);
-  searchRequest();
+  // searchRequest();
 }
 
 function setDeskCity(c) {
@@ -156,6 +152,7 @@ function setSortDesktop(v) {
 }
 
 function validateFilter() {
+  window.scrollTo(0, 0)
   UIkit.modal("#filter-modal").hide();
   searchRequest();
 }
@@ -163,16 +160,7 @@ function validateFilter() {
 function searchRequest() {
   search.blur()
   offset = 0;
-  // console.log(
-  //   "category =",
-  //   category,
-  //   "city =",
-  //   city,
-  //   "search =",
-  //   search.value,
-  //   "sort =",
-  //   sort
-  // );
+  console.log("sort =", sort);
   adsField.style.display = "none";
   homeSpinner.style.display = "block";
   loadButton.style.display = "none";
@@ -196,11 +184,19 @@ function searchRequest() {
       if (res.data) {
         // console.log(res.data);
         let ads = "";
-        res.data.forEach(ad => {
-          ads += createAdCard(ad);
-        });
-        displayListing();
+        if (sort === "Default" || sort === "") {
+          let data = shuffle(res.data)
+          data.forEach(ad => {
+            ads += createAdCard(ad);
+          });
+        } else {
+          res.data.forEach(ad => {
+            ads += createAdCard(ad);
+          });
+        }
+
         adsField.innerHTML = ads;
+        displayListing();
         incrementOffset();
         checkResult(res.data);
       } else {
@@ -229,6 +225,27 @@ function searchRequest() {
     });
 }
 
+// shuffle an array
+function shuffle(array) {
+  var currentIndex = array.length,
+    temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
 searchBar.addEventListener("submit", e => {
   e.preventDefault();
   // console.log(search.value);
@@ -238,7 +255,6 @@ searchBar.addEventListener("submit", e => {
 
 function displayCurrentSearch(searchValue) {
   if (searchValue !== "") {
-    searchSetting.style.display = "none";
     searchCloseIcon.style.display = "inline-flex";
     mobileSearchKeyword.innerHTML = `<p class="uk-align-left" id="keyword-title">Mot clé recherché: <strong style="color: #00aaff; font-weight: bold">« ${
       searchValue
@@ -281,9 +297,16 @@ function loadMore() {
       // console.log(res.data);
       if (res.data) {
         let ads = "";
-        res.data.forEach(a => {
-          ads += createAdCard(a);
-        });
+        if (sort === "Default" || sort === "") {
+          let data = shuffle(res.data)
+          data.forEach(ad => {
+            ads += createAdCard(ad);
+          });
+        } else {
+          res.data.forEach(ad => {
+            ads += createAdCard(ad);
+          });
+        }
         adsField.innerHTML += ads;
         incrementOffset();
       }
@@ -354,7 +377,6 @@ function numberWithCommas(x) {
 
 function clearSearch() {
   searchField.value = "";
-  searchSetting.style.display = "inline-flex";
   searchCloseIcon.style.display = "none";
   mobileSearchKeyword.style.display = "none";
   searchRequest();
@@ -364,10 +386,8 @@ function searchBarFocus() {
   // console.log(searchField.value)
   if (searchField.value.length > 0) {
     searchCloseIcon.style.display = "inline-flex";
-    searchSetting.style.display = "none";
   } else {
     searchCloseIcon.style.display = "none";
-    searchSetting.style.display = "inline-flex";
   }
 }
 window.onscroll = function (e) {

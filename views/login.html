@@ -39,7 +39,7 @@
     }
     .fbk-btn{
         height: 36px;
-        font-size: 12px;
+        font-size: 11px;
         border-radius: 5px;
         box-shadow: 0 2px 4px 0 rgba(0,0,0,.25);
         box-sizing: border-box;
@@ -64,12 +64,14 @@
         text-transform: uppercase;
         font-size: 13px;
     }
+    .abcRioButtonContentWrapper span {
+        font-size: 11px;
+    }
+
     </style>
     <div class="uk-position-center" id="auth-spinner">
         <!-- <img src="/img/spinner.gif"> -->
-        <svg class="spinner" width="80px" height="80px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
-            <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
-        </svg>
+        {{ render "components/spinner.html"}}
     </div>
     <div id="auth" style="display: none">
         <div id="login" class="uk-animation-slide-bottom-small">

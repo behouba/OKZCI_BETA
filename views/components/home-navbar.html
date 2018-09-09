@@ -32,8 +32,8 @@
                         <span class="uk-form-icon" uk-icon="icon: search; ratio: 1"></span>
                         <input class="uk-input uk-form-width-medium uk-form-medium" type="text" placeholder="Recherche..."
                             oninput="searchBarFocus()" onsubmit="search(e)" id="search" />
-                        <a class="uk-form-icon uk-form-icon-flip" style="display:none" onclick="clearSearch()" uk-icon="icon: close; ratio: 1"
-                            id="search-close-icon"></a>
+                        <a class="uk-form-icon uk-form-icon-flip" style="right: 25px;display:none" onclick="clearSearch()"
+                            uk-icon="icon: close; ratio: 1" id="search-close-icon"></a>
                         <a class="uk-form-icon uk-form-icon-flip" uk-toggle href="#filter-modal" uk-icon="icon: settings; ratio: 1"
                             id="search-setting"></a>
                     </div>
@@ -59,6 +59,7 @@
                     <div class="uk-width-1-1">
                         <p class="uk-text-bold">Trier par: </p>
                         <select class="uk-select uk-align-right" onchange="setSort(value)">
+                            <option>Default</option>
                             <option>Récents</option>
                             <option>Prix croissant</option>
                             <option>Prix decroissant</option>

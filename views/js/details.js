@@ -185,13 +185,7 @@ function detailPageLoaded() {
     detailSpinner.style.display = 'none'
 }
 
-window.addEventListener("onunload", e => {
-    detail.style.display = 'none';
-    detailSpinner.style.display = 'block';
-})
-
-window.addEventListener("onload", e => {
+function detailLoad() {
     detailSpinner.style.display = 'none';
     detail.style.display = 'block';
-
-})
+}

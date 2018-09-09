@@ -24,6 +24,10 @@ h6 {
   font-weight: 600;
 }
 
+.uk-select {
+  font-weight: 500;
+}
+
 .uk-link:hover {
   cursor: pointer;
 }
@@ -200,6 +204,11 @@ main {
 .ad-card .title {
   color: #00aaff;
   font-weight: 500;
+  text-transform: lowercase;
+}
+
+.ad-card .title::first-letter {
+  text-transform: uppercase;
 }
 
 .ad-card .uk-text-small {
@@ -388,6 +397,10 @@ nav ul {
     -webkit-tap-highlight-color: rgba(255, 255, 255, 0);
   }
 
+  .ad-card .title {
+    font-size: 14px;
+  }
+
   uk-h2,
   h2 {
     font-size: 1.4rem;
@@ -430,61 +443,63 @@ nav ul {
 }
 
 /* svg spinner loader */
-.spinner {
-  animation: rotator 1.4s linear infinite;
+.spinner-container {
+  -webkit-animation: rotate 2s linear infinite;
+  animation: rotate 2s linear infinite;
+  z-index: 2;
 }
 
-@keyframes rotator {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(270deg);
-  }
-}
-
-.path {
-  stroke-dasharray: 187;
+.spinner-path {
+  stroke-dasharray: 1, 150;
   stroke-dashoffset: 0;
-  transform-origin: center;
-  animation: dash 1.4s ease-in-out infinite, colors 5.6s ease-in-out infinite;
+  stroke: #00aaff;
+  stroke-linecap: round;
+  -webkit-animation: dash 1.5s ease-in-out infinite;
+  animation: dash 1.5s ease-in-out infinite;
 }
 
-@keyframes colors {
-  0% {
-    stroke: #4285f4;
-  }
-
-  25% {
-    stroke: #4285f4;
-  }
-
-  50% {
-    stroke: #4285f4;
-  }
-
-  75% {
-    stroke: #4285f4;
-  }
-
+@keyframes rotate {
   100% {
-    stroke: #4285f4;
+    transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes rotate {
+  100% {
+    -webkit-transform: rotate(360deg);
   }
 }
 
 @keyframes dash {
   0% {
-    stroke-dashoffset: 187;
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
   }
 
   50% {
-    stroke-dashoffset: 46.75;
-    transform: rotate(135deg);
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
   }
 
   100% {
-    stroke-dashoffset: 187;
-    transform: rotate(450deg);
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
+  }
+}
+
+@-webkit-keyframes dash {
+  0% {
+    stroke-dasharray: 1, 150;
+    stroke-dashoffset: 0;
+  }
+
+  50% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -35;
+  }
+
+  100% {
+    stroke-dasharray: 90, 150;
+    stroke-dashoffset: -124;
   }
 }

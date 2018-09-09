@@ -89,7 +89,7 @@
         <div id="ad-form" class="uk-width-1-2@m uk-margin-auto">
             <div class="uk-margin-large-top uk-child-width-expand uk-child-width-1-2" uk-grid id="update-btn">
                 <div>
-                    <a class="uk-button uk-button-default uk-width-1-1" onclick="startUpdate()">
+                    <a class="uk-button uk-button-default load-more-btn uk-width-1-1" onclick="startUpdate()">
                         <span uk-icon="icon: file-edit"></span>
                         MODIFIER CETTE ANNONCE
                     </a>
@@ -108,7 +108,8 @@
                     <button class="uk-modal-close-default" type="button" uk-close></button>
                     <div class="uk-grid-collapse uk-margin uk-child-width-1-1@s uk-flex-middle" uk-grid>
                         <div class="uk-padding-small uk-text-center">
-                            <h3 class="uk-text-danger">Vous êtes sur le point de supprimer cette annonce. Attention cette action est irréversible!</h3>
+                            <h3 class="uk-text-danger">Vous êtes sur le point de supprimer cette annonce. Attention
+                                cette action est irréversible!</h3>
                             <div class="uk-width-1-1">
                                 <button class="uk-button uk-button-default uk-modal-close uk-button-small">ANNULER</button>
                                 <a onclick="deleteAd()" class="uk-button uk-button-danger uk-button-small">SUPPRIMER</a>
@@ -125,7 +126,8 @@
                     <div class="uk-margin">
                         <label class="uk-form-label" for="title" id="title-label">Titre</label>
                         <div class="uk-form-controls">
-                            <input class="uk-input" id="title" required minlength="3" type="text" name="title" value="{{ .ad.Title }}" maxlength="45">
+                            <input class="uk-input" id="title" required minlength="3" type="text" name="title" value="{{ .ad.Title }}"
+                                maxlength="45">
                         </div>
                     </div>
                     <div class="uk-margin">
@@ -157,7 +159,8 @@
                             <input class="uk-input" id="contact" name="contact" type="tel" pattern="[0-9]{8}" value="{{ .ad.Contact }}">
                         </div>
                     </div>
-                    <div class="uk-margin-large-top uk-child-width-expand uk-child-width-1-2" uk-grid id="bottom-btn" style="display: none">
+                    <div class="uk-margin-large-top uk-child-width-expand uk-child-width-1-2" uk-grid id="bottom-btn"
+                        style="display: none">
                         <div>
                             <a onclick="cancelUpdate()" class="uk-button uk-button-danger uk-width-1-1" id="cancel-btn">ANNULER</a>
                         </div>

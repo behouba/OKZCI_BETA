@@ -2,7 +2,7 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/3.4.1/workbox
 
 
 workbox.setConfig({
-    debug: true
+    debug: false
 });
 
 // this is ok
@@ -59,7 +59,7 @@ workbox.routing.registerRoute(
     workbox.strategies.networkFirst({
         plugins: [
             new workbox.expiration.Plugin({
-                maxEntries: 20,
+                maxEntries: 30,
                 maxAgeSeconds: 24 * 60 * 60,
             }),
         ],
