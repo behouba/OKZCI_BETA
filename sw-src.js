@@ -5,27 +5,27 @@ workbox.setConfig({
     debug: false
 });
 
-// this is ok
-workbox.routing.registerRoute(
-    new RegExp('/'),
-    workbox.strategies.networkFirst()
-);
-workbox.routing.registerRoute(
-    new RegExp('/me/'),
-    workbox.strategies.networkFirst()
-);
-// this also is ok
-workbox.routing.registerRoute(
-    new RegExp('/search/'),
-    workbox.strategies.networkFirst({
-        plugins: [
-            new workbox.expiration.Plugin({
-                maxEntries: 20,
-                maxAgeSeconds: 24 * 60 * 60,
-            }),
-        ],
-    })
-);
+// // this is ok
+// workbox.routing.registerRoute(
+//     new RegExp('/'),
+//     workbox.strategies.networkFirst()
+// );
+// workbox.routing.registerRoute(
+//     new RegExp('/me/'),
+//     workbox.strategies.networkFirst()
+// );
+// // this also is ok
+// workbox.routing.registerRoute(
+//     new RegExp('/search/'),
+//     workbox.strategies.networkFirst({
+//         plugins: [
+//             new workbox.expiration.Plugin({
+//                 maxEntries: 20,
+//                 maxAgeSeconds: 24 * 60 * 60,
+//             }),
+//         ],
+//     })
+// );
 
 
 workbox.routing.registerRoute(
@@ -33,20 +33,20 @@ workbox.routing.registerRoute(
     workbox.strategies.staleWhileRevalidate()
 );
 
-workbox.routing.registerRoute(
-    new RegExp('/logout/'),
-    workbox.strategies.networkOnly()
-);
+// workbox.routing.registerRoute(
+//     new RegExp('/logout/'),
+//     workbox.strategies.networkOnly()
+// );
 
-workbox.routing.registerRoute(
-    new RegExp('/politique-de-confidentialité/'),
-    workbox.strategies.cacheFirst()
-);
+// workbox.routing.registerRoute(
+//     new RegExp('/politique-de-confidentialité/'),
+//     workbox.strategies.cacheFirst()
+// );
 
-workbox.routing.registerRoute(
-    new RegExp('/conditions/'),
-    workbox.strategies.cacheFirst()
-);
+// workbox.routing.registerRoute(
+//     new RegExp('/conditions/'),
+//     workbox.strategies.cacheFirst()
+// );
 
 workbox.routing.registerRoute(
     new RegExp('/create/'),
@@ -54,17 +54,17 @@ workbox.routing.registerRoute(
 );
 
 
-workbox.routing.registerRoute(
-    new RegExp('/pictures/ad/'),
-    workbox.strategies.networkFirst({
-        plugins: [
-            new workbox.expiration.Plugin({
-                maxEntries: 30,
-                maxAgeSeconds: 24 * 60 * 60,
-            }),
-        ],
-    })
-);
+// workbox.routing.registerRoute(
+//     new RegExp('/pictures/ad/'),
+//     workbox.strategies.networkFirst({
+//         plugins: [
+//             new workbox.expiration.Plugin({
+//                 maxEntries: 30,
+//                 maxAgeSeconds: 24 * 60 * 60,
+//             }),
+//         ],
+//     })
+// );
 
 workbox.routing.registerRoute(
     new RegExp('/settings/'),

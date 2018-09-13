@@ -45,13 +45,6 @@
         box-sizing: border-box;
     }
 </style>
-<script>
-    gapi.auth2.init();
-    let auth2 = gapi.auth2.getAuthInstance();
-    auth2.signOut().then(function () {
-        console.log("User signed out.");
-    });
-</script>
 
 <body onload="authLoading()">
     <style>

@@ -23,6 +23,8 @@
         </div>
     </div>
 </footer>
+
+
 <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
 <script>
     function onLoad() {
@@ -56,4 +58,7 @@
             });
 
     }
+    window.addEventListener("beforeunload", e => {
+        UIkit.offcanvas("#side-profile").hide();
+    })
 </script>

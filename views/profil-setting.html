@@ -5,7 +5,8 @@
     <title>{{.user.UserName}}</title>
     {{ render "components/common-head.html"}}
     <link rel="stylesheet" href="/css/profile-setting.css" />
-    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <link crossorigin="anonymous" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+        rel="stylesheet">
     <script src="/js/cleave.min.js"></script>
     <script src="/js/cleave-phone.ci.js"></script>
 </head>
@@ -39,7 +40,7 @@
                     <div class="user-data" uk-grid>
                         <div class="user-name uk-width-1-1">
                             <p class="uk-align-left">Nom</p>
-                            <a class="uk-align-right" href="#user-name-modal" uk-toggle>{{ .user.UserName }}
+                            <a class="uk-align-right uk-text-truncate" href="#user-name-modal" uk-toggle>{{.user.UserName}}
                                 <span uk-icon="icon: arrow-right"></span>
                             </a>
                         </div>
@@ -48,7 +49,8 @@
                                 <div class="uk-padding uk-width-1-1 uk-text-center uk-margin-auto">
                                     <div class="uk-text-center uk-margin-auto">
                                         <div class="dashboard-profil">
-                                            <img data-src="{{ .user.Picture }}" onerror="this.src='img/user.svg'" alt="" uk-img>
+                                            <img data-src="{{ .user.Picture }}" onerror="this.src='img/user.svg'" alt=""
+                                                uk-img>
                                         </div>
                                     </div>
                                     <div class="uk-width-1-1 uk-text-center uk-margin-auto uk-margin">
@@ -65,7 +67,8 @@
                         </div>
                         <div class="user-tel uk-width-1-1">
                             <p class="uk-align-left">Telephone</p>
-                            <a class="uk-align-right" href="#contact-modal" uk-toggle>+225 {{ .user.PhoneNumber }}
+                            <a class="uk-align-right uk-text-truncate" href="#contact-modal" uk-toggle>+225
+                                {{.user.PhoneNumber }}
                                 <span uk-icon="icon: arrow-right"></span>
                             </a>
                         </div>
@@ -74,7 +77,8 @@
                                 <div class="uk-padding uk-width-1-1 uk-text-center uk-margin">
                                     <div class="uk-width-1-1 uk-text-center uk-margin-auto uk-margin">
                                         <div class="uk-margin">
-                                            <input class="uk-input contact-input" type="text" minlength="8" value="{{ .user.PhoneNumber }}" id="contact" placeholder="Contact">
+                                            <input class="uk-input contact-input" type="text" minlength="8" value="{{ .user.PhoneNumber }}"
+                                                id="contact" placeholder="Contact">
                                         </div>
                                     </div>
                                     <div class="uk-width-1-1">
@@ -86,7 +90,8 @@
                         </div>
                         <div class="user-city uk-width-1-1">
                             <p class="uk-align-left">Ville</p>
-                            <a class="uk-align-right" href="#location-modal" uk-toggle>{{ .user.Location }}
+                            <a class="uk-align-right uk-text-truncate" href="#location-modal" uk-toggle>
+                                {{.user.Location }}
                                 <span uk-icon="icon: arrow-right"></span>
                             </a>
                         </div>
@@ -112,7 +117,7 @@
                         </div>
                         <div class="user-email uk-width-1-1">
                             <p class="uk-align-left">Identifiant</p>
-                            <p class="uk-align-right" href="">{{ .user.Email }}
+                            <p class="uk-align-right uk-text-truncate" href="">{{ .user.Email }}
                                 <span uk-icon="icon: arrow-right"></span>
                             </p>
                         </div>

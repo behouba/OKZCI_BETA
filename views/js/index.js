@@ -32,17 +32,17 @@ let createDate = document.getElementsByClassName("create-date");
 
 function homePageLoaded() {
   if (sessionStorage.getItem("data") !== null && step === 1) {
-    displayCurrentSearch(search.value)
-    adsField.innerHTML = sessionStorage.getItem("data");
-    let position = Number(localStorage.getItem("scrollPosition"));
-    localStorage.removeItem("scrollPosition");
-    sessionStorage.removeItem("step");
-    sessionStorage.removeItem("data");
-    loadButton.style.display = "block";
     getSearchParams();
+    adsField.innerHTML = sessionStorage.getItem("data");
+    displayCurrentSearch(search.value)
     setTimeout(() => {
-      window.scrollTo(0, position);
-    }, 1000);
+      window.scrollTo(0, Number(localStorage.getItem("scrollPosition")));
+      localStorage.removeItem("scrollPosition");
+      sessionStorage.removeItem("step");
+      sessionStorage.removeItem("data");
+      sessionStorage.removeItem("createAd");
+      loadButton.style.display = "block";
+    }, 0);
   } else {
     searchRequest();
   }
@@ -57,6 +57,7 @@ function displayListing() {
 }
 
 function getSearchParams() {
+  displayListing()
   city = sessionStorage.getItem("city");
   category = sessionStorage.getItem("category");
   sort = sessionStorage.getItem("sort");
@@ -66,7 +67,6 @@ function getSearchParams() {
   desktopCurrentCategory.innerText =
     category.toUpperCase() || "TOUTES LES CATEGORIES";
   categoryTitle.innerText = category.toUpperCase() || "TOUTES LES ANNONCES";
-  displayListing()
 }
 
 function incrementOffset() {
@@ -81,15 +81,18 @@ function offFunction() {
 }
 
 function loginBeforeCreate() {
+  saveData();
   sessionStorage.setItem("createAd", "createAd");
   window.location.href = "/create";
 }
 
 function goCreateAdPage() {
+  saveData();
   window.location.href = "/create";
 }
 
 function saveData() {
+  localStorage.setItem("scrollPosition", window.pageYOffset)
   sessionStorage.setItem("step", "1");
   sessionStorage.setItem("data", adsField.innerHTML);
   sessionStorage.setItem("city", city);
@@ -99,12 +102,13 @@ function saveData() {
 }
 
 window.addEventListener("beforeunload", e => {
-  localStorage.setItem("scrollPosition", window.pageYOffset)
   main.style.display = 'none';
   mainSpinner.style.display = 'block';
 })
 
+
 function setCategory(cat) {
+  UIkit.offcanvas("#categories-menu").hide();
   if (cat === "all") {
     category = "";
     categoryTitle.innerText = "TOUTES LES ANNONCES";
@@ -115,7 +119,6 @@ function setCategory(cat) {
     categoryTitle.innerText = cat.toUpperCase();
   }
   // console.log("categorie", category);
-  UIkit.offcanvas("#categories-menu").hide();
   searchRequest();
 }
 
@@ -152,19 +155,18 @@ function setSortDesktop(v) {
 }
 
 function validateFilter() {
-  window.scrollTo(0, 0)
   UIkit.modal("#filter-modal").hide();
+  // window.scrollTo(0, 0)
   searchRequest();
 }
 
-function searchRequest() {
+async function searchRequest() {
+  window.scrollTo(0, 0)
   search.blur()
   offset = 0;
-  console.log("sort =", sort);
   adsField.style.display = "none";
   homeSpinner.style.display = "block";
   loadButton.style.display = "none";
-  // listingTitle.style.display = "flex";
   noMoreAds.style.display = "none";
   let url =
     "/search?query=" +
@@ -248,8 +250,12 @@ function shuffle(array) {
 
 searchBar.addEventListener("submit", e => {
   e.preventDefault();
+
   // console.log(search.value);
   displayCurrentSearch(search.value)
+  if (search.value === "") {
+    return
+  }
   searchRequest();
 });
 
@@ -267,12 +273,19 @@ function displayCurrentSearch(searchValue) {
 
 desktopSearchBar.addEventListener("submit", e => {
   e.preventDefault();
+  displayCurrentSearch(search.value)
+  if (search.value === "") {
+    return
+  }
   search.value = desktopSearch.value;
   searchRequest();
 });
 
 function deskSearBarBtn() {
   search.value = desktopSearch.value;
+  if (search.value === "") {
+    return
+  }
   searchRequest();
 }
 

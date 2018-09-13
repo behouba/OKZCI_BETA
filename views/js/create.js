@@ -118,6 +118,7 @@ function createAgain() {
     steps = 1
     backTo()
     UIkit.modal(successModal).hide();
+    create.style.display = 'block';
 }
 
 function goToHomePage() {
@@ -154,6 +155,9 @@ adFormField.addEventListener('submit', e => {
         return
     }
 
+    sessionStorage.removeItem("step");
+    sessionStorage.removeItem("data");
+
     // remove all ',' from price to make it convertible into int64
     priceValue.value = priceValue.value.replace(/,/g, '')
 
@@ -185,7 +189,6 @@ adFormField.addEventListener('submit', e => {
             newAdURL.href = url;
             newAdURL.innerText = url;
             spinner.style.display = 'none';
-            create.style.display = 'block';
             UIkit.modal(successModal).show();
         })
         .catch(err => {
@@ -214,7 +217,7 @@ function capitalizeFirstLetter(string) {
 }
 
 function createPageLoaded() {
-    document.getElementById("create-spinner").style.display = 'none'
+    document.getElementById("main-spinner").style.display = 'none'
     document.getElementById("create").style.display = 'block'
 }
 

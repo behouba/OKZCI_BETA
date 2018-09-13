@@ -29,6 +29,22 @@
       h2 {
       color: #393939;
       }
+
+
+      /* background animation */
+      @keyframes colorchange
+    {
+      0%   {background: #00aaff;}
+      50%  {background: #FFA500;}
+      100%   {background: #00aaff;}
+    }
+
+    @-webkit-keyframes colorchange /* Safari and Chrome - necessary duplicate */
+    {
+        0%   {background: #00aaff;}
+      50%  {background: #FFA500;}
+      100%   {background: #00aaff;}
+    }
       @media only screen and (min-width: 768px) {
       /* For desktop: */
       .mobile-profile {
@@ -70,14 +86,17 @@
       #content {
       padding: 10px;
       }
+      #success-modal .uk-button-small {
+            font-size: 13px;
+        }
       }
       #create-spinner {
       position: fixed !important;
       width: 100%;
       height: 100%;
-      z-index: 5;
-      background-color: rgba(119, 117, 117, 0.4);
+      z-index: 1000;
       display: none;
+      animation: colorchange 5s infinite;
       }
       #create-spinner img {
       display: block;
@@ -93,19 +112,28 @@
       @media only screen and (max-width: 320px) {
         .uk-nav-primary>li>a {
             font-size: 17px;
-        }  
+        }
+        #success-modal .uk-button-small {
+            font-size: 11px;
+        } 
+        #create-spinner img {
+            margin-top: 150px;
+        }
       }
       .uk-form-custom:hover{
           cursor: pointer;
       }
    </style>
 
-<body>
-    <div class="uk-position-center" id="create-spinner">
+<body onload="createPageLoaded()">
+    <div class="uk-position-center" id="create-spinner" style="display:none">
         <img src="img/spinner.gif" />
         <p class="uk-text-center">Creation de l'annonce en cours...</p>
     </div>
-    <div id="create">
+    <div class="uk-position-center" id="main-spinner">
+        {{ render "components/spinner.html"}}
+    </div>
+    <div id="create" style="display:none">
         <header style="margin-bottom: 10px" class="uk-text-bold">
             <div uk-sticky="sel-target: .uk-navbar-container; cls-active: uk-navbar-sticky; show-on-up: true;" class="uk-box-shadow-medium">
                 <nav class="uk-navbar uk-navbar-container" uk-navbar uk-navbar="mode: click">
@@ -216,7 +244,7 @@
                     </div>
                     <div class="uk-margin">
                         <label class="uk-form-label" for="details">Details de l'annonce</label>
-                        <textarea class="uk-textarea" rows="5" id="details" name="description" required minlength="10"
+                        <textarea class="uk-textarea" rows="8" id="details" name="description" required minlength="10"
                             placeholder="Details..."></textarea>
                     </div>
                     <div id="price-simple">
@@ -262,7 +290,7 @@
                     </div>
                 </form>
             </div>
-            <!-- succes modal -->
+            <!-- success modal -->
             <div id="success-modal" class="uk-modal-full" uk-modal style="height: 100%">
                 <div class="uk-modal-dialog uk-modal-body uk-margin-auto-vertical">
                     <!-- <button class="uk-modal-close-full uk-close-large" type="button" uk-close></button> -->
@@ -279,7 +307,7 @@
                             </small>
                         </div>
                         <div class="uk-text-center">
-                            <button onclick="goToHomePage()" class="uk-button uk-button-default uk-button-small uk-margin-small-bottom">Aller
+                            <button onclick="goToHomePage()" class="uk-button uk-button-default uk-button-small load-more-btn uk-margin-small-bottom">Aller
                                 à la page d'acceuil</button>
                             <button onclick="createAgain()" class="uk-button uk-button-primary uk-button-small uk-margin-small-bottom">Créer
                                 un autre annonce</button>

@@ -43,6 +43,7 @@ function sendMessage1(userName, userEmail, OwnerEmail, OwnerName) {
     }
     console.log(msg)
     UIkit.modal('#message-modal').hide()
+    UIkit.notification('Message en cours d\'envoi...', 'info')
     axios.post('/send-message', msg)
         .then(res => {
             messageBody.value = ''
@@ -82,6 +83,7 @@ function sendMessage2(OwnerEmail, OwnerName) {
     msg.userEmail = userEmail.value
     console.log(msg)
     UIkit.modal('#message-modal').hide()
+    UIkit.notification('Message en cours d\'envoi...', 'info')
     axios.post('/send-message', msg)
         .then(res => {
             messageBody.value = ''

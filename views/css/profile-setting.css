@@ -19,13 +19,16 @@ footer .uk-grid>* {
 }
 
 @media only screen and (min-width: 768px) {
+
     /* For desktop: */
     .mobile-profile {
         display: none;
     }
+
     #desktop-profile {
         display: block;
     }
+
     .uk-grid>* {
         margin-left: 40px;
     }
@@ -98,14 +101,27 @@ footer .uk-grid>* {
 }
 
 @media only screen and (max-width: 768px) {
+
     /* For mobile: */
     .mobile-profile {
         display: block;
     }
+
     #desktop-profile {
         display: none;
     }
+
     .uk-grid>* {
         margin-left: 30px;
+    }
+
+    .user-data.uk-grid.uk-grid-stack {
+        font-size: 14px;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .user-data.uk-grid.uk-grid-stack {
+        font-size: 13px;
     }
 }

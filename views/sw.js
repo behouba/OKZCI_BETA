@@ -5,27 +5,27 @@ workbox.setConfig({
     debug: false
 });
 
-// this is ok
-workbox.routing.registerRoute(
-    new RegExp('/'),
-    workbox.strategies.networkFirst()
-);
-workbox.routing.registerRoute(
-    new RegExp('/me/'),
-    workbox.strategies.networkFirst()
-);
-// this also is ok
-workbox.routing.registerRoute(
-    new RegExp('/search/'),
-    workbox.strategies.networkFirst({
-        plugins: [
-            new workbox.expiration.Plugin({
-                maxEntries: 20,
-                maxAgeSeconds: 24 * 60 * 60,
-            }),
-        ],
-    })
-);
+// // this is ok
+// workbox.routing.registerRoute(
+//     new RegExp('/'),
+//     workbox.strategies.networkFirst()
+// );
+// workbox.routing.registerRoute(
+//     new RegExp('/me/'),
+//     workbox.strategies.networkFirst()
+// );
+// // this also is ok
+// workbox.routing.registerRoute(
+//     new RegExp('/search/'),
+//     workbox.strategies.networkFirst({
+//         plugins: [
+//             new workbox.expiration.Plugin({
+//                 maxEntries: 20,
+//                 maxAgeSeconds: 24 * 60 * 60,
+//             }),
+//         ],
+//     })
+// );
 
 
 workbox.routing.registerRoute(
@@ -33,20 +33,20 @@ workbox.routing.registerRoute(
     workbox.strategies.staleWhileRevalidate()
 );
 
-workbox.routing.registerRoute(
-    new RegExp('/logout/'),
-    workbox.strategies.networkOnly()
-);
+// workbox.routing.registerRoute(
+//     new RegExp('/logout/'),
+//     workbox.strategies.networkOnly()
+// );
 
-workbox.routing.registerRoute(
-    new RegExp('/politique-de-confidentialité/'),
-    workbox.strategies.cacheFirst()
-);
+// workbox.routing.registerRoute(
+//     new RegExp('/politique-de-confidentialité/'),
+//     workbox.strategies.cacheFirst()
+// );
 
-workbox.routing.registerRoute(
-    new RegExp('/conditions/'),
-    workbox.strategies.cacheFirst()
-);
+// workbox.routing.registerRoute(
+//     new RegExp('/conditions/'),
+//     workbox.strategies.cacheFirst()
+// );
 
 workbox.routing.registerRoute(
     new RegExp('/create/'),
@@ -54,17 +54,17 @@ workbox.routing.registerRoute(
 );
 
 
-workbox.routing.registerRoute(
-    new RegExp('/pictures/ad/'),
-    workbox.strategies.networkFirst({
-        plugins: [
-            new workbox.expiration.Plugin({
-                maxEntries: 30,
-                maxAgeSeconds: 24 * 60 * 60,
-            }),
-        ],
-    })
-);
+// workbox.routing.registerRoute(
+//     new RegExp('/pictures/ad/'),
+//     workbox.strategies.networkFirst({
+//         plugins: [
+//             new workbox.expiration.Plugin({
+//                 maxEntries: 30,
+//                 maxAgeSeconds: 24 * 60 * 60,
+//             }),
+//         ],
+//     })
+// );
 
 workbox.routing.registerRoute(
     new RegExp('/settings/'),
@@ -91,11 +91,11 @@ workbox.routing.registerRoute(
 workbox.precaching.precacheAndRoute([
   {
     "url": "css/index.css",
-    "revision": "bbd9661907724ded167754fa5e9e4a29"
+    "revision": "f3afe213f16453adfc2569c88d3bd96c"
   },
   {
     "url": "css/profile-setting.css",
-    "revision": "49f81a2598cd487e16a08d8a20897bbd"
+    "revision": "8c8e4915feeb080d3414baebe12104d6"
   },
   {
     "url": "css/uikit.min.css",
@@ -255,7 +255,7 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "js/create.js",
-    "revision": "d1294499423cc70d836cc02a5fe18435"
+    "revision": "952d645394f0953b0e010510853282a3"
   },
   {
     "url": "js/date.js",
@@ -263,11 +263,11 @@ workbox.precaching.precacheAndRoute([
   },
   {
     "url": "js/details.js",
-    "revision": "03fd9861eaa48959f38f017321fc8a6c"
+    "revision": "e977d7dffd90c02c082a9cc874375e70"
   },
   {
     "url": "js/index.js",
-    "revision": "dc73cb0e1f8d265279ff71f8350babe4"
+    "revision": "163378e08a5526fc00322e6c0c5855a9"
   },
   {
     "url": "js/moment-with-locales.js",
