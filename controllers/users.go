@@ -4,6 +4,9 @@ import (
 	"log"
 	"mime/multipart"
 	"os"
+	"strings"
+
+	"github.com/disintegration/imaging"
 
 	"github.com/behouba/OKZ_BETA_0.01/models"
 	"github.com/kataras/iris"
@@ -14,7 +17,6 @@ func userProfil(ctx iris.Context) {
 	email := session.Start(ctx).GetString("email")
 	user, err := models.GetUserByEmail(email)
 	if err != nil {
-		log.Println(err)
 		ctx.Redirect("/", iris.StatusSeeOther)
 	}
 	ctx.ViewData("user", user)
@@ -92,7 +94,8 @@ func updateUserLocation(ctx iris.Context) {
 func updateUserProfileImage(ctx iris.Context) {
 	var user models.User
 	user.Email = session.Start(ctx).GetString("email")
-	userID := session.Start(ctx).GetString("userID")
+	userID := strings.Split(user.Email, "@")[0]
+	log.Println(userID)
 	err := os.RemoveAll("./public/u/" + userID)
 	if err != nil {
 		log.Println(err)
@@ -104,6 +107,13 @@ func updateUserProfileImage(ctx iris.Context) {
 		return
 	}
 	_, err = ctx.UploadFormFiles("./public/u/"+userID+"/", func(ctx iris.Context, file *multipart.FileHeader) {
+		f, _ := file.Open()
+		src, err := imaging.Decode(f)
+		src = imaging.Resize(src, 240, 0, imaging.Lanczos)
+		err = imaging.Save(src, "out_example.jpg")
+		if err != nil {
+			log.Fatalf("failed to save image: %v", err)
+		}
 		path := endPoint.Users + userID + "/" + file.Filename
 		user.Picture = path
 	})

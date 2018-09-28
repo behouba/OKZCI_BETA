@@ -16,7 +16,6 @@ func home(ctx iris.Context) {
 
 	userMap := session.Start(ctx).Get("user")
 	if userMap == nil {
-		log.Println("user is not logged")
 		ctx.View("index.html")
 		return
 	}
@@ -59,9 +58,9 @@ func sendUSMessage(sender, email, body string) error {
 	msg := "From: " + from + "\n" +
 		"To: " + to + "\n" +
 		"Subject: Salut \n\n" +
-		"Vous avec reçu un message de la par d'une utilisateur: \n" +
+		"Vous avec reçu un message de la par d'un utilisateur: \n" +
 		"Nom: " + sender + " \n" +
-		"Email: " + email + " \n" +
+		"ID: " + email + " \n" +
 		"Message: " + body + " \n"
 
 	err := smtp.SendMail("smtp.gmail.com:587",

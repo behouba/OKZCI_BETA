@@ -5,14 +5,14 @@ import (
 	"mime/multipart"
 
 	"os"
-	"time"
 
-	"gopkg.in/mgo.v2/bson"
+	"github.com/disintegration/imaging"
 
 	"github.com/behouba/OKZ_BETA_0.01/models"
 	"github.com/kataras/iris"
 	ms "github.com/mitchellh/mapstructure"
 	shortid "github.com/ventu-io/go-shortid"
+	"gopkg.in/mgo.v2/bson"
 )
 
 func create(ctx iris.Context) {
@@ -124,7 +124,6 @@ func addFav(ctx iris.Context) {
 		return
 	}
 	session.Start(ctx).Set("user", user)
-	log.Println("fav added", ad.ShortID, user.UserName)
 }
 
 func removeFav(ctx iris.Context) {
@@ -145,7 +144,6 @@ func removeFav(ctx iris.Context) {
 		return
 	}
 	session.Start(ctx).Set("user", user)
-	log.Println("fav removed", ad.ShortID, user.UserName)
 }
 
 func createAdvert(ctx iris.Context) {
@@ -163,16 +161,32 @@ func createAdvert(ctx iris.Context) {
 		ctx.StatusCode(iris.StatusInternalServerError)
 		return
 	}
-	_, err = ctx.UploadFormFiles("./public/ad/"+ad.ShortID+"/", func(ctx iris.Context, file *multipart.FileHeader) {
-		path := endPoint.Ads + ad.ShortID + "/" + file.Filename
-		ad.Pictures = append(ad.Pictures, path)
-		ad.CreatedAt = time.Now()
-	})
+	f, info, err := ctx.FormFile("files")
+	if err != nil {
+		ctx.StatusCode(iris.StatusInternalServerError)
+		return
+	}
+	src, err := imaging.Decode(f)
+	src = imaging.Resize(src, 240, 0, imaging.Lanczos)
+	err = imaging.Save(src, "./public/ad/"+ad.ShortID+"/small_"+info.Filename)
+	if err != nil {
+		log.Fatalf("failed to save image: %v", err)
+	}
+	ad.Pictures = append(ad.Pictures, endPoint.Ads+ad.ShortID+"/small_"+info.Filename)
+	// _, err = ctx.UploadFormFiles("./public/ad/"+ad.ShortID+"/", func(ctx iris.Context, file *multipart.FileHeader) {
+
+	// 	path := endPoint.Ads + ad.ShortID + "/" + file.Filename
+	// 	ad.Pictures = append(ad.Pictures, path)
+	// 	ad.CreatedAt = time.Now()
+	// })
+	urls, err := uploadFiles(ctx, ad.ShortID)
 	if err != nil {
 		ctx.StatusCode(iris.StatusInternalServerError)
 		log.Println(err)
 		return
 	}
+	ad.Pictures = append(ad.Pictures, urls...)
+
 	if err := ad.StoreNewAd(); err != nil {
 		log.Println(err)
 		ctx.StatusCode(iris.StatusInternalServerError)
@@ -199,5 +213,59 @@ func createAdvert(ctx iris.Context) {
 		ShortID: ad.ShortID,
 	}
 	ctx.JSON(resp)
-	log.Println("new ad created ")
+}
+
+func uploadFiles(ctx iris.Context, adShortID string) (filesURL []string, err error) {
+	maxSize := ctx.Application().ConfigurationReadOnly().GetPostMaxMemory()
+
+	err = ctx.Request().ParseMultipartForm(maxSize)
+	if err != nil {
+		ctx.StatusCode(iris.StatusInternalServerError)
+		ctx.WriteString(err.Error())
+		return
+	}
+
+	form := ctx.Request().MultipartForm
+
+	files := form.File["files"]
+	failures := 0
+	for _, file := range files {
+		err = saveUploadedFile(file, "./public/ad/"+adShortID+"/")
+		if err != nil {
+			failures++
+			log.Printf("failed to upload: %s\n", file.Filename)
+		}
+
+		path := endPoint.Ads + adShortID + "/" + file.Filename
+		filesURL = append(filesURL, path)
+	}
+	log.Printf("%d files uploaded", len(files)-failures)
+	return
+}
+
+func saveUploadedFile(fh *multipart.FileHeader, destDirectory string) (err error) {
+	file, err := fh.Open()
+	src, err := imaging.Decode(file)
+	src = imaging.Resize(src, 640, 0, imaging.Lanczos)
+	err = imaging.Save(src, destDirectory+fh.Filename)
+	if err != nil {
+		log.Fatalf("failed to save image: %v", err)
+		return
+	}
+	return
+	// src, err := fh.Open()
+	// if err != nil {
+	// 	return 0, err
+	// }
+	// defer src.Close()
+
+	// out, err := os.OpenFile(filepath.Join(destDirectory, fh.Filename),
+	// 	os.O_WRONLY|os.O_CREATE, os.FileMode(0666))
+
+	// if err != nil {
+	// 	return 0, err
+	// }
+	// defer out.Close()
+
+	// return io.Copy(out, src)
 }

@@ -14,7 +14,7 @@
             {{ if .user }}
             <div class="uk-navbar-right" style="height: 65px;">
                 <a uk-toggle="target: #side-profile" class="uk-navbar-toggle">
-                    <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}),url('img/user.svg'); width: 28px; height: 28px;background-size: cover;"></span>
+                    <span class="uk-icon uk-icon-image uk-border-circle" style="background-image: url({{.user.Picture}}), url('img/user.svg'); width: 28px; height: 28px;background-size: cover;"></span>
                 </a>
             </div>
             {{ else }}
@@ -26,7 +26,7 @@
             {{ end }}
         </nav>
         <nav class="uk-navbar-container" uk-navbar id="search-nav">
-            <div class="uk-navbar-center">
+            <div style="margin:auto;">
                 <form id="search-bar">
                     <div class="uk-margin uk-inline">
                         <span class="uk-form-icon" uk-icon="icon: search; ratio: 1"></span>

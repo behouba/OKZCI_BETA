@@ -55,9 +55,7 @@ func googleAuth(ctx iris.Context) {
 		ctx.StatusCode(iris.StatusForbidden)
 		return
 	}
-	log.Println("google user is authenticated...")
 	session.Set("user", user)
-	session.Set("email", user.Email)
 	session.Set("email", user.Email)
 }
 
@@ -73,9 +71,7 @@ func facebookAuth(ctx iris.Context) {
 		ctx.StatusCode(iris.StatusForbidden)
 		return
 	}
-	log.Println("facebook user is authenticated...")
 	session.Set("user", user)
-	session.Set("email", user.Email)
 	session.Set("email", user.Email)
 }
 
@@ -95,9 +91,7 @@ func authentification(ctx iris.Context) {
 		ctx.StatusCode(iris.StatusForbidden)
 		return
 	}
-	log.Println("user is logged in as user-email=", user)
 	session.Set("user", user)
-	session.Set("email", user.Email)
 	session.Set("email", user.Email)
 }
 
@@ -185,7 +179,6 @@ func verification(ctx iris.Context) {
 		log.Println(err)
 		return
 	}
-	log.Println("pin code is valid")
 	session.Set("user", u)
 	session.Set("email", u.Email)
 }
@@ -206,7 +199,6 @@ func recoveryVerification(ctx iris.Context) {
 		log.Println(err)
 		return
 	}
-	log.Println("recovery pin code is valid")
 }
 
 func updatePassword(ctx iris.Context) {
@@ -226,10 +218,8 @@ func updatePassword(ctx iris.Context) {
 		ctx.StatusCode(iris.StatusInternalServerError)
 		return
 	}
-	log.Println("password updated for user = ", user)
 	session.Set("user", user)
 	session.Set("email", user.Email)
-	session.Set("userID", user.ID.String())
 }
 
 func logout(ctx iris.Context) {

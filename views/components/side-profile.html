@@ -3,7 +3,8 @@
         <ul class="uk-nav uk-nav-default uk-text-bold uk-margin-top">
             <li class="uk-nav-header uk-text-center">
                 <div class="dashboard-profil">
-                    <img data-src="{{ .user.Picture }}" onerror="this.src='img/user.svg'" class="" alt="" uk-img style="min-height: 100%">
+                    <img src="{{ .user.Picture }}" onerror="if (this.src != 'img/user.svg') this.src = 'img/user.svg';"
+                        class="" alt="" uk-img style="height: 220px;width: 220px">
                 </div>
             </li>
             <li class="uk-nav-header uk-text-center uk-margin">{{ .user.UserName }}</li>

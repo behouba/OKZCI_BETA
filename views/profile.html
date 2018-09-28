@@ -52,7 +52,7 @@
             <div class="uk-margin" uk-grid>
                 <div class="uk-text-center uk-margin-auto">
                     <div class="dashboard-profil">
-                        <img data-src="{{ .user.Picture }}" onerror="this.src='img/user.svg'" alt="" uk-img style="min-height: 100%">
+                        <img src="{{ .user.Picture }}" onerror="this.src='img/user.svg'" alt="" uk-img style="min-height: 100%">
                         <p class="uk-text-bold" style="text-transform: uppercase;">{{ .user.UserName }}</p>
                         <p class="uk-text-small" id="count-indicator">Chargement des vos annonces en cours...</p>
                         <small class="uk-text-warning uk-text-small" id="update-tip" style="display: none">Clickez sur

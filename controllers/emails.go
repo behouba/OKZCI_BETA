@@ -84,7 +84,6 @@ func messagesHandler(ctx iris.Context) {
 		ctx.StatusCode(iris.StatusInternalServerError)
 		return
 	}
-	log.Println("message envoyé")
 }
 
 func sendMailMessage(message message) error {
@@ -108,7 +107,6 @@ func reportAd(ctx iris.Context) {
 		ctx.StatusCode(iris.StatusInternalServerError)
 		return
 	}
-	log.Println("report message sent to admin")
 }
 
 func sendMailToAdmins(subject, body, shortID string, receivers []string) error {

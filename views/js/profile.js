@@ -43,7 +43,6 @@ function getUserPageData(id) {
             }
         })
         .catch(err => {
-            UIkit.notification(err, 'warning')
             console.log(err)
         })
 }

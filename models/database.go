@@ -66,7 +66,6 @@ func init() {
 		return
 	}
 	mongoURI := Config.DB.URI + "admin?replicaSet=OKZDB-shard-0&authSource=admin"
-	log.Println(Config.DB.AwsRegion)
 	dialInfo, err := mgo.ParseURL(mongoURI)
 	if err != nil {
 		log.Println(err)

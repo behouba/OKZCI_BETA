@@ -18,7 +18,6 @@ func searchHandler(ctx iris.Context) {
 		log.Println(err)
 		ctx.StatusCode(iris.StatusInternalServerError)
 	}
-	log.Println(query, category, city, sort)
 	ads, err := models.SearchAds(query, category, city, sort, offset)
 	if err != nil {
 		log.Println(err)

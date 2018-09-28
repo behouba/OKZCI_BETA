@@ -3,6 +3,9 @@
 
 <head>
     <title>{{ .ad.Title }}</title>
+    <meta property="og:image" content="{{index .ad.Pictures 0}}" />
+    <meta property="og:title" content="{{ .ad.Title }}" />
+    <meta property="og:description" content="{{ .ad.Details }}" />
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css" integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ"
         crossorigin="anonymous"> {{ render "components/common-head.html"}}
 </head>
@@ -122,17 +125,18 @@
                 <div uk-slideshow="animation: push; min-height: 272;">
                     <div class="uk-position-relative uk-visible-toggle uk-light">
                         <ul class="uk-slideshow-items">
-                            {{ range .ad.Pictures }}
+                            {{ range $i, $img := .ad.Pictures }} {{ if ne $i 0 }}
                             <li>
-                                <img src="{{.}}" onerror="this.src='img/blank.png'" alt="Image" uk-cover>
+                                <img src="{{$img}}" onerror="this.src='img/blank.png'" alt="Image" uk-cover>
                             </li>
+                            {{ end }}
                             {{ end }}
                         </ul>
                         <div class="uk-position-bottom uk-position-small  uk-position-small">
                             <div uk-lightbox uk-lightbox="animation: fade">
-                                {{ range $i, $img := .ad.Pictures }} {{ if eq $i 0}}
+                                {{ range $i, $img := .ad.Pictures }} {{ if eq $i 1}}
                                 <a uk-icon="expand" href="{{$img}}" data-type="image" class="picture-nav"></a>
-                                {{ else }}
+                                {{ else if ne $i 0 }}
                                 <a href="{{$img}}" data-type="image"></a>
                                 {{ end }} {{ end }}
                             </div>
@@ -162,7 +166,6 @@
                     <p id="ad-price" class="uk-text-bold">{{ .ad.Price }} FCFA</p>
                     {{ else }}
                     <br> {{ end }}
-
                 </div>
                 <hr>
                 <div id="contact-box">
